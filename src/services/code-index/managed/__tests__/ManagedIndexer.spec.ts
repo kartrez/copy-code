@@ -1,13 +1,13 @@
 // kilocode_change - new file
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import * as vscode from "vscode"
-import { ManagedGptByIndexer } from "../ManagedGptByIndexer"
 import { GitWatcher, GitWatcherEvent, GitWatcherFile } from "../../../../shared/GitWatcher"
 import * as gitUtils from "../git-utils"
 import * as kiloConfigFile from "../../../../utils/kilo-config-file"
 import * as git from "../../../../utils/git"
 import * as apiClient from "../api-client"
 import * as path from "path"
+import { ManagedIndexer } from "../ManagedIndexer"
 
 // Mock vscode
 vi.mock("vscode", () => ({
@@ -62,7 +62,7 @@ vi.mock("../../../../core/ignore/RooIgnoreController", () => ({
 
 describe("ManagedIndexer", () => {
 	let mockContextProxy: any
-	let indexer: ManagedGptByIndexer
+	let indexer: ManagedIndexer
 	let mockWorkspaceFolder: vscode.WorkspaceFolder
 
 	beforeEach(() => {
@@ -114,7 +114,6 @@ describe("ManagedIndexer", () => {
 		})
 
 		let mockContext: any
-		new ManagedGptByIndexer(mockContext)
 
 		// Define test paths for use in tests
 		const testExtensionPath = path.join(path.sep, "test", "extension")
@@ -142,7 +141,7 @@ describe("ManagedIndexer", () => {
 			languageModelAccessInformation: {} as any,
 		}
 
-		indexer = new ManagedGptByIndexer(mockContext)
+		indexer = new ManagedIndexer(mockContext)
 		// Store mock instances on indexer for test access
 		;(indexer as any).mockWatcherInstances = mockWatcherInstances
 	})
@@ -153,7 +152,7 @@ describe("ManagedIndexer", () => {
 
 	describe("constructor", () => {
 		it("should create a ManagedIndexer instance", () => {
-			expect(indexer).toBeInstanceOf(ManagedGptByIndexer)
+			expect(indexer).toBeInstanceOf(ManagedIndexer)
 		})
 
 		it("should not subscribe to configuration changes until start is called", () => {

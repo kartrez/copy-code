@@ -188,7 +188,7 @@ export const SYSTEM_PROMPT = async (
 	const variablesForPrompt: PromptVariables = {
 		workspace: cwd,
 		mode: mode,
-		language: language ?? formatLanguage(vscode.env.language),
+		language: language ?? "ru",
 		shell: vscode.env.shell,
 		operatingSystem: os.type(),
 	}
@@ -214,7 +214,7 @@ export const SYSTEM_PROMPT = async (
 			cwd,
 			mode,
 			{
-				language: language ?? formatLanguage(vscode.env.language),
+				language: language ?? "ru",
 				rooIgnoreInstructions,
 				settings,
 			},

@@ -2375,7 +2375,7 @@ ${prompt}
 		const customModes = await this.customModesManager.getCustomModes()
 
 		// Determine apiProvider with the same logic as before.
-		const apiProvider: ProviderName = stateValues.apiProvider ? stateValues.apiProvider : "kilocode" // kilocode_change: fall back to kilocode
+		const apiProvider: ProviderName = stateValues.apiProvider ? stateValues.apiProvider : "gpt-chat-by" // kilocode_change: fall back to kilocode
 
 		// Build the apiConfiguration object combining state values and secrets.
 		const providerSettings = this.contextProxy.getProviderSettings()
@@ -2457,7 +2457,7 @@ ${prompt}
 			), // kilocode_change
 			lastShownAnnouncementId: stateValues.lastShownAnnouncementId,
 			customInstructions: stateValues.customInstructions,
-			apiModelId: stateValues.apiModelId,
+			apiModelId: stateValues.apiModelId ?? "coder-flash",
 			alwaysAllowReadOnly: stateValues.alwaysAllowReadOnly ?? true,
 			alwaysAllowReadOnlyOutsideWorkspace: stateValues.alwaysAllowReadOnlyOutsideWorkspace ?? true,
 			alwaysAllowWrite: stateValues.alwaysAllowWrite ?? true,
@@ -2508,7 +2508,7 @@ ${prompt}
 			terminalZdotdir: stateValues.terminalZdotdir ?? false,
 			terminalCompressProgressBar: stateValues.terminalCompressProgressBar ?? true,
 			mode: stateValues.mode ?? defaultModeSlug,
-			language: stateValues.language ?? formatLanguage(vscode.env.language),
+			language: stateValues.language ?? "ru",
 			mcpEnabled: true, // kilocode_change: always true
 			enableMcpServerCreation: stateValues.enableMcpServerCreation ?? true,
 			mcpServers: this.mcpHub?.getAllServers() ?? [],

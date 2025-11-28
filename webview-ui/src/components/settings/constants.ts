@@ -72,7 +72,7 @@ export const PROVIDERS = [
 	{ value: "sap-ai-core", label: "SAP AI Core" },
 	// kilocode_change end
 	{ value: "deepseek", label: "DeepSeek" },
-	{ value: "kilocode", label: "Kilo Gateway" },
+	// { value: "kilocode", label: "Kilo Gateway" },
 	{ value: "moonshot", label: "Moonshot" },
 	{ value: "openai-native", label: "OpenAI" },
 	{ value: "openai", label: "OpenAI Compatible" },

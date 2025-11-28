@@ -33,8 +33,6 @@ export interface GitDiffFile {
  * Server manifest response
  */
 export interface ServerManifest {
-	/** Organization ID */
-	organizationId: string
 	/** Project ID */
 	projectId: string
 	/** Git branch */
@@ -57,8 +55,6 @@ export interface ServerManifest {
 export interface SearchRequest {
 	/** Search query */
 	query: string
-	/** Organization ID */
-	organizationId: string
 	/** Project ID */
 	projectId: string
 	/** Preferred branch to search first */
