@@ -1,13 +1,13 @@
 // kilocode_change - new file
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import * as vscode from "vscode"
-import { ManagedIndexer } from "../ManagedIndexer"
+import { ManagedGptByIndexer } from "../ManagedGptByIndexer"
 import { GitWatcher, GitWatcherEvent, GitWatcherFile } from "../../../../shared/GitWatcher"
-import { OrganizationService } from "../../../kilocode/OrganizationService"
 import * as gitUtils from "../git-utils"
 import * as kiloConfigFile from "../../../../utils/kilo-config-file"
 import * as git from "../../../../utils/git"
 import * as apiClient from "../api-client"
+import * as path from "path"
 
 // Mock vscode
 vi.mock("vscode", () => ({
@@ -34,7 +34,6 @@ vi.mock("vscode", () => ({
 
 // Mock dependencies
 vi.mock("../../../../shared/GitWatcher")
-vi.mock("../../../kilocode/OrganizationService")
 vi.mock("../git-utils")
 vi.mock("../../../../utils/kilo-config-file")
 vi.mock("../../../../utils/git")
@@ -63,7 +62,7 @@ vi.mock("../../../../core/ignore/RooIgnoreController", () => ({
 
 describe("ManagedIndexer", () => {
 	let mockContextProxy: any
-	let indexer: ManagedIndexer
+	let indexer: ManagedGptByIndexer
 	let mockWorkspaceFolder: vscode.WorkspaceFolder
 
 	beforeEach(() => {
@@ -72,12 +71,7 @@ describe("ManagedIndexer", () => {
 		// Setup mock ContextProxy
 		mockContextProxy = {
 			getSecret: vi.fn((key: string) => {
-				if (key === "kilocodeToken") return "test-token"
-				return null
-			}),
-			getValue: vi.fn((key: string) => {
-				if (key === "kilocodeOrganizationId") return "test-org-id"
-				if (key === "kilocodeTesterWarningsDisabledUntil") return null
+				if (key === "token") return "test-token"
 				return null
 			}),
 			onManagedIndexerConfigChange: vi.fn(() => ({
@@ -106,13 +100,6 @@ describe("ManagedIndexer", () => {
 			files: {},
 		} as any)
 
-		// Mock OrganizationService
-		vi.mocked(OrganizationService.fetchOrganization).mockResolvedValue({
-			id: "test-org-id",
-			name: "Test Org",
-		} as any)
-		vi.mocked(OrganizationService.isCodeIndexingEnabled).mockReturnValue(true)
-
 		// Mock GitWatcher - store instances for later verification
 		const mockWatcherInstances: any[] = []
 		vi.mocked(GitWatcher).mockImplementation(() => {
@@ -126,7 +113,36 @@ describe("ManagedIndexer", () => {
 			return mockWatcher as any
 		})
 
-		indexer = new ManagedIndexer(mockContextProxy)
+		let mockContext: any
+		new ManagedGptByIndexer(mockContext)
+
+		// Define test paths for use in tests
+		const testExtensionPath = path.join(path.sep, "test", "extension")
+		const testStoragePath = path.join(path.sep, "test", "storage")
+		const testGlobalStoragePath = path.join(path.sep, "test", "global-storage")
+		const testLogPath = path.join(path.sep, "test", "log")
+
+		mockContext = {
+			subscriptions: [],
+			workspaceState: {} as any,
+			globalState: {} as any,
+			extensionUri: {} as any,
+			extensionPath: testExtensionPath,
+			asAbsolutePath: vi.fn(),
+			storageUri: {} as any,
+			storagePath: testStoragePath,
+			globalStorageUri: {} as any,
+			globalStoragePath: testGlobalStoragePath,
+			logUri: {} as any,
+			logPath: testLogPath,
+			extensionMode: 3, // vscode.ExtensionMode.Test
+			secrets: {} as any,
+			environmentVariableCollection: {} as any,
+			extension: {} as any,
+			languageModelAccessInformation: {} as any,
+		}
+
+		indexer = new ManagedGptByIndexer(mockContext)
 		// Store mock instances on indexer for test access
 		;(indexer as any).mockWatcherInstances = mockWatcherInstances
 	})
@@ -137,7 +153,7 @@ describe("ManagedIndexer", () => {
 
 	describe("constructor", () => {
 		it("should create a ManagedIndexer instance", () => {
-			expect(indexer).toBeInstanceOf(ManagedIndexer)
+			expect(indexer).toBeInstanceOf(ManagedGptByIndexer)
 		})
 
 		it("should not subscribe to configuration changes until start is called", () => {
@@ -154,117 +170,11 @@ describe("ManagedIndexer", () => {
 		})
 	})
 
-	describe("fetchConfig", () => {
-		it("should fetch config from ContextProxy", async () => {
-			const config = await indexer.fetchConfig()
-
-			expect(mockContextProxy.getSecret).toHaveBeenCalledWith("kilocodeToken")
-			expect(mockContextProxy.getValue).toHaveBeenCalledWith("kilocodeOrganizationId")
-			expect(mockContextProxy.getValue).toHaveBeenCalledWith("kilocodeTesterWarningsDisabledUntil")
-			expect(config).toEqual({
-				kilocodeOrganizationId: "test-org-id",
-				kilocodeToken: "test-token",
-				kilocodeTesterWarningsDisabledUntil: null,
-			})
-		})
-
-		it("should store config in instance", async () => {
-			await indexer.fetchConfig()
-
-			expect(indexer.config).toEqual({
-				kilocodeOrganizationId: "test-org-id",
-				kilocodeToken: "test-token",
-				kilocodeTesterWarningsDisabledUntil: null,
-			})
-		})
-
-		it("should handle missing config values", async () => {
-			mockContextProxy.getSecret.mockReturnValue(null)
-			mockContextProxy.getValue.mockReturnValue(null)
-
-			const config = await indexer.fetchConfig()
-
-			expect(config).toEqual({
-				kilocodeOrganizationId: null,
-				kilocodeToken: null,
-				kilocodeTesterWarningsDisabledUntil: null,
-			})
-		})
-	})
-
-	describe("fetchOrganization", () => {
-		it("should fetch organization when token and org ID are present", async () => {
-			const org = await indexer.fetchOrganization()
-
-			expect(OrganizationService.fetchOrganization).toHaveBeenCalledWith("test-token", "test-org-id", undefined)
-			expect(org).toEqual({
-				id: "test-org-id",
-				name: "Test Org",
-			})
-		})
-
-		it("should return null when token is missing", async () => {
-			mockContextProxy.getSecret.mockReturnValue(null)
-
-			const org = await indexer.fetchOrganization()
-
-			expect(OrganizationService.fetchOrganization).not.toHaveBeenCalled()
-			expect(org).toBeNull()
-		})
-
-		it("should return null when org ID is missing", async () => {
-			mockContextProxy.getValue.mockImplementation((key: string) => {
-				if (key === "kilocodeOrganizationId") return null
-				if (key === "kilocodeTesterWarningsDisabledUntil") return null
-				return null
-			})
-
-			const org = await indexer.fetchOrganization()
-
-			expect(OrganizationService.fetchOrganization).not.toHaveBeenCalled()
-			expect(org).toBeNull()
-		})
-
-		it("should store organization in instance", async () => {
-			await indexer.fetchOrganization()
-
-			expect(indexer.organization).toEqual({
-				id: "test-org-id",
-				name: "Test Org",
-			})
-		})
-	})
-
 	describe("isEnabled", () => {
-		it("should return true when organization exists and feature is enabled", async () => {
-			// Must fetch organization first to populate indexer.organization
-			await indexer.fetchOrganization()
-
+		it("should return true when exists and feature is enabled", async () => {
 			const enabled = indexer.isEnabled()
 
 			expect(enabled).toBe(true)
-		})
-
-		it("should return false when organization does not exist", async () => {
-			vi.mocked(OrganizationService.fetchOrganization).mockResolvedValue(null)
-
-			// Must fetch organization first
-			await indexer.fetchOrganization()
-
-			const enabled = indexer.isEnabled()
-
-			expect(enabled).toBe(false)
-		})
-
-		it("should return false when code indexing is not enabled", async () => {
-			vi.mocked(OrganizationService.isCodeIndexingEnabled).mockReturnValue(false)
-
-			// Must fetch organization first
-			await indexer.fetchOrganization()
-
-			const enabled = indexer.isEnabled()
-
-			expect(enabled).toBe(false)
 		})
 	})
 
@@ -282,29 +192,8 @@ describe("ManagedIndexer", () => {
 			expect(indexer.workspaceFolderState).toEqual([])
 		})
 
-		it("should not start when feature is not enabled", async () => {
-			vi.mocked(OrganizationService.isCodeIndexingEnabled).mockReturnValue(false)
-
-			await indexer.start()
-
-			expect(indexer.isActive).toBe(false)
-			expect(indexer.workspaceFolderState).toEqual([])
-		})
-
 		it("should not start when token is missing", async () => {
 			mockContextProxy.getSecret.mockReturnValue(null)
-
-			await indexer.start()
-
-			expect(indexer.isActive).toBe(false)
-			expect(indexer.workspaceFolderState).toEqual([])
-		})
-
-		it("should not start when organization ID is missing", async () => {
-			mockContextProxy.getValue.mockImplementation((key: string) => {
-				if (key === "kilocodeOrganizationId") return null
-				return null
-			})
 
 			await indexer.start()
 

@@ -107,7 +107,6 @@ import { getKilocodeDefaultModel } from "../../api/providers/kilocode/getKilocod
 import { getKiloCodeWrapperProperties } from "../../core/kilocode/wrapper"
 import { getKilocodeConfig, KilocodeConfig } from "../../utils/kilo-config-file"
 import { getActiveToolUseStyle } from "../../api/providers/kilocode/nativeToolCallHelpers"
-import { ManagedGptByIndexer } from "../../services/code-index/gptchatby-managed/ManagedGptByIndexer"
 
 export type ClineProviderState = Awaited<ReturnType<ClineProvider["getState"]>>
 // kilocode_change end
@@ -2810,10 +2809,6 @@ ${prompt}
 	 */
 	public getCurrentWorkspaceCodeIndexManager(): CodeIndexManager | undefined {
 		return CodeIndexManager.getInstance(this.context)
-	}
-
-	public getGptChatByManager(): ManagedGptByIndexer {
-		return ManagedGptByIndexer.getInstance()
 	}
 
 	/**

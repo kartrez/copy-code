@@ -1,5 +1,5 @@
-import { ManagedGptByIndexer } from "../../../services/code-index/gptchatby-managed/ManagedGptByIndexer"// kilocode_change
 import { CodeIndexManager } from "../../../services/code-index/manager"
+import { ManagedIndexer } from "../../../services/code-index/managed/ManagedIndexer"
 
 export function getObjectiveSection(
 	codeIndexManager?: CodeIndexManager,
@@ -7,7 +7,7 @@ export function getObjectiveSection(
 ): string {
 	const isCodebaseSearchAvailable =
 		// kilocode_change start
-		ManagedGptByIndexer.getInstance().isEnabled() ||
+		ManagedIndexer.getInstance().isEnabled() ||
 		(codeIndexManager &&
 			codeIndexManager.isFeatureEnabled &&
 			codeIndexManager.isFeatureConfigured &&

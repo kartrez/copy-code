@@ -48,7 +48,7 @@ import { getKiloCodeWrapperProperties } from "./core/kilocode/wrapper" // kiloco
 import { checkAnthropicApiKeyConflict } from "./utils/anthropicApiKeyWarning" // kilocode_change
 import { SettingsSyncService } from "./services/settings-sync/SettingsSyncService" // kilocode_change
 import { flushModels, getModels } from "./api/providers/fetchers/modelCache"
-import { ManagedGptByIndexer } from "./services/code-index/gptchatby-managed/ManagedGptByIndexer"
+import { ManagedIndexer } from "./services/code-index/managed/ManagedIndexer"
 
 /**
  * Built using https://github.com/microsoft/vscode-webview-ui-toolkit
@@ -468,7 +468,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// kilocode_change start: Initialize ManagedIndexer
 	await checkAndRunAutoLaunchingTask(context)
-	const managedIndexer = new ManagedGptByIndexer(context)
+	const managedIndexer = new ManagedIndexer(context)
 	context.subscriptions.push(managedIndexer)
 	void managedIndexer.start().catch((error) => {
 		outputChannel.appendLine(

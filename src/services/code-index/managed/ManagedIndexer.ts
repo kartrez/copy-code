@@ -1,29 +1,27 @@
-// kilocode_change new file
 
 import * as vscode from "vscode"
 import * as path from "path"
 import { promises as fs } from "fs"
 import pMap from "p-map"
-import pLimit from "p-limit"
-import { ContextProxy } from "../../../core/config/ContextProxy"
-import { KiloOrganization } from "../../../shared/kilocode/organization"
-import { OrganizationService } from "../../kilocode/OrganizationService"
+import { EventEmitter } from "events"
 import { GitWatcher, GitWatcherEvent } from "../../../shared/GitWatcher"
 import { getCurrentBranch, isGitRepository, getCurrentCommitSha, getBaseBranch } from "./git-utils"
-import { getKilocodeConfig } from "../../../utils/kilo-config-file"
+import { normalizeProjectId } from "../../../utils/kilo-config-file"
 import { getGitRepositoryInfo } from "../../../utils/git"
-import { getServerManifest, searchCode, upsertFile } from "./api-client"
-import { MANAGED_MAX_CONCURRENT_FILES } from "../constants"
+import { getServerManifest, searchCode, upsertChunks } from "./api-client"
+import {
+	MAX_FILE_SIZE_BYTES,
+} from "../constants"
 import { ServerManifest } from "./types"
 import { scannerExtensions } from "../shared/supported-extensions"
 import { VectorStoreSearchResult } from "../interfaces/vector-store"
 import { ClineProvider } from "../../../core/webview/ClineProvider"
 import { RooIgnoreController } from "../../../core/ignore/RooIgnoreController"
+import { ICodeParser } from "../interfaces"
+import { CodeParser } from "../processors"
 
 interface ManagedIndexerConfig {
-	kilocodeToken: string | null
-	kilocodeOrganizationId: string | null
-	kilocodeTesterWarningsDisabledUntil: number | null
+	gptChatByApiKey: string | null
 }
 
 /**
@@ -74,10 +72,8 @@ export class ManagedIndexer implements vscode.Disposable {
 
 	// Handle changes to vscode workspace folder changes
 	workspaceFoldersListener: vscode.Disposable | null = null
-	// kilocode_change: Listen to configuration changes from ContextProxy
 	configChangeListener: vscode.Disposable | null = null
 	config: ManagedIndexerConfig | null = null
-	organization: KiloOrganization | null = null
 	isActive = false
 
 	/**
@@ -85,94 +81,58 @@ export class ManagedIndexer implements vscode.Disposable {
 	 */
 	workspaceFolderState: ManagedIndexerWorkspaceFolderState[] = []
 
-	// Concurrency limiter for file upserts
-	private readonly fileUpsertLimit = pLimit(MANAGED_MAX_CONCURRENT_FILES)
+	private readonly codeParser: ICodeParser = new CodeParser()
+	private readonly configEmitter = new EventEmitter()
 
-	constructor(public contextProxy: ContextProxy) {
+	constructor(public context: vscode.ExtensionContext) {
 		ManagedIndexer.prevInstance = this
 	}
 
 	private async onConfigurationChange(config: ManagedIndexerConfig): Promise<void> {
 		console.info("[ManagedIndexer] Configuration changed, restarting...", {
-			hasToken: !!config.kilocodeToken,
-			hasOrgId: !!config.kilocodeOrganizationId,
-			testerWarningsDisabled: config.kilocodeTesterWarningsDisabledUntil,
+			hasToken: !!config.gptChatByApiKey,
 		})
 		this.config = config
 		this.dispose()
 		await this.start()
 	}
 
-	// TODO: The fetchConfig, fetchOrganization, and isEnabled functions are sort of spaghetti
-	// code right now. We need to clean this up to be more stateless or better rely
-	// on proper memoization/invalidation techniques
-
 	async fetchConfig(): Promise<ManagedIndexerConfig> {
-		// kilocode_change: Read directly from ContextProxy instead of ClineProvider
-		const kilocodeToken = this.contextProxy.getSecret("kilocodeToken")
-		const kilocodeOrganizationId = this.contextProxy.getValue("kilocodeOrganizationId")
-		const kilocodeTesterWarningsDisabledUntil = this.contextProxy.getValue("kilocodeTesterWarningsDisabledUntil")
-
+		const token = await this.context.secrets.get("gptChatByApiKey")
 		this.config = {
-			kilocodeToken: kilocodeToken ?? null,
-			kilocodeOrganizationId: kilocodeOrganizationId ?? null,
-			kilocodeTesterWarningsDisabledUntil: kilocodeTesterWarningsDisabledUntil ?? null,
+			gptChatByApiKey: token ?? null,
 		}
 
 		return this.config
 	}
 
-	async fetchOrganization(): Promise<KiloOrganization | null> {
-		const config = await this.fetchConfig()
-
-		if (config.kilocodeToken && config.kilocodeOrganizationId) {
-			this.organization = await OrganizationService.fetchOrganization(
-				config.kilocodeToken,
-				config.kilocodeOrganizationId,
-				config.kilocodeTesterWarningsDisabledUntil ?? undefined,
-			)
-
-			return this.organization
-		}
-
-		this.organization = null
-
-		return this.organization
-	}
-
 	isEnabled(): boolean {
-		const organization = this.organization
-
-		if (!organization) {
-			return false
-		}
-
-		const isEnabled = OrganizationService.isCodeIndexingEnabled(organization)
-
-		if (!isEnabled) {
-			return false
-		}
-
-		return true
+		return !!this.config?.gptChatByApiKey
 	}
 
 	sendEnabledStateToWebview() {
 		const isEnabled = this.isEnabled()
-		const provider = ClineProvider.getVisibleInstance()
-		if (provider) {
-			provider.postMessageToWebview({
-				type: "managedIndexerEnabled",
-				managedIndexerEnabled: isEnabled,
-			})
+		ClineProvider.getInstance().then((provider) => {
+			if (provider) {
+				provider.postMessageToWebview({
+					type: "managedIndexerEnabled",
+					managedIndexerEnabled: isEnabled,
+				})
+			}
+		})
+	}
+
+	public onManagedIndexerConfigChange(listener: (config: ManagedIndexerConfig) => void): vscode.Disposable {
+		this.configEmitter.on("managed-indexer-config-changed", listener)
+		return {
+			dispose: () => this.configEmitter.off("managed-indexer-config-changed", listener),
 		}
 	}
 
 	async start() {
 		console.log("[ManagedIndexer] Starting ManagedIndexer")
 
-		this.configChangeListener = this.contextProxy.onManagedIndexerConfigChange(
-			this.onConfigurationChange.bind(this),
-		)
+		this.configChangeListener = this.onManagedIndexerConfigChange(this.onConfigurationChange.bind(this))
 
 		vscode.workspace.onDidChangeWorkspaceFolders(this.onDidChangeWorkspaceFolders.bind(this))
 
@@ -182,18 +142,11 @@ export class ManagedIndexer implements vscode.Disposable {
 			return
 		}
 
-		this.organization = await this.fetchOrganization()
+		await this.fetchConfig()
 
 		const isEnabled = this.isEnabled()
 		this.sendEnabledStateToWebview()
 		if (!isEnabled) {
-			return
-		}
-
-		// TODO: Plumb kilocodeTesterWarningsDisabledUntil through
-		const { kilocodeOrganizationId, kilocodeToken } = this.config ?? {}
-
-		if (!kilocodeOrganizationId || !kilocodeToken) {
 			return
 		}
 
@@ -236,8 +189,7 @@ export class ManagedIndexer implements vscode.Disposable {
 					state.repositoryUrl = repositoryUrl
 
 					// Step 2: Get project configuration
-					const config = await getKilocodeConfig(cwd, repositoryUrl)
-					const projectId = config?.project?.id
+					const projectId = normalizeProjectId(repositoryUrl)
 
 					if (!projectId) {
 						console.log("[ManagedIndexer] No project ID found for workspace folder", cwd)
@@ -248,10 +200,9 @@ export class ManagedIndexer implements vscode.Disposable {
 					// Step 3: Fetch server manifest
 					try {
 						state.manifest = await getServerManifest(
-							kilocodeOrganizationId,
 							projectId,
 							gitBranch,
-							kilocodeToken,
+							this.config?.gptChatByApiKey || '',
 							state.currentAbortController?.signal,
 						)
 					} catch (error) {
@@ -314,6 +265,7 @@ export class ManagedIndexer implements vscode.Disposable {
 			}),
 		)
 
+		// @ts-ignore
 		this.workspaceFolderState = states.filter((s) => s !== null)
 
 		// Start watchers
@@ -325,7 +277,6 @@ export class ManagedIndexer implements vscode.Disposable {
 	}
 
 	dispose() {
-		// kilocode_change: Dispose configuration change listener
 		this.configChangeListener?.dispose()
 		this.configChangeListener = null
 
@@ -340,7 +291,6 @@ export class ManagedIndexer implements vscode.Disposable {
 		this.workspaceFolderState = []
 
 		this.isActive = false
-		this.organization = null
 	}
 
 	/**
@@ -370,9 +320,7 @@ export class ManagedIndexer implements vscode.Disposable {
 		// Start a new fetch and cache the promise
 		state.manifestFetchPromise = (async () => {
 			try {
-				// Recalculate projectId as it might have changed with the branch
-				const config = await getKilocodeConfig(state.workspaceFolder.uri.fsPath, state.repositoryUrl)
-				const projectId = config?.project?.id
+				const projectId = normalizeProjectId(state.repositoryUrl)
 
 				if (!projectId) {
 					throw new Error(`No project ID found for workspace folder ${state.workspaceFolder.uri.fsPath}`)
@@ -380,15 +328,14 @@ export class ManagedIndexer implements vscode.Disposable {
 				state.projectId = projectId
 
 				// Ensure we have the necessary configuration
-				if (!this.config?.kilocodeToken || !this.config?.kilocodeOrganizationId) {
+				if (!this.config?.gptChatByApiKey) {
 					throw new Error("Missing required configuration for manifest fetch")
 				}
 
 				const manifest = await getServerManifest(
-					this.config.kilocodeOrganizationId,
 					state.projectId,
 					branch,
-					this.config.kilocodeToken,
+					this.config?.gptChatByApiKey || '',
 				)
 
 				state.manifest = manifest
@@ -526,8 +473,8 @@ export class ManagedIndexer implements vscode.Disposable {
 				return
 			}
 
-			if (!this.config?.kilocodeToken || !this.config?.kilocodeOrganizationId || !state.projectId) {
-				console.warn("[ManagedIndexer] Missing token, organization ID, or project ID, skipping file upsert")
+			if (!this.config?.gptChatByApiKey || !state.projectId) {
+				console.warn("[ManagedIndexer] Missing token, project ID, skipping file upsert")
 				return
 			}
 
@@ -567,8 +514,7 @@ export class ManagedIndexer implements vscode.Disposable {
 							// Ensure we have the necessary configuration
 							// check again inside loop as this can change mid-flight
 							if (
-								!this.config?.kilocodeToken ||
-								!this.config?.kilocodeOrganizationId ||
+								!this.config?.gptChatByApiKey ||
 								!state.projectId
 							) {
 								return
@@ -581,37 +527,29 @@ export class ManagedIndexer implements vscode.Disposable {
 
 							// if file is larger than 1 megabyte, skip it
 							const stats = await fs.stat(absoluteFilePath)
-							if (stats.size > 1 * 1024 * 1024) {
+							if (stats.size > MAX_FILE_SIZE_BYTES) {
 								return
 							}
 
-							const fileBuffer = await fs.readFile(absoluteFilePath)
+							const content = await fs.readFile(absoluteFilePath)
+								.then((buffer) => Buffer.from(buffer).toString("utf-8"))
 							const relativeFilePath = path.relative(event.watcher.config.cwd, absoluteFilePath)
 
 							const ignore = state.ignoreController
 							if (ignore && !ignore.validateAccess(relativeFilePath)) {
 								return
 							}
+							const blocks = await this.codeParser.parseFile(filePath, { content, fileHash: fileHash })
 
-							// Call the upsertFile API with abort signal
-							await upsertFile(
-								{
-									fileBuffer,
-									fileHash,
-									filePath: relativeFilePath,
-									gitBranch: event.branch,
-									isBaseBranch: event.isBaseBranch,
-									organizationId: this.config.kilocodeOrganizationId,
-									projectId,
-									kilocodeToken: this.config.kilocodeToken,
-								},
-								signal,
+							upsertChunks(
+								projectId,
+								event.branch,
+								event.isBaseBranch,
+								blocks,
+								this.config?.gptChatByApiKey || '',
+								signal
 							)
 
-							// Clear any previous file-upsert errors on success
-							if (state.error?.type === "file-upsert") {
-								state.error = undefined
-							}
 						} catch (error) {
 							// Don't log abort errors as failures
 							if (error instanceof Error && error.message === "AbortError") {
@@ -620,7 +558,6 @@ export class ManagedIndexer implements vscode.Disposable {
 
 							const errorMessage = error instanceof Error ? error.message : String(error)
 							console.error(`[ManagedIndexer] Failed to upsert file ${filePath}: ${errorMessage}`)
-
 							// Store the error in state
 							state.error = {
 								type: "file-upsert",
@@ -670,20 +607,20 @@ export class ManagedIndexer implements vscode.Disposable {
 			hasWatcher: !!state.watcher,
 			error: state.error
 				? {
-						type: state.error.type,
-						message: state.error.message,
-						timestamp: state.error.timestamp,
-						context: state.error.context,
-					}
+					type: state.error.type,
+					message: state.error.message,
+					timestamp: state.error.timestamp,
+					context: state.error.context,
+				}
 				: undefined,
 		}))
 	}
 
 	public async search(query: string, directoryPrefix?: string): Promise<VectorStoreSearchResult[]> {
-		const { kilocodeOrganizationId, kilocodeToken } = this.config ?? {}
+		const { gptChatByApiKey } = this.config ?? {}
 
-		if (!kilocodeOrganizationId || !kilocodeToken) {
-			throw new Error("Kilocode organization ID and token are required for managed index search")
+		if (!gptChatByApiKey) {
+			throw new Error("Gtp Chat token are required for managed index search")
 		}
 
 		const results = await Promise.all(
@@ -695,7 +632,6 @@ export class ManagedIndexer implements vscode.Disposable {
 				return await searchCode(
 					{
 						query,
-						organizationId: kilocodeOrganizationId,
 						projectId: state.projectId,
 						preferBranch: state.gitBranch,
 						fallbackBranch: "main",
@@ -703,7 +639,7 @@ export class ManagedIndexer implements vscode.Disposable {
 						excludeFiles: [],
 						path: directoryPrefix,
 					},
-					kilocodeToken,
+					gptChatByApiKey,
 				)
 			}),
 		)

@@ -1,7 +1,7 @@
 import { ToolProtocol, TOOL_PROTOCOL } from "@roo-code/types"
-import { ManagedGptByIndexer } from "../../../services/code-index/gptchatby-managed/ManagedGptByIndexer"
 import { CodeIndexManager } from "../../../services/code-index/manager"
 import { isNativeProtocol } from "@roo-code/types"
+import { ManagedIndexer } from "../../../services/code-index/managed/ManagedIndexer"
 
 export function getToolUseGuidelinesSection(
 	codeIndexManager?: CodeIndexManager,
@@ -9,7 +9,7 @@ export function getToolUseGuidelinesSection(
 ): string {
 	const isCodebaseSearchAvailable =
 		// kilocode_change start
-		ManagedGptByIndexer.getInstance().isEnabled() ||
+		ManagedIndexer.getInstance().isEnabled() ||
 		(codeIndexManager &&
 			codeIndexManager.isFeatureEnabled &&
 			codeIndexManager.isFeatureConfigured &&

@@ -13,7 +13,7 @@ import type { CodeIndexManager } from "../../../services/code-index/manager"
 // kilocode_change start
 import { ClineProviderState } from "../../webview/ClineProvider"
 import { isFastApplyAvailable } from "../../tools/kilocode/editFileTool"
-import { ManagedGptByIndexer } from "../../../services/code-index/gptchatby-managed/ManagedGptByIndexer"
+import { ManagedIndexer } from "../../../services/code-index/managed/ManagedIndexer"
 // kilocode_change end
 
 /**
@@ -72,7 +72,7 @@ export function filterNativeToolsForMode(
 
 	// kilocode_change start
 	const isCodebaseSearchAvailable =
-		ManagedGptByIndexer.getInstance().isEnabled() ||
+		ManagedIndexer.getInstance().isEnabled() ||
 		(codeIndexManager &&
 			codeIndexManager.isFeatureEnabled &&
 			codeIndexManager.isFeatureConfigured &&
