@@ -58,13 +58,13 @@ export interface SearchRequest {
 	/** Project ID */
 	projectId: string
 	/** Preferred branch to search first */
-	preferBranch: string
+	// preferBranch: string
 	/** Fallback branch to search (usually 'main') */
-	fallbackBranch: string
+	// fallbackBranch: string
 	/** Files to exclude from results (deleted on preferred branch) */
 	excludeFiles: string[]
 	/** Optional directory path filter */
-	path?: string
+	// path?: string
 }
 
 /**
@@ -81,8 +81,9 @@ export interface SearchResult {
 	endLine: number
 	/** Relevance score */
 	score: number
+	codeChunk: string
 	/** Which branch this result came from */
-	gitBranch: string
+	// gitBranch: string
 	/** Whether this result came from the preferred branch */
-	fromPreferredBranch: boolean
+	// fromPreferredBranch: boolean
 }

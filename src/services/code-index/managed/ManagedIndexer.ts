@@ -651,7 +651,7 @@ export class ManagedIndexer implements vscode.Disposable {
 				score: result.score,
 				payload: {
 					filePath: result.filePath,
-					codeChunk: "", // Managed indexing doesn't return code chunks
+					codeChunk: result.codeChunk,
 					startLine: result.startLine,
 					endLine: result.endLine,
 				},
