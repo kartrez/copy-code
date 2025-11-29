@@ -138,11 +138,11 @@ export const DEFAULT_MODES: readonly ModeConfig[] = [
 	{
 		slug: "no-mode",
 		// kilocode_change start
-		name: "No Mode",
+		name: "No Agent Mode",
 		iconName: "codicon-empty-window",
 		// kilocode_change end
 		roleDefinition: "",
-		description: "No system context (reduces token consumption)",
+		description: "No Agent context (reduces token consumption)",
 		whenToUse: "",
 		groups: ["read", ["edit", { fileRegex: "", description: "" }], "browser", "mcp"],
 		customInstructions: "",
