@@ -2519,10 +2519,10 @@ export const webviewMessageHandler = async (
 		// kilocode_change_start
 		case "fetchProfileDataRequest":
 			try {
-				const { apiConfiguration, currentApiConfigName } = await provider.getState()
-				const kilocodeToken = apiConfiguration?.kilocodeToken
+				const { apiConfiguration } = await provider.getState()
+				const gptChatByApiKey = apiConfiguration?.gptChatByApiKey
 
-				if (!kilocodeToken) {
+				if (!gptChatByApiKey) {
 					provider.log("KiloCode token not found in extension state.")
 					provider.postMessageToWebview({
 						type: "profileDataResponse",
@@ -2533,70 +2533,17 @@ export const webviewMessageHandler = async (
 
 				// Changed to /api/profile
 				const headers: Record<string, string> = {
-					Authorization: `Bearer ${kilocodeToken}`,
+					Authorization: `Bearer ${gptChatByApiKey}`,
 					"Content-Type": "application/json",
 				}
 
-				// Add X-KILOCODE-TESTER: SUPPRESS header if the setting is enabled
-				if (
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil &&
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil > Date.now()
-				) {
-					headers["X-KILOCODE-TESTER"] = "SUPPRESS"
-				}
+				const url = "https://gpt-chat.by/api/copi-code/profile"
+				const response = await axios.get<Omit<ProfileData, "token">>(url, { headers })
 
-				const url = getKiloUrlFromToken("https://api.kilocode.ai/api/profile", kilocodeToken)
-				const response = await axios.get<Omit<ProfileData, "kilocodeToken">>(url, { headers })
-
-				// Go back to Personal when no longer part of the current set organization
-				const organizationExists = (response.data.organizations ?? []).some(
-					({ id }) => id === apiConfiguration?.kilocodeOrganizationId,
-				)
-				if (apiConfiguration?.kilocodeOrganizationId && !organizationExists) {
-					provider.upsertProviderProfile(currentApiConfigName ?? "default", {
-						...apiConfiguration,
-						kilocodeOrganizationId: undefined,
-					})
-				}
-
-				try {
-					const shouldAutoSwitch =
-						response.data.organizations &&
-						response.data.organizations.length > 0 &&
-						!apiConfiguration.kilocodeOrganizationId &&
-						!getGlobalState("hasPerformedOrganizationAutoSwitch")
-
-					if (shouldAutoSwitch) {
-						const firstOrg = response.data.organizations![0]
-						provider.log(
-							`[Auto-switch] Performing automatic organization switch to: ${firstOrg.name} (${firstOrg.id})`,
-						)
-
-						const upsertMessage: WebviewMessage = {
-							type: "upsertApiConfiguration",
-							text: currentApiConfigName ?? "default",
-							apiConfiguration: {
-								...apiConfiguration,
-								kilocodeOrganizationId: firstOrg.id,
-							},
-						}
-
-						await webviewMessageHandler(provider, upsertMessage)
-						await updateGlobalState("hasPerformedOrganizationAutoSwitch", true)
-
-						vscode.window.showInformationMessage(`Automatically switched to organization: ${firstOrg.name}`)
-
-						provider.log(`[Auto-switch] Successfully switched to organization: ${firstOrg.name}`)
-					}
-				} catch (error) {
-					provider.log(
-						`[Auto-switch] Error during automatic organization switch: ${error instanceof Error ? error.message : String(error)}`,
-					)
-				}
 
 				provider.postMessageToWebview({
 					type: "profileDataResponse",
-					payload: { success: true, data: { kilocodeToken, ...response.data } },
+					payload: { success: true, data: { token: gptChatByApiKey, ...response.data } },
 				})
 			} catch (error: any) {
 				const errorMessage =
@@ -2613,9 +2560,9 @@ export const webviewMessageHandler = async (
 		case "fetchBalanceDataRequest": // New handler
 			try {
 				const { apiConfiguration } = await provider.getState()
-				const { kilocodeToken, kilocodeOrganizationId } = apiConfiguration ?? {}
+				const gptChatByApiKey = apiConfiguration?.gptChatByApiKey
 
-				if (!kilocodeToken) {
+				if (!gptChatByApiKey) {
 					provider.log("KiloCode token not found in extension state for balance data.")
 					provider.postMessageToWebview({
 						type: "balanceDataResponse", // New response type
@@ -2625,23 +2572,11 @@ export const webviewMessageHandler = async (
 				}
 
 				const headers: Record<string, string> = {
-					Authorization: `Bearer ${kilocodeToken}`,
+					Authorization: `Bearer ${gptChatByApiKey}`,
 					"Content-Type": "application/json",
 				}
 
-				if (kilocodeOrganizationId) {
-					headers["X-KiloCode-OrganizationId"] = kilocodeOrganizationId
-				}
-
-				// Add X-KILOCODE-TESTER: SUPPRESS header if the setting is enabled
-				if (
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil &&
-					apiConfiguration.kilocodeTesterWarningsDisabledUntil > Date.now()
-				) {
-					headers["X-KILOCODE-TESTER"] = "SUPPRESS"
-				}
-
-				const url = getKiloUrlFromToken("https://api.kilocode.ai/api/profile/balance", kilocodeToken)
+				const url = "https://gpt-chat.by/api/copi-code/balance"
 				const response = await axios.get(url, { headers })
 				provider.postMessageToWebview({
 					type: "balanceDataResponse", // New response type
@@ -2660,36 +2595,30 @@ export const webviewMessageHandler = async (
 		case "shopBuyCredits": // New handler
 			try {
 				const { apiConfiguration } = await provider.getState()
-				const kilocodeToken = apiConfiguration?.kilocodeToken
-				if (!kilocodeToken) {
+				const gptChatByApiKey = apiConfiguration?.gptChatByApiKey
+				if (!gptChatByApiKey) {
 					provider.log("KiloCode token not found in extension state for buy credits.")
 					break
 				}
 				const credits = message.values?.credits || 50
-				const uriScheme = message.values?.uriScheme || "vscode"
-				const uiKind = message.values?.uiKind || "Desktop"
-				const source = uiKind === "Web" ? "web" : uriScheme
+				const period = message.values?.period
+				const headers: Record<string, string> = {
+					Authorization: `Bearer ${gptChatByApiKey}`,
+					"Content-Type": "application/json",
+				}
+				let url = `https://gpt-chat.by/api/copi-code/balance/top-up?amount=${credits}`
+				if (period === 1) {
+					url = `https://gpt-chat.by/api/copi-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE`
+				}
+				if (period === 12) {
+					url = `https://gpt-chat.by/api/copi-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE_YEAR`
+				}
 
-				const url = getKiloUrlFromToken(
-					`https://api.kilocode.ai/payments/topup?origin=extension&source=${source}&amount=${credits}`,
-					kilocodeToken,
-				)
-				const response = await axios.post(
-					url,
-					{},
-					{
-						headers: {
-							Authorization: `Bearer ${kilocodeToken}`,
-							"Content-Type": "application/json",
-						},
-						maxRedirects: 0, // Prevent axios from following redirects automatically
-						validateStatus: (status) => status < 400, // Accept 3xx status codes
-					},
-				)
-				if (response.status !== 303 || !response.headers.location) {
+				const response = await axios.get(url, { headers })
+				if (!response.data.url) {
 					return
 				}
-				await vscode.env.openExternal(vscode.Uri.parse(response.headers.location))
+				await vscode.env.openExternal(vscode.Uri.parse(response.data.url))
 			} catch (error: any) {
 				const errorMessage = error?.message || "Unknown error"
 				const errorStack = error?.stack ? ` Stack: ${error.stack}` : ""

@@ -374,14 +374,14 @@ export type UserOrganizationWithApiKey = {
 }
 
 export type ProfileData = {
-	kilocodeToken: string
-	user: {
+	token: string
+	telegram: {
 		id: string
-		name: string
-		email: string
-		image: string
+		firstname: string
+		lastname: string
 	}
-	organizations?: UserOrganizationWithApiKey[]
+	hasSubscription: boolean,
+	subscriptionExpairedDate: string,
 }
 
 export interface ProfileDataResponsePayload {

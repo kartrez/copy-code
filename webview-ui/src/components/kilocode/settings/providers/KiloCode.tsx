@@ -12,7 +12,7 @@ import { vscode } from "@src/utils/vscode"
 import { OrganizationSelector } from "../../common/OrganizationSelector"
 import { KiloCodeWrapperProperties } from "../../../../../../src/shared/kilocode/wrapper"
 import { getAppUrl } from "@roo-code/types"
-import { useKiloIdentity } from "@src/utils/kilocode/useKiloIdentity"
+import { useIdentity } from "@/utils/kilocode/useIdentity"
 
 type KiloCodeProps = {
 	apiConfiguration: ProviderSettings
@@ -53,7 +53,7 @@ export const KiloCode = ({
 	)
 
 	// Use the existing hook to get user identity
-	const userIdentity = useKiloIdentity(apiConfiguration.kilocodeToken || "", "")
+	const userIdentity = useIdentity(apiConfiguration.kilocodeToken || "", "")
 	const isKiloCodeAiUser = userIdentity.endsWith("@kilocode.ai")
 
 	const areKilocodeWarningsDisabled = apiConfiguration.kilocodeTesterWarningsDisabledUntil

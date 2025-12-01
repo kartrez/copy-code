@@ -16,12 +16,7 @@ export const OrganizationSelector = ({ className, showLabel = false }: { classNa
 		const message = event.data
 		if (message.type === "profileDataResponse") {
 			const payload = message.payload as ProfileDataResponsePayload
-			if (payload.success) {
-				setOrganizations(payload.data?.organizations ?? [])
-			} else {
-				console.error("Error fetching profile organizations data:", payload.error)
-				setOrganizations([])
-			}
+			setOrganizations([])
 		} else if (message.type === "updateProfileData") {
 			vscode.postMessage({
 				type: "fetchProfileDataRequest",

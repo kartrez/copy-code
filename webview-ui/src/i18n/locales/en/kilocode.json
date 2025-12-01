@@ -132,11 +132,18 @@
 		"organization": "Organization",
 		"personal": "Personal",
 		"shop": {
-			"title": "Buy Credits",
+			"title": "Top-Up balance",
 			"popular": "Popular",
 			"credits": "credits",
 			"action": "Buy Now",
-			"viewAll": "View all pricing options"
+			"viewAll": "Go to the website for a payment of any amount"
+		},
+		"subcription": {
+			"title": "Subscribe",
+			"period_1": "the period is 1 month",
+			"period_12": "a 12-month period, with a discount 20%",
+			"viewAll": "Read about the benefits of a subscription",
+			"expiredAt": "Your subscription is active until"
 		},
 		"detailedUsage": "Detailed Usage",
 		"createOrganization": "Create an Organization to Track Detailed Usage"

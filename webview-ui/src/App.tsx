@@ -30,7 +30,7 @@ import ErrorBoundary from "./components/ErrorBoundary"
 import { useAddNonInteractiveClickListener } from "./components/ui/hooks/useNonInteractiveClick"
 import { TooltipProvider } from "./components/ui/tooltip"
 import { STANDARD_TOOLTIP_DELAY } from "./components/ui/standard-tooltip"
-import { useKiloIdentity } from "./utils/kilocode/useKiloIdentity"
+import { useIdentity } from "./utils/kilocode/useIdentity"
 import { MemoryWarningBanner } from "./kilocode/MemoryWarningBanner"
 
 type Tab = "settings" | "history" | "mcp" | "modes" | "chat" | "marketplace" | "account" | "cloud" | "profile" // kilocode_change: add "profile"
@@ -223,7 +223,7 @@ const App = () => {
 	}, [shouldShowAnnouncement, tab])
 
 	// kilocode_change start
-	const telemetryDistinctId = useKiloIdentity(apiConfiguration?.kilocodeToken ?? "", machineId ?? "")
+	const telemetryDistinctId = useIdentity(apiConfiguration?.gptChatByApiKey ?? "", machineId ?? "")
 	useEffect(() => {
 		if (didHydrateState) {
 			telemetryClient.updateTelemetryState(telemetrySetting, telemetryKey, telemetryDistinctId)
