@@ -86,34 +86,34 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 	const creditPackages = [
 		{
 			credits: 10,
-			popular: false,
+			gift: ''
 		},
 		{
+			gift: '',
 			credits: 25,
-			popular: true,
 		},
 		{
 			credits: 50,
-			popular: false,
+			gift: "1 мес. подписки"
 		},
 		{
 			credits: 100,
-			popular: false,
+			gift: "3 мес. подписки"
 		},
 	]
 
 	const subscriptionPackages = [
 		{
 			credits: 5,
-			popular: false,
 			discount: false,
 			period: 1,
+			gift: ''
 		},
 		{
 			credits: 48,
-			popular: true,
 			discount: true,
 			period: 12,
+			gift: "$5 на баланс"
 		},
 	]
 
@@ -226,16 +226,15 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 													<div
 														key={pkg.credits}
 														className={`relative border rounded-lg p-4 bg-[var(--vscode-editor-background)] transition-all hover:shadow-md ${
-															pkg.popular
+															pkg.gift
 																? "border-[var(--vscode-button-background)] ring-1 ring-[var(--vscode-button-background)]"
 																: "border-[var(--vscode-input-border)]"
 														}`}>
-														{pkg.popular && (
+														{pkg.gift && (
 															<div
 																className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-																<span
-																	className="bg-[var(--vscode-button-background)] text-[var(--vscode-button-foreground)] text-xs px-2 py-1 rounded-full font-medium">
-																	{t("kilocode:profile.shop.popular")}
+																<span className="bg-[var(--vscode-button-background)] text-[var(--vscode-button-foreground)] text-xs px-2 py-1 rounded-full font-medium">
+																	<span className="codicon codicon-gift" style={{ position: "relative", top: "3px" }}></span>{pkg.gift}
 																</span>
 															</div>
 														)}
@@ -250,7 +249,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 																{pkg.discount ? t("kilocode:profile.subcription.period_12") : t("kilocode:profile.subcription.period_1")}
 															</div>
 															<VSCodeButton
-																appearance={pkg.popular ? "primary" : "secondary"}
+																appearance={pkg.gift ? "primary" : "secondary"}
 																className="w-full"
 																onClick={handleBuyCredits(pkg.credits, pkg.period)}>
 																{t("kilocode:profile.shop.action")}
@@ -261,12 +260,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 											</div>
 
 											<div className="text-center">
-												<VSCodeButtonLink
-													href="https://gpt-chat.by"
-													appearance="secondary"
-													className="text-sm">
-													{t("kilocode:profile.subcription.viewAll")}
-												</VSCodeButtonLink>
+												Подписка открывает доступ:
+												<ul>
+													<li>Локальная индексация кода, позволяет сохранять индексы кода
+														только у вас на компьютере, важно для приватных проектов.</li>
+													<li>Большому списку различных моделей ИИ, таких как Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5 и более чем 450 другими.</li>
+												</ul>
 											</div>
 										</div>
 									)}
@@ -281,16 +280,16 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 												<div
 													key={pkg.credits}
 													className={`relative border rounded-lg p-4 bg-[var(--vscode-editor-background)] transition-all hover:shadow-md ${
-														pkg.popular
+														pkg.gift
 															? "border-[var(--vscode-button-background)] ring-1 ring-[var(--vscode-button-background)]"
 															: "border-[var(--vscode-input-border)]"
 													}`}>
-													{pkg.popular && (
+													{pkg.gift && (
 														<div
 															className="absolute -top-2 left-1/2 transform -translate-x-1/2">
 																<span
 																	className="bg-[var(--vscode-button-background)] text-[var(--vscode-button-foreground)] text-xs px-2 py-1 rounded-full font-medium">
-																	{t("kilocode:profile.shop.popular")}
+																	<span className="codicon codicon-gift" style={{ position: "relative", top: "3px" }}></span>{pkg.gift}
 																</span>
 														</div>
 													)}
@@ -301,7 +300,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 															${pkg.credits}
 														</div>
 														<VSCodeButton
-															appearance={pkg.popular ? "primary" : "secondary"}
+															appearance={pkg.gift ? "primary" : "secondary"}
 															className="w-full"
 															onClick={handleBuyCredits(pkg.credits)}>
 															{t("kilocode:profile.shop.action")}
