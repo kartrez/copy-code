@@ -19,6 +19,7 @@ import { ClineProvider } from "../../../core/webview/ClineProvider"
 import { RooIgnoreController } from "../../../core/ignore/RooIgnoreController"
 import { ICodeParser } from "../interfaces"
 import { CodeParser } from "../processors"
+import { ContextProxy } from "../../../core/config/ContextProxy"
 
 interface ManagedIndexerConfig {
 	gptChatByApiKey: string | null
@@ -72,6 +73,7 @@ export class ManagedIndexer implements vscode.Disposable {
 
 	// Handle changes to vscode workspace folder changes
 	workspaceFoldersListener: vscode.Disposable | null = null
+	// kilocode_change: Listen to configuration changes from ContextProxy
 	configChangeListener: vscode.Disposable | null = null
 	config: ManagedIndexerConfig | null = null
 	isActive = false
@@ -82,9 +84,8 @@ export class ManagedIndexer implements vscode.Disposable {
 	workspaceFolderState: ManagedIndexerWorkspaceFolderState[] = []
 
 	private readonly codeParser: ICodeParser = new CodeParser()
-	private readonly configEmitter = new EventEmitter()
 
-	constructor(public context: vscode.ExtensionContext) {
+	constructor(public context: ContextProxy) {
 		ManagedIndexer.prevInstance = this
 	}
 
@@ -95,12 +96,14 @@ export class ManagedIndexer implements vscode.Disposable {
 		this.config = config
 		this.dispose()
 		await this.start()
+		// Send updated state after restart
+		this.sendStateToWebview()
 	}
 
 	async fetchConfig(): Promise<ManagedIndexerConfig> {
-		const token = await this.context.secrets.get("gptChatByApiKey")
+		const gptChatByApiKey = this.context.getSecret("gptChatByApiKey")
 		this.config = {
-			gptChatByApiKey: token ?? null,
+			gptChatByApiKey: gptChatByApiKey ?? null,
 		}
 
 		return this.config
@@ -110,28 +113,57 @@ export class ManagedIndexer implements vscode.Disposable {
 		return !!this.config?.gptChatByApiKey
 	}
 
-	sendEnabledStateToWebview(isEnable?: boolean) {
-		ClineProvider.getInstance().then((provider) => {
-			if (provider) {
-				provider.postMessageToWebview({
-					type: "managedIndexerEnabled",
-					managedIndexerEnabled: isEnable ?? true,
-				})
-			}
-		})
+	/**
+	 * Get a complete serializable snapshot of the managed indexer state
+	 * for communication to the webview
+	 */
+	private getManagedIndexerStateSnapshot() {
+		return {
+			isEnabled: this.isEnabled(),
+			isActive: this.isActive,
+			workspaceFolders: this.workspaceFolderState.map((state) => ({
+				workspaceFolderPath: state.workspaceFolder.uri.fsPath,
+				workspaceFolderName: state.workspaceFolder.name,
+				gitBranch: state.gitBranch,
+				projectId: state.projectId,
+				repositoryUrl: state.repositoryUrl,
+				isIndexing: state.isIndexing,
+				hasManifest: !!state.manifest,
+				manifestFileCount: state.manifest ? Object.keys(state.manifest.files).length : 0,
+				hasWatcher: !!state.watcher,
+				error: state.error
+					? {
+						type: state.error.type,
+						message: state.error.message,
+						timestamp: state.error.timestamp,
+						context: state.error.context,
+					}
+					: undefined,
+			})),
+		}
 	}
 
-	public onManagedIndexerConfigChange(listener: (config: ManagedIndexerConfig) => void): vscode.Disposable {
-		this.configEmitter.on("managed-indexer-config-changed", listener)
-		return {
-			dispose: () => this.configEmitter.off("managed-indexer-config-changed", listener),
+	/**
+	 * Send the complete managed indexer state to the webview
+	 */
+	sendStateToWebview() {
+		const state = this.getManagedIndexerStateSnapshot()
+		const provider = ClineProvider.getVisibleInstance()
+		if (provider) {
+			provider.postMessageToWebview({
+				type: "managedIndexerState",
+				managedIndexerEnabled: state.isEnabled,
+				managedIndexerState: state.workspaceFolders,
+			})
 		}
 	}
 
 	async start() {
 		console.log("[ManagedIndexer] Starting ManagedIndexer")
 
-		this.configChangeListener = this.onManagedIndexerConfigChange(this.onConfigurationChange.bind(this))
+		this.configChangeListener = this.context.onManagedIndexerConfigChange(
+			this.onConfigurationChange.bind(this),
+		)
 
 		vscode.workspace.onDidChangeWorkspaceFolders(this.onDidChangeWorkspaceFolders.bind(this))
 
@@ -144,7 +176,7 @@ export class ManagedIndexer implements vscode.Disposable {
 		await this.fetchConfig()
 
 		const isEnabled = this.isEnabled()
-		this.sendEnabledStateToWebview(isEnabled)
+		this.sendStateToWebview()
 		if (!isEnabled) {
 			return
 		}
@@ -273,6 +305,9 @@ export class ManagedIndexer implements vscode.Disposable {
 				await state.watcher?.start()
 			}),
 		)
+
+		// Send initial state after setup
+		this.sendStateToWebview()
 	}
 
 	dispose() {
@@ -347,6 +382,9 @@ export class ManagedIndexer implements vscode.Disposable {
 					state.error = undefined
 				}
 
+				// Send state update after successful manifest fetch
+				this.sendStateToWebview()
+
 				return manifest
 			} catch (error) {
 				const errorMessage = error instanceof Error ? error.message : String(error)
@@ -362,6 +400,9 @@ export class ManagedIndexer implements vscode.Disposable {
 					},
 					details: error instanceof Error ? error.stack : undefined,
 				}
+
+				// Send state update after error
+				this.sendStateToWebview()
 
 				throw error
 			} finally {
@@ -460,6 +501,7 @@ export class ManagedIndexer implements vscode.Disposable {
 		// Set indexing state
 		state.isIndexing = true
 		state.error = undefined
+		this.sendStateToWebview()
 
 		try {
 			// Ensure we have the manifest (wait if it's being fetched)
@@ -549,6 +591,11 @@ export class ManagedIndexer implements vscode.Disposable {
 								signal
 							)
 
+							// Clear any previous file-upsert errors on success
+							if (state.error?.type === "file-upsert") {
+								state.error = undefined
+								this.sendStateToWebview()
+							}
 						} catch (error) {
 							// Don't log abort errors as failures
 							if (error instanceof Error && error.message === "AbortError") {
@@ -569,10 +616,11 @@ export class ManagedIndexer implements vscode.Disposable {
 								},
 								details: error instanceof Error ? error.stack : undefined,
 							}
+							this.sendStateToWebview()
 						}
 					}
 				},
-				{ concurrency: 20 },
+				{ concurrency: 5 },
 			)
 
 			// Force a re-fetch of the manifest
@@ -581,6 +629,7 @@ export class ManagedIndexer implements vscode.Disposable {
 			// Always clear indexing state when done
 			state.isIndexing = false
 			console.log("[ManagedIndexer] Indexing complete")
+			this.sendStateToWebview()
 		}
 	}
 
@@ -588,31 +637,7 @@ export class ManagedIndexer implements vscode.Disposable {
 		// TODO we could more intelligently handle this instead of going scorched earth
 		this.dispose()
 		await this.start()
-	}
-
-	/**
-	 * Get a serializable representation of the current workspace folder state
-	 * for debugging and introspection purposes
-	 */
-	getWorkspaceFolderStateSnapshot() {
-		return this.workspaceFolderState.map((state) => ({
-			workspaceFolderPath: state.workspaceFolder.uri.fsPath,
-			workspaceFolderName: state.workspaceFolder.name,
-			gitBranch: state.gitBranch,
-			projectId: state.projectId,
-			isIndexing: state.isIndexing,
-			hasManifest: !!state.manifest,
-			manifestFileCount: state.manifest ? Object.keys(state.manifest.files).length : 0,
-			hasWatcher: !!state.watcher,
-			error: state.error
-				? {
-					type: state.error.type,
-					message: state.error.message,
-					timestamp: state.error.timestamp,
-					context: state.error.context,
-				}
-				: undefined,
-		}))
+		this.sendStateToWebview()
 	}
 
 	public async search(query: string, directoryPrefix?: string): Promise<VectorStoreSearchResult[]> {
@@ -744,6 +769,9 @@ export class ManagedIndexer implements vscode.Disposable {
 				},
 				details: error instanceof Error ? error.stack : undefined,
 			}
+
+			// Send state update after error
+			this.sendStateToWebview()
 
 			throw error
 		}

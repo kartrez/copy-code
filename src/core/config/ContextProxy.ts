@@ -23,9 +23,7 @@ import { logger } from "../../utils/logging"
 
 // kilocode_change start: Configuration change event types
 export interface ManagedIndexerConfig {
-	kilocodeToken: string | null
-	kilocodeOrganizationId: string | null
-	kilocodeTesterWarningsDisabledUntil: number | null
+	gptChatByApiKey: string | null
 }
 // kilocode_change end
 
@@ -307,12 +305,8 @@ export class ContextProxy {
 	}
 
 	public async setProviderSettings(values: ProviderSettings) {
-		// kilocode_change start: Capture old values for change detection
-		const oldToken = this.secretCache.kilocodeToken
-		const oldOrgId = this.stateCache.kilocodeOrganizationId
-		const oldTesterWarnings = this.stateCache.kilocodeTesterWarningsDisabledUntil
-		// kilocode_change end
-
+		// Capture old values for change detection
+		const oldToken = this.secretCache.gptChatByApiKey
 		// Explicitly clear out any old API configuration values before that
 		// might not be present in the new configuration.
 		// If a value is not present in the new configuration, then it is assumed
@@ -328,6 +322,7 @@ export class ContextProxy {
 			}
 		}
 
+		// @ts-ignore
 		await this.setValues({
 			...PROVIDER_SETTINGS_KEYS.filter((key) => !isSecretStateKey(key))
 				.filter((key) => !!this.stateCache[key])
@@ -336,15 +331,11 @@ export class ContextProxy {
 		})
 
 		// kilocode_change start: Emit event if managed indexer config changed
-		const newToken = this.secretCache.kilocodeToken
-		const newOrgId = this.stateCache.kilocodeOrganizationId
-		const newTesterWarnings = this.stateCache.kilocodeTesterWarningsDisabledUntil
+		const newToken = this.secretCache.gptChatByApiKey
 
-		if (oldToken !== newToken || oldOrgId !== newOrgId || oldTesterWarnings !== newTesterWarnings) {
+		if (oldToken !== newToken) {
 			this.configEmitter.emit("managed-indexer-config-changed", {
-				kilocodeToken: newToken ?? null,
-				kilocodeOrganizationId: newOrgId ?? null,
-				kilocodeTesterWarningsDisabledUntil: newTesterWarnings ?? null,
+				gptChatByApiKey: newToken ?? null
 			} as ManagedIndexerConfig)
 		}
 		// kilocode_change end

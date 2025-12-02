@@ -48,7 +48,8 @@ import { getKiloCodeWrapperProperties } from "./core/kilocode/wrapper" // kiloco
 import { checkAnthropicApiKeyConflict } from "./utils/anthropicApiKeyWarning" // kilocode_change
 import { SettingsSyncService } from "./services/settings-sync/SettingsSyncService" // kilocode_change
 import { flushModels, getModels } from "./api/providers/fetchers/modelCache"
-import { ManagedIndexer } from "./services/code-index/managed/ManagedIndexer"
+import { ManagedIndexer } from "./services/code-index/managed/ManagedIndexer" // kilocode_change
+import { kilo_initializeSessionManager } from "./shared/kilocode/cli-sessions/extension/session-manager-utils"
 
 /**
  * Built using https://github.com/microsoft/vscode-webview-ui-toolkit
@@ -145,12 +146,12 @@ export async function activate(context: vscode.ExtensionContext) {
 				codeIndexManagers.push(manager)
 
 				// Initialize in background; do not block extension activation
-		/*		void manager.initialize(contextProxy).catch((error) => {
+				void manager.initialize(contextProxy).catch((error) => {
 					const message = error instanceof Error ? error.message : String(error)
 					outputChannel.appendLine(
 						`[CodeIndexManager] Error during background CodeIndexManager configuration/indexing for ${folder.uri.fsPath}: ${message}`,
 					)
-				})*/
+				})
 
 				context.subscriptions.push(manager)
 			}
@@ -266,6 +267,24 @@ export async function activate(context: vscode.ExtensionContext) {
 			`[CloudService] Failed to initialize cloud profile sync: ${error instanceof Error ? error.message : String(error)}`,
 		)
 	}
+
+	// kilocode_change start
+	try {
+		const { apiConfiguration } = await provider.getState()
+
+		await kilo_initializeSessionManager({
+			context: context,
+			kiloToken: apiConfiguration.kilocodeToken,
+			log: provider.log.bind(provider),
+			outputChannel,
+			provider,
+		})
+	} catch (error) {
+		outputChannel.appendLine(
+			`[SessionManager] Failed to initialize SessionManager: ${error instanceof Error ? error.message : String(error)}`,
+		)
+	}
+	// kilocode_change end
 
 	// Finish initializing the provider.
 	TelemetryService.instance.setProvider(provider)
@@ -468,7 +487,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// kilocode_change start: Initialize ManagedIndexer
 	await checkAndRunAutoLaunchingTask(context)
-	const managedIndexer = new ManagedIndexer(context)
+	const managedIndexer = new ManagedIndexer(contextProxy)
 	context.subscriptions.push(managedIndexer)
 	void managedIndexer.start().catch((error) => {
 		outputChannel.appendLine(
