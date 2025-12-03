@@ -7,7 +7,7 @@ import {
 	WebviewMessage,
 } from "@roo/WebviewMessage"
 import { VSCodeButtonLink } from "@/components/common/VSCodeButtonLink"
-import { VSCodeButton, VSCodeDivider } from "@vscode/webview-ui-toolkit/react"
+import { VSCodeButton, VSCodeDivider, VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
 import CountUp from "react-countup"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { useAppTranslation } from "@/i18n/TranslationContext"
@@ -79,6 +79,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 			apiConfiguration: {
 				...apiConfiguration,
 				gptChatByApiKey: "",
+				gptChatEnableLocalIndexing: false,
 			},
 		})
 	}
@@ -124,6 +125,20 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 				credits: credits,
 				period: period,
 			},
+		})
+	}
+
+	const updateSetting = (value: boolean) => {
+		vscode.postMessage({
+			type: "upsertApiConfiguration",
+			text: currentApiConfigName,
+			apiConfiguration: {
+				...apiConfiguration,
+				gptChatEnableLocalIndexing: value,
+			},
+		})
+		vscode.postMessage({
+			type: "requestManagedIndexerState",
 		})
 	}
 
@@ -210,65 +225,68 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 											<div className="text-lg font-semibold text-[var(--vscode-foreground)] mb-4 text-center">
 												{t("kilocode:profile.subcription.expiredAt")}: {profileData.subscriptionExpairedDate}
 											</div>
+											<VSCodeCheckbox
+												checked={apiConfiguration?.gptChatEnableLocalIndexing}
+												onChange={(e: any) => updateSetting(e.target.checked)}>
+												<span className="font-medium">{t("settings:codeIndex.enableLabel")}</span>
+											</VSCodeCheckbox>
 										</div>
 									)}
 
 									{/* Buy Credits Section - Only show for personal accounts */}
-									{!profileData?.hasSubscription && (
-										<div className="w-full mt-8">
+									<div className="w-full mt-8">
 										<div
-												className="text-lg font-semibold text-[var(--vscode-foreground)] mb-4 text-center">
-												{t("kilocode:profile.subcription.title")}
-											</div>
+											className="text-lg font-semibold text-[var(--vscode-foreground)] mb-4 text-center">
+											{profileData?.hasSubscription ? t("kilocode:profile.subcription.title"): t("kilocode:profile.subcription.title")}
+										</div>
 
-											<div className="grid grid-cols-1 min-[300px]:grid-cols-2 gap-3 mb-6">
-												{subscriptionPackages.map((pkg) => (
-													<div
-														key={pkg.credits}
-														className={`relative border rounded-lg p-4 bg-[var(--vscode-editor-background)] transition-all hover:shadow-md ${
-															pkg.gift
-																? "border-[var(--vscode-button-background)] ring-1 ring-[var(--vscode-button-background)]"
-																: "border-[var(--vscode-input-border)]"
-														}`}>
-														{pkg.gift && (
-															<div
-																className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+										<div className="grid grid-cols-1 min-[300px]:grid-cols-2 gap-3 mb-6">
+											{subscriptionPackages.map((pkg) => (
+												<div
+													key={pkg.credits}
+													className={`relative border rounded-lg p-4 bg-[var(--vscode-editor-background)] transition-all hover:shadow-md ${
+														pkg.gift
+															? "border-[var(--vscode-button-background)] ring-1 ring-[var(--vscode-button-background)]"
+															: "border-[var(--vscode-input-border)]"
+													}`}>
+													{pkg.gift && (
+														<div
+															className="absolute -top-2 left-1/2 transform -translate-x-1/2">
 																<span className="bg-[var(--vscode-button-background)] text-[var(--vscode-button-foreground)] text-xs px-2 py-1 rounded-full font-medium">
 																	<span className="codicon codicon-gift" style={{ position: "relative", top: "3px" }}></span>{pkg.gift}
 																</span>
-															</div>
-														)}
-
-														<div className="text-center">
-															<div
-																className="text-2xl font-bold text-[var(--vscode-foreground)] mb-1">
-																${pkg.credits}
-															</div>
-															<div
-																className="text-sm text-[var(--vscode-descriptionForeground)] mb-2">
-																{pkg.discount ? t("kilocode:profile.subcription.period_12") : t("kilocode:profile.subcription.period_1")}
-															</div>
-															<VSCodeButton
-																appearance={pkg.gift ? "primary" : "secondary"}
-																className="w-full"
-																onClick={handleBuyCredits(pkg.credits, pkg.period)}>
-																{t("kilocode:profile.shop.action")}
-															</VSCodeButton>
 														</div>
-													</div>
-												))}
-											</div>
+													)}
 
-											<div className="text-center">
-												Подписка открывает доступ:
-												<ul>
-													<li>Локальная индексация кода, позволяет сохранять индексы кода
-														только у вас на компьютере, важно для приватных проектов.</li>
-													<li>Большому списку различных моделей ИИ, таких как Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5 и более чем 450 другими.</li>
-												</ul>
-											</div>
+													<div className="text-center">
+														<div
+															className="text-2xl font-bold text-[var(--vscode-foreground)] mb-1">
+															${pkg.credits}
+														</div>
+														<div
+															className="text-sm text-[var(--vscode-descriptionForeground)] mb-2">
+															{pkg.discount ? t("kilocode:profile.subcription.period_12") : t("kilocode:profile.subcription.period_1")}
+														</div>
+														<VSCodeButton
+															appearance={pkg.gift ? "primary" : "secondary"}
+															className="w-full"
+															onClick={handleBuyCredits(pkg.credits, pkg.period)}>
+															{t("kilocode:profile.shop.action")}
+														</VSCodeButton>
+													</div>
+												</div>
+											))}
 										</div>
-									)}
+
+										<div className="text-center">
+											{t("kilocode:profile.subcription.access.title")}
+											<ul>
+												<li>{t("kilocode:profile.subcription.access.li_1")}</li>
+												<li>{t("kilocode:profile.subcription.access.li_2")}</li>
+											</ul>
+										</div>
+									</div>
+
 									<div className="w-full mt-8">
 										<div
 											className="text-lg font-semibold text-[var(--vscode-foreground)] mb-4 text-center">

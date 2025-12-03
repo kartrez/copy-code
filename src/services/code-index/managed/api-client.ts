@@ -10,6 +10,7 @@ import { SearchRequest, SearchResult, ServerManifest } from "./types"
 import { logger } from "../../../utils/logging"
 import { fetchWithRetries } from "../../../shared/http"
 import { CodeBlock } from "../interfaces"
+import { ProfileData } from "../../../shared/WebviewMessage"
 
 const baseUrl = 'https://gpt-chat.by'
 
@@ -31,6 +32,36 @@ export interface UpsertFileParams {
 	isBaseBranch?: boolean
 	/** Authentication token */
 	token: string
+}
+
+export async function getProfile(
+	token: string|undefined,
+): Promise<ProfileData> {
+
+	try {
+		if (!token) {
+			throw new Error(`Gpt chat API topken is undefined`)
+		}
+
+		const response = await fetchWithRetries({
+			url: `${baseUrl}/api/copi-code/profile`,
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${token}`,
+				"Content-Type": "application/json",
+			},
+		})
+
+		if (!response.ok) {
+			throw new Error(`Search failed: ${response.statusText}`)
+		}
+
+		return await response.json()
+	} catch (error) {
+		const errorMessage = error instanceof Error ? error.message : String(error)
+		logger.error(`Search failed: ${errorMessage}`)
+		throw error
+	}
 }
 
 /**

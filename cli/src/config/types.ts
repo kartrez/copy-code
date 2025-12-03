@@ -320,7 +320,8 @@ type DeepSeekProviderConfig = BaseProviderConfig & {
 type GptChatByProviderConfig = BaseProviderConfig & {
 	provider: "gpt-chat-by"
 	apiModelId?: string
-	gptChatByApiKey?: string
+	gptChatByApiKey?: string,
+	gptChatEnableLocalIndexing?: boolean
 }
 
 type DoubaoProviderConfig = BaseProviderConfig & {
@@ -490,6 +491,7 @@ export type ProviderConfig =
 	| VirtualQuotaFallbackProviderConfig
 	| HumanRelayProviderConfig
 	| FakeAIProviderConfig
+	| GptChatByProviderConfig
 
 // Type guards
 export function isValidConfig(config: unknown): config is CLIConfig {

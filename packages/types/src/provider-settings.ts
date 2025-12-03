@@ -362,6 +362,7 @@ const deepSeekSchema = apiModelIdProviderModelSchema.extend({
 
 const gptChatBySchema = apiModelIdProviderModelSchema.extend({
 	gptChatByApiKey: z.string().optional(),
+	gptChatEnableLocalIndexing: z.boolean().optional()
 })
 
 const deepInfraSchema = apiModelIdProviderModelSchema.extend({

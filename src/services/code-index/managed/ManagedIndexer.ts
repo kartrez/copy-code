@@ -3,12 +3,11 @@ import * as vscode from "vscode"
 import * as path from "path"
 import { promises as fs } from "fs"
 import pMap from "p-map"
-import { EventEmitter } from "events"
 import { GitWatcher, GitWatcherEvent } from "../../../shared/GitWatcher"
 import { getCurrentBranch, isGitRepository, getCurrentCommitSha, getBaseBranch } from "./git-utils"
 import { normalizeProjectId } from "../../../utils/kilo-config-file"
 import { getGitRepositoryInfo } from "../../../utils/git"
-import { getServerManifest, searchCode, upsertChunks } from "./api-client"
+import { getProfile, getServerManifest, searchCode, upsertChunks } from "./api-client"
 import {
 	MAX_FILE_SIZE_BYTES,
 } from "../constants"
@@ -20,9 +19,11 @@ import { RooIgnoreController } from "../../../core/ignore/RooIgnoreController"
 import { ICodeParser } from "../interfaces"
 import { CodeParser } from "../processors"
 import { ContextProxy } from "../../../core/config/ContextProxy"
+import { ProfileData } from "../../../shared/WebviewMessage"
 
 interface ManagedIndexerConfig {
-	gptChatByApiKey: string | null
+	gptChatByApiKey: string | null,
+	gptChatEnableLocalIndexing: boolean | null
 }
 
 /**
@@ -76,6 +77,7 @@ export class ManagedIndexer implements vscode.Disposable {
 	// kilocode_change: Listen to configuration changes from ContextProxy
 	configChangeListener: vscode.Disposable | null = null
 	config: ManagedIndexerConfig | null = null
+	profile: ProfileData | null = null
 	isActive = false
 
 	/**
@@ -102,15 +104,22 @@ export class ManagedIndexer implements vscode.Disposable {
 
 	async fetchConfig(): Promise<ManagedIndexerConfig> {
 		const gptChatByApiKey = this.context.getSecret("gptChatByApiKey")
+		const gptChatEnableLocalIndexing = this.context.getValue("gptChatEnableLocalIndexing")
+		this.profile = await getProfile(gptChatByApiKey)
 		this.config = {
 			gptChatByApiKey: gptChatByApiKey ?? null,
+			gptChatEnableLocalIndexing: gptChatEnableLocalIndexing ?? null,
 		}
 
 		return this.config
 	}
 
 	isEnabled(): boolean {
-		return !!this.config?.gptChatByApiKey
+		if (!this.profile?.hasSubscription) {
+			return true
+		}
+
+		return !this.config?.gptChatEnableLocalIndexing
 	}
 
 	/**
@@ -172,7 +181,6 @@ export class ManagedIndexer implements vscode.Disposable {
 		if (!workspaceFolderCount) {
 			return
 		}
-
 		await this.fetchConfig()
 
 		const isEnabled = this.isEnabled()

@@ -140,10 +140,16 @@
 		},
 		"subcription": {
 			"title": "Subscribe",
+			"title_2": "Renew your subscription",
 			"period_1": "the period is 1 month",
 			"period_12": "a 12-month period, with a discount 20%",
 			"viewAll": "Read about the benefits of a subscription",
-			"expiredAt": "Your subscription is active until"
+			"expiredAt": "Your subscription is active until",
+			"access": {
+				"title": "Subscription opens access:",
+				"li_1": "Local code indexing, which allows you to save code indexes only on your computer. Is important for private projects!!!",
+				"li_2": "A large list of different AI models, such as Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5 and more than 400+ others."
+			}
 		},
 		"detailedUsage": "Detailed Usage",
 		"createOrganization": "Create an Organization to Track Detailed Usage"
