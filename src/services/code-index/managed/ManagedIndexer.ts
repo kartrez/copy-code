@@ -23,7 +23,8 @@ import { ProfileData } from "../../../shared/WebviewMessage"
 
 interface ManagedIndexerConfig {
 	gptChatByApiKey: string | null,
-	gptChatEnableLocalIndexing: boolean | null
+	gptChatEnableLocalIndexing: boolean | null,
+	gptChatProfileHasSubscription: boolean | null,
 }
 
 /**
@@ -106,16 +107,24 @@ export class ManagedIndexer implements vscode.Disposable {
 		const gptChatByApiKey = this.context.getSecret("gptChatByApiKey")
 		const gptChatEnableLocalIndexing = this.context.getValue("gptChatEnableLocalIndexing")
 		this.profile = await getProfile(gptChatByApiKey)
+		this.context.setValue("gptChatProfileHasSubscription", this.profile.hasSubscription)
+		if (!this.profile.hasSubscription) {
+			this.context.setValue("apiProvider", "gpt-chat-by")
+			this.context.setValue("apiModelId", "coder-flash")
+		}
+
+
 		this.config = {
 			gptChatByApiKey: gptChatByApiKey ?? null,
 			gptChatEnableLocalIndexing: gptChatEnableLocalIndexing ?? null,
+			gptChatProfileHasSubscription: this.profile.hasSubscription
 		}
 
 		return this.config
 	}
 
 	isEnabled(): boolean {
-		if (!this.profile?.hasSubscription) {
+		if (!this.config?.gptChatProfileHasSubscription) {
 			return true
 		}
 

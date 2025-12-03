@@ -322,6 +322,7 @@ type GptChatByProviderConfig = BaseProviderConfig & {
 	apiModelId?: string
 	gptChatByApiKey?: string,
 	gptChatEnableLocalIndexing?: boolean
+	gptChatProfileHasSubscription?: boolean
 }
 
 type DoubaoProviderConfig = BaseProviderConfig & {

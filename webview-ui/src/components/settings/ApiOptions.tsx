@@ -181,6 +181,8 @@ const ApiOptions = ({
 		return Object.entries(headers)
 	})
 
+	const hasSubscription = apiConfiguration?.gptChatProfileHasSubscription || false
+
 	useEffect(() => {
 		const propHeaders = apiConfiguration?.openAiHeaders || {}
 
@@ -323,7 +325,7 @@ const ApiOptions = ({
 	}, [apiConfiguration, routerModels, organizationAllowList, setErrorMessage])
 
 	const selectedProviderModels = useMemo(() => {
-		const models = MODELS_BY_PROVIDER[selectedProvider]
+		const models = hasSubscription ? MODELS_BY_PROVIDER[selectedProvider]: MODELS_BY_PROVIDER["gpt-chat-by"]
 		if (!models) return []
 
 		const filteredModels = filterModels(models, selectedProvider, organizationAllowList)
@@ -332,20 +334,20 @@ const ApiOptions = ({
 		// But filter out other deprecated models from being newly selectable
 		const availableModels = filteredModels
 			? Object.entries(filteredModels)
-					.filter(([modelId, modelInfo]) => {
-						// Always include the currently selected model
-						if (modelId === selectedModelId) return true
-						// Filter out deprecated models that aren't currently selected
-						return !modelInfo.deprecated
-					})
-					.map(([modelId]) => ({
-						value: modelId,
-						label: modelId,
-					}))
+				.filter(([modelId, modelInfo]) => {
+					// Always include the currently selected model
+					if (modelId === selectedModelId) return true
+					// Filter out deprecated models that aren't currently selected
+					return !modelInfo.deprecated
+				})
+				.map(([modelId]) => ({
+					value: modelId,
+					label: modelId,
+				}))
 			: []
 
 		return availableModels
-	}, [selectedProvider, organizationAllowList, selectedModelId])
+	}, [selectedProvider, organizationAllowList, selectedModelId, hasSubscription])
 
 	const onProviderChange = useCallback(
 		(value: ProviderName) => {
@@ -494,10 +496,10 @@ const ApiOptions = ({
 	// kilocode_change start: no organizationAllowList
 	const providerOptions = useMemo(
 		() =>
-			PROVIDERS.map(({ value, label }) => {
+			hasSubscription ? PROVIDERS.map(({ value, label }) => {
 				return { value, label }
-			}),
-		[],
+			}): [{ value: "gpt-chat-by", label: "gpt-chat.by" }],
+		[hasSubscription],
 	)
 	// kilocode_change end
 
