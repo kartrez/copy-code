@@ -30,7 +30,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 	useEffect(() => {
 		vscode.postMessage({ type: "fetchProfileDataRequest" })
 		vscode.postMessage({ type: "fetchBalanceDataRequest" })
-	}, [apiConfiguration?.gptChatByApiKey])
+	}, [apiConfiguration?.gptChatByApiKey, apiConfiguration?.gptChatProfileHasSubscription])
 
 	useEffect(() => {
 		const handleMessage = (event: MessageEvent<WebviewMessage>) => {
