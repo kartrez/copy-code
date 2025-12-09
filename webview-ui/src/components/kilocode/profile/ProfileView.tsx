@@ -7,7 +7,7 @@ import {
 	WebviewMessage,
 } from "@roo/WebviewMessage"
 import { VSCodeButtonLink } from "@/components/common/VSCodeButtonLink"
-import { VSCodeButton, VSCodeDivider, VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react"
+import { VSCodeButton, VSCodeDivider } from "@vscode/webview-ui-toolkit/react"
 import CountUp from "react-countup"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { useAppTranslation } from "@/i18n/TranslationContext"
@@ -129,22 +129,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 		})
 	}
 
-	const updateSetting = (value: boolean) => {
-		vscode.postMessage({
-			type: "upsertApiConfiguration",
-			text: currentApiConfigName,
-			apiConfiguration: {
-				...apiConfiguration,
-				gptChatEnableLocalIndexing: value,
-			},
-		})
-		vscode.postMessage({
-			type: "requestManagedIndexerState",
-		})
-	}
-
 	if (isLoadingUser) {
-		return <></>
+		return <>Loading Profile...</>
 	}
 
 	return (
@@ -226,11 +212,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 											<div className="text-lg font-semibold text-[var(--vscode-foreground)] mb-4 text-center">
 												{t("kilocode:profile.subcription.expiredAt")}: {profileData.subscriptionExpairedDate}
 											</div>
-											<VSCodeCheckbox
-												checked={apiConfiguration?.gptChatEnableLocalIndexing}
-												onChange={(e: any) => updateSetting(e.target.checked)}>
-												<span className="font-medium">{t("settings:codeIndex.enableLabel")}</span>
-											</VSCodeCheckbox>
 										</div>
 									)}
 

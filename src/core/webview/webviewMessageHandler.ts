@@ -10,7 +10,6 @@ import { fastApplyApiProviderSchema, getKiloUrlFromToken, isGlobalStateKey } fro
 import { getAppUrl } from "@roo-code/types"
 import {
 	MaybeTypedWebviewMessage,
-	ProfileData,
 	SeeNewChangesPayload,
 	TaskHistoryRequestPayload,
 	TasksByIdRequestPayload,
@@ -93,7 +92,8 @@ import { getSapAiCoreDeployments } from "../../api/providers/fetchers/sap-ai-cor
 import { AutoPurgeScheduler } from "../../services/auto-purge" // kilocode_change
 import { setPendingTodoList } from "../tools/UpdateTodoListTool"
 import { ManagedIndexer } from "../../services/code-index/managed/ManagedIndexer"
-import { SessionManager } from "../../shared/kilocode/cli-sessions/core/SessionManager" // kilocode_change
+import { SessionManager } from "../../shared/kilocode/cli-sessions/core/SessionManager"
+import { getProfile } from "../../services/code-index/managed/api-client" // kilocode_change
 
 export const webviewMessageHandler = async (
 	provider: ClineProvider,
@@ -2532,19 +2532,16 @@ export const webviewMessageHandler = async (
 					break
 				}
 
-				// Changed to /api/profile
-				const headers: Record<string, string> = {
-					Authorization: `Bearer ${gptChatByApiKey}`,
-					"Content-Type": "application/json",
+				const profile = await getProfile(gptChatByApiKey)
+				await provider.contextProxy.setValue("gptChatProfileHasSubscription", profile.hasSubscription)
+				if (!profile.hasSubscription) {
+					await provider.contextProxy.setValue("apiProvider", "gpt-chat-by")
+					await provider.contextProxy.setValue("apiModelId", "coder-flash")
 				}
-
-				const url = "https://gpt-chat.by/api/copi-code/profile"
-				const response = await axios.get<Omit<ProfileData, "token">>(url, { headers })
-
-
+				await provider.postStateToWebview()
 				provider.postMessageToWebview({
 					type: "profileDataResponse",
-					payload: { success: true, data: { token: gptChatByApiKey, ...response.data } },
+					payload: { success: true, data: profile },
 				})
 			} catch (error: any) {
 				const errorMessage =
@@ -2577,7 +2574,7 @@ export const webviewMessageHandler = async (
 					"Content-Type": "application/json",
 				}
 
-				const url = "https://gpt-chat.by/api/copi-code/balance"
+				const url = "https://gpt-chat.by/api/copy-code/balance"
 				const response = await axios.get(url, { headers })
 				provider.postMessageToWebview({
 					type: "balanceDataResponse", // New response type
@@ -2607,12 +2604,12 @@ export const webviewMessageHandler = async (
 					Authorization: `Bearer ${gptChatByApiKey}`,
 					"Content-Type": "application/json",
 				}
-				let url = `https://gpt-chat.by/api/copi-code/balance/top-up?amount=${credits}`
+				let url = `https://gpt-chat.by/api/copy-code/balance/top-up?amount=${credits}`
 				if (period === 1) {
-					url = `https://gpt-chat.by/api/copi-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE`
+					url = `https://gpt-chat.by/api/copy-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE`
 				}
 				if (period === 12) {
-					url = `https://gpt-chat.by/api/copi-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE_YEAR`
+					url = `https://gpt-chat.by/api/copy-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE_YEAR`
 				}
 
 				const response = await axios.get(url, { headers })
@@ -3875,6 +3872,7 @@ export const webviewMessageHandler = async (
 		// kilocode_change end
 		// kilocode_change start - ManagedIndexer state
 		case "requestManagedIndexerState": {
+			await ManagedIndexer.getInstance()?.fetchConfig()
 			ManagedIndexer.getInstance()?.sendStateToWebview()
 			break
 		}

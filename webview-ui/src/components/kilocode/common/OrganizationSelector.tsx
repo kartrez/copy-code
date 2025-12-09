@@ -15,7 +15,6 @@ export const OrganizationSelector = ({ className, showLabel = false }: { classNa
 	const handleMessage = (event: MessageEvent<WebviewMessage>) => {
 		const message = event.data
 		if (message.type === "profileDataResponse") {
-			const payload = message.payload as ProfileDataResponsePayload
 			setOrganizations([])
 		} else if (message.type === "updateProfileData") {
 			vscode.postMessage({

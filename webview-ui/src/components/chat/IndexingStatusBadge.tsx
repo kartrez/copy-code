@@ -132,8 +132,22 @@ export const IndexingStatusBadge: React.FC<IndexingStatusBadgeProps> = ({ classN
 		return statusColors[indexingStatus.systemStatus as keyof typeof statusColors] || statusColors.Standby
 	}, [indexingStatus.systemStatus])
 
+	const { apiConfiguration} = useExtensionState()
+	const [isEnableLocalIndexing, setEnableLocalIndexing] = React.useState(false)
+	useEffect(() => {
+		if (!apiConfiguration?.gptChatProfileHasSubscription) {
+			setEnableLocalIndexing(false)
+			return
+		}
+		if (apiConfiguration?.gptChatEnableLocalIndexing && apiConfiguration?.gptChatEnableLocalIndexing) {
+			setEnableLocalIndexing(true)
+			return
+		}
+		setEnableLocalIndexing(false)
+	}, [apiConfiguration?.gptChatEnableLocalIndexing, apiConfiguration?.gptChatProfileHasSubscription])
+
 	// Use ManagedCodeIndexPopover when organization is available, otherwise use regular CodeIndexPopover
-	const PopoverComponent = managedIndexerState.isEnabled ? ManagedCodeIndexPopover : CodeIndexPopover // kilocode_change
+	const PopoverComponent = isEnableLocalIndexing ? CodeIndexPopover: ManagedCodeIndexPopover // kilocode_change
 
 	return (
 		<PopoverComponent indexingStatus={indexingStatus}>

@@ -44,7 +44,7 @@ export async function getProfile(
 		}
 
 		const response = await fetchWithRetries({
-			url: `${baseUrl}/api/copi-code/profile`,
+			url: `${baseUrl}/api/copy-code/profile`,
 			method: "GET",
 			headers: {
 				Authorization: `Bearer ${token}`,
