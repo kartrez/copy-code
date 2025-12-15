@@ -65,6 +65,7 @@ interface ManagedIndexerWorkspaceFolderState {
 
 export class ManagedIndexer implements vscode.Disposable {
 	static prevInstance: ManagedIndexer
+
 	static getInstance(): ManagedIndexer {
 		if (!ManagedIndexer.prevInstance) {
 			throw new Error("[ManagedIndexer.getInstance()] no available instance")
@@ -118,6 +119,10 @@ export class ManagedIndexer implements vscode.Disposable {
 	}
 
 	isEnabled(): boolean {
+		if (this.disabledViaConfig) {
+			return false
+		}
+
 		if (!this.config?.gptChatProfileHasSubscription) {
 			return true
 		}
@@ -184,6 +189,7 @@ export class ManagedIndexer implements vscode.Disposable {
 		if (!workspaceFolderCount) {
 			return
 		}
+
 		await this.fetchConfig()
 
 		this.sendStateToWebview()

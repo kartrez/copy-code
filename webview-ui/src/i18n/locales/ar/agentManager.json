@@ -10,7 +10,11 @@
 		"worktree": "Worktree",
 		"local": "محلي",
 		"mainWorkspace": "مساحة العمل الرئيسية",
-		"readyToMerge": "جاهز للدمج"
+		"readyToMerge": "جاهز للدمج",
+		"shareSession": "مشاركة الجلسة",
+		"shareConfirmMessage": "هل ترغب في مشاركة لقطة من هذه الجلسة علنًا؟",
+		"shareConfirmYes": "نعم",
+		"shareConfirmNo": "لا"
 	},
 	"sessionDetail": {
 		"startNewAgent": "بدء وكيل جديد",
@@ -31,9 +35,23 @@
 		"comingSoon": "قريباً",
 		"runningInWorktree": "يعمل في Worktree",
 		"runningLocally": "يعمل محلياً",
+		"runMode": "وضع التشغيل",
 		"branch": "فرع",
 		"creatingSession": "جاري إنشاء الجلسة...",
-		"waitingForCli": "جارٍ تهيئة جلسة الوكيل..."
+		"waitingForCli": "جارٍ تهيئة جلسة الوكيل...",
+		"versions": "إصدارات",
+		"versionsTooltip": "وكلاء متوازيون يستكشفون مناهج مختلفة",
+		"versionsHelperText": "{{count}} وكلاء متوازيون على فروع منفصلة",
+		"versionCount_zero": "{{count}} إصدار",
+		"versionCount_one": "إصدار واحد",
+		"versionCount_two": "إصداران",
+		"versionCount_few": "{{count}} إصدارات",
+		"versionCount_many": "{{count}} إصداراً",
+		"versionCount_other": "{{count}} إصدار",
+		"launchVersions": "إطلاق {{count}} إصدارات",
+		"startAgent": "بدء الوكيل",
+		"cancelCreating": "إلغاء إنشاء الجلسة",
+		"cancelButton": "إلغاء"
 	},
 	"messages": {
 		"waiting": "في انتظار رد الوكيل...",
@@ -48,10 +66,13 @@
 		"usingTool": "استخدام الأداة: **{{tool}}** {{details}}"
 	},
 	"chatInput": {
-		"autonomous": "الوكيل يعمل في الوضع المستقل",
+		"autoMode": "الوكيل يعمل في وضع الأتمتة الكاملة - لا يُسمح بالإدخال",
+		"sessionEnded": "انتهت الجلسة، يرجى بدء جلسة جديدة",
 		"placeholderTypeTask": "اكتب مهمتك هنا...",
 		"ariaLabel": "إدخال الرسالة",
 		"cancelTitle": "إلغاء الوكيل",
+		"finishToBranchTitle": "إنهاء worktree والتحضير للـ branch: {{branch}}",
+		"finishToBranchTitleNoBranch": "إنهاء worktree والتحضير للـ branch",
 		"sendTitle": "إرسال الرسالة",
 		"resumeTitle": "استئناف الوكيل",
 		"hint": "اضغط Enter للإرسال، Shift+Enter لسطر جديد"

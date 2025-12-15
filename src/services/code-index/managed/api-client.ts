@@ -64,6 +64,35 @@ export async function getProfile(
 	}
 }
 
+export async function isEnabled(kilocodeToken: string, organizationId: string | null): Promise<boolean> {
+	try {
+		const baseUrl = getKiloBaseUriFromToken(kilocodeToken)
+		let url = `${baseUrl}/api/code-indexing/enabled`
+		if (organizationId) {
+			url += `?${new URLSearchParams({ organizationId }).toString()}`
+		}
+		const response = await fetchWithRetries({
+			url,
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${kilocodeToken}`,
+				"Content-Type": "application/json",
+			},
+		})
+
+		if (!response.ok) {
+			console.error(`Failed to check if managed indexing is enabled: ${response.statusText}`)
+			return false
+		}
+
+		const result = await response.json()
+		return result.enabled
+	} catch (error) {
+		console.error(`Failed to check if managed indexing is enabled: ${error}`)
+		return false
+	}
+}
+
 /**
  * Searches code in the managed index with branch preferences
  *

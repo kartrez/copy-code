@@ -74,6 +74,9 @@ describe("ManagedIndexer", () => {
 				if (key === "token") return "test-token"
 				return null
 			}),
+			getGlobalState: vi.fn((key: string) => {
+				return null
+			}),
 			onManagedIndexerConfigChange: vi.fn(() => ({
 				dispose: vi.fn(),
 			})),

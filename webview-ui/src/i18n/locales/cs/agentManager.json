@@ -10,7 +10,11 @@
 		"worktree": "Worktree",
 		"local": "Lokální",
 		"mainWorkspace": "Hlavní pracovní prostor",
-		"readyToMerge": "Připraveno ke sloučení"
+		"readyToMerge": "Připraveno ke sloučení",
+		"shareSession": "Sdílet relaci",
+		"shareConfirmMessage": "Chcete veřejně sdílet snímek této relace?",
+		"shareConfirmYes": "Ano",
+		"shareConfirmNo": "Ne"
 	},
 	"sessionDetail": {
 		"startNewAgent": "Spustit nového agenta",
@@ -31,9 +35,20 @@
 		"comingSoon": "Již brzy",
 		"runningInWorktree": "Běží ve worktree",
 		"runningLocally": "Běží lokálně",
+		"runMode": "Režim spuštění",
 		"branch": "Větev",
 		"creatingSession": "Vytváření relace...",
-		"waitingForCli": "Inicializace relace agenta..."
+		"waitingForCli": "Inicializace relace agenta...",
+		"versions": "Verze",
+		"versionsTooltip": "Paralelní agenti zkoumající různé přístupy",
+		"versionsHelperText": "{{count}} paralelních agentů na samostatných větvích",
+		"versionCount_one": "{{count}} verze",
+		"versionCount_few": "{{count}} verze",
+		"versionCount_other": "{{count}} verzí",
+		"launchVersions": "Spustit {{count}} verzí",
+		"startAgent": "Spustit agenta",
+		"cancelCreating": "Zrušit vytváření relace",
+		"cancelButton": "Zrušit"
 	},
 	"messages": {
 		"waiting": "Čekání na odpověď agenta...",
@@ -48,10 +63,13 @@
 		"usingTool": "Používání nástroje: **{{tool}}** {{details}}"
 	},
 	"chatInput": {
-		"autonomous": "Agent běží v autonomním režimu",
+		"autoMode": "Agent běží v plně automatickém režimu - vstup není povolen",
+		"sessionEnded": "Relace skončila, prosím zahajte novou relaci",
 		"placeholderTypeTask": "Napiš svůj úkol zde...",
 		"ariaLabel": "Vstup zprávy",
 		"cancelTitle": "Zrušit agenta",
+		"finishToBranchTitle": "Dokončit worktree a připravit branch: {{branch}}",
+		"finishToBranchTitleNoBranch": "Dokončit worktree a připravit branch",
 		"sendTitle": "Odeslat zprávu",
 		"resumeTitle": "Obnovit agenta",
 		"hint": "Enter pro odeslání, Shift+Enter pro nový řádek"

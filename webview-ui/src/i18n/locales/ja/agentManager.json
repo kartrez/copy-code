@@ -10,7 +10,11 @@
 		"worktree": "Worktree",
 		"local": "ローカル",
 		"mainWorkspace": "メインワークスペース",
-		"readyToMerge": "マージ準備完了"
+		"readyToMerge": "マージ準備完了",
+		"shareSession": "セッションを共有",
+		"shareConfirmMessage": "このセッションのスナップショットを公開で共有しますか？",
+		"shareConfirmYes": "はい",
+		"shareConfirmNo": "いいえ"
 	},
 	"sessionDetail": {
 		"startNewAgent": "新しいエージェントを開始",
@@ -31,9 +35,19 @@
 		"comingSoon": "近日公開",
 		"runningInWorktree": "Worktreeで実行中",
 		"runningLocally": "ローカルで実行中",
+		"runMode": "実行モード",
 		"branch": "ブランチ",
 		"creatingSession": "セッションを作成中...",
-		"waitingForCli": "エージェントセッションを初期化中..."
+		"waitingForCli": "エージェントセッションを初期化中...",
+		"versions": "バージョン",
+		"versionsTooltip": "異なるアプローチを探索する並列エージェント",
+		"versionsHelperText": "別々のブランチで{{count}}個の並列エージェント",
+		"versionCount_one": "{{count}}個のバージョン",
+		"versionCount_other": "{{count}}個のバージョン",
+		"launchVersions": "{{count}}個のバージョンを起動",
+		"startAgent": "エージェントを開始",
+		"cancelCreating": "セッション作成をキャンセル",
+		"cancelButton": "キャンセル"
 	},
 	"messages": {
 		"waiting": "エージェントの応答を待っています...",
@@ -48,10 +62,13 @@
 		"usingTool": "ツールを使用中: **{{tool}}** {{details}}"
 	},
 	"chatInput": {
-		"autonomous": "エージェントは自律モードで実行中",
+		"autoMode": "エージェントが完全自動モードで実行中 - 入力はできません",
+		"sessionEnded": "セッションが終了しました。新しいセッションを開始してください",
 		"placeholderTypeTask": "タスクを入力してください...",
 		"ariaLabel": "メッセージ入力",
 		"cancelTitle": "エージェントをキャンセル",
+		"finishToBranchTitle": "Worktreeを終了してブランチを準備: {{branch}}",
+		"finishToBranchTitleNoBranch": "Worktreeを終了してブランチを準備",
 		"sendTitle": "メッセージを送信",
 		"resumeTitle": "エージェントを再開",
 		"hint": "Enterで送信、Shift+Enterで改行"

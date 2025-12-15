@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react"
 import { useAtomValue, useSetAtom } from "jotai"
 import type { ClineMessage } from "@roo-code/types"
 import { updateSessionMessagesAtom } from "../atoms/messages"
+import { updateSessionTodosAtom } from "../atoms/todos"
+import { extractTodosFromMessages } from "./extractTodosFromMessages"
 import {
 	upsertSessionAtom,
 	removeSessionAtom,
@@ -74,6 +76,7 @@ function mapToStateMachineEvent(eventType: string, partial?: boolean): SessionEv
 
 		// Input-required asks
 		case "ask_followup":
+			// Followups should always transition to waiting_input (partial handling is done in the state machine).
 			return { type: "ask_followup", partial: partial ?? false }
 
 		// Approval-required asks
@@ -104,6 +107,10 @@ function mapToStateMachineEvent(eventType: string, partial?: boolean): SessionEv
 		case "ask_payment_required_prompt":
 			return { type: "ask_payment_required_prompt" }
 
+		// Cancellation
+		case "cancel_session":
+			return { type: "cancel_session" }
+
 		default:
 			return null
 	}
@@ -115,6 +122,7 @@ function mapToStateMachineEvent(eventType: string, partial?: boolean): SessionEv
  */
 export function useAgentManagerMessages() {
 	const updateSessionMessages = useSetAtom(updateSessionMessagesAtom)
+	const updateSessionTodos = useSetAtom(updateSessionTodosAtom)
 	const upsertSession = useSetAtom(upsertSessionAtom)
 	const removeSession = useSetAtom(removeSessionAtom)
 	const setSelectedSessionId = useSetAtom(selectedSessionIdAtom)
@@ -136,6 +144,9 @@ export function useAgentManagerMessages() {
 				case "agentManager.chatMessages": {
 					const { sessionId, messages } = message as ChatMessagesMessage
 					updateSessionMessages({ sessionId, messages })
+					// Extract and update todos from messages
+					const todos = extractTodosFromMessages(messages)
+					updateSessionTodos({ sessionId, todos })
 					break
 				}
 
@@ -222,6 +233,7 @@ export function useAgentManagerMessages() {
 		return () => window.removeEventListener("message", handleMessage)
 	}, [
 		updateSessionMessages,
+		updateSessionTodos,
 		upsertSession,
 		removeSession,
 		setSelectedSessionId,

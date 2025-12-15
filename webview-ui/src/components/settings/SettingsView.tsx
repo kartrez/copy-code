@@ -21,13 +21,15 @@ import {
 	AlertTriangle,
 	Globe,
 	Info,
-	Server, // kilocode_change
 	Bot, // kilocode_change
 	MessageSquare,
 	Monitor,
 	LucideIcon,
 	// SquareSlash, // kilocode_change
 	// Glasses, // kilocode_change
+	Plug,
+	Server,
+	Users2,
 } from "lucide-react"
 
 // kilocode_change
@@ -84,6 +86,8 @@ import deepEqual from "fast-deep-equal" // kilocode_change
 import { GhostServiceSettingsView } from "../kilocode/settings/GhostServiceSettings" // kilocode_change
 import { SlashCommandsSettings } from "./SlashCommandsSettings"
 import { UISettings } from "./UISettings"
+import ModesView from "../modes/ModesView"
+// import McpView from "../mcp/McpView" // kilocode_change: own view
 
 export const settingsTabsContainer = "flex flex-1 overflow-hidden [&.narrow_.tab-label]:hidden"
 export const settingsTabList =
@@ -107,6 +111,8 @@ const sectionNames = [
 	"notifications",
 	"contextManagement",
 	"terminal",
+	"modes",
+	"mcp",
 	"prompts",
 	"ui",
 	"experimental",
@@ -120,19 +126,17 @@ type SectionName = (typeof sectionNames)[number] // kilocode_change
 type SettingsViewProps = {
 	onDone: () => void
 	targetSection?: string
+	editingProfile?: string // kilocode_change - profile to edit
 }
 
-const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, targetSection }, ref) => {
+// kilocode_change start - editingProfile
+const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>((props, ref) => {
+	const { onDone, targetSection, editingProfile } = props
+	// kilocode_change end - editingProfile
 	const { t } = useAppTranslation()
 
 	const extensionState = useExtensionState()
-	const {
-		currentApiConfigName,
-		listApiConfigMeta,
-		uriScheme,
-		kiloCodeWrapperProperties, // kilocode_change
-		settingsImportedAt,
-	} = extensionState
+	const { currentApiConfigName, listApiConfigMeta, uriScheme, settingsImportedAt } = extensionState
 
 	const [isDiscardDialogShow, setDiscardDialogShow] = useState(false)
 	const [isChangeDetected, setChangeDetected] = useState(false)
@@ -270,8 +274,26 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 		setCachedState((prevCachedState) => ({ ...prevCachedState, ...extensionState }))
 		prevApiConfigName.current = currentApiConfigName
 		setChangeDetected(false)
-		setEditingApiConfigName(currentApiConfigName || "default") // kilocode_change: Sync editing profile when active profile changes
-	}, [currentApiConfigName, extensionState])
+		// kilocode_change start - Don't reset editingApiConfigName if we have an editingProfile prop (from auth return)
+		if (!editingProfile) {
+			setEditingApiConfigName(currentApiConfigName || "default")
+		}
+		// kilocode_change end
+	}, [currentApiConfigName, extensionState, editingProfile]) // kilocode_change
+
+	// kilocode_change start: Set editing profile when prop changes (from auth return)
+	useEffect(() => {
+		if (editingProfile) {
+			console.log("[SettingsView] Setting editing profile from prop:", editingProfile)
+			setEditingApiConfigName(editingProfile)
+			isLoadingProfileForEditing.current = true
+			vscode.postMessage({
+				type: "getProfileConfigurationForEditing",
+				text: editingProfile,
+			})
+		}
+	}, [editingProfile])
+	// kilocode_change end
 
 	// kilocode_change start
 	const isLoadingProfileForEditing = useRef(false)
@@ -715,13 +737,14 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 
 	const sections: { id: SectionName; icon: LucideIcon }[] = useMemo(
 		() => [
-			{ id: "providers", icon: Webhook },
+			{ id: "providers", icon: Plug },
+			{ id: "modes", icon: Users2 },
 			{ id: "autoApprove", icon: CheckCheck },
 			// { id: "slashCommands", icon: SquareSlash }, // kilocode_change: needs work to be re-introduced
 			{ id: "browser", icon: SquareMousePointer },
 			{ id: "checkpoints", icon: GitBranch },
 			{ id: "display", icon: Monitor }, // kilocode_change
-			...(kiloCodeWrapperProperties?.kiloCodeWrapped ? [] : [{ id: "ghost" as const, icon: Bot }]), // kilocode_change
+			{ id: "ghost" as const, icon: Bot }, // kilocode_change
 			{ id: "notifications", icon: Bell },
 			{ id: "contextManagement", icon: Database },
 			{ id: "terminal", icon: SquareTerminal },
@@ -732,7 +755,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 			{ id: "mcp", icon: Server },
 			{ id: "about", icon: Info },
 		],
-		[kiloCodeWrapperProperties?.kiloCodeWrapped], // kilocode_change
+		[], // kilocode_change
 	)
 	// Update target section logic to set active tab
 	useEffect(() => {
@@ -740,6 +763,32 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 			setActiveTab(targetSection as SectionName)
 		}
 	}, [targetSection]) // kilocode_change
+
+	// kilocode_change start - Listen for messages to restore editing profile after auth
+	useEffect(() => {
+		const handleMessage = (event: MessageEvent) => {
+			const message = event.data
+			if (
+				message.type === "action" &&
+				message.action === "settingsButtonClicked" &&
+				message.values?.editingProfile
+			) {
+				const profileToEdit = message.values.editingProfile as string
+				console.log("[SettingsView] Restoring editing profile:", profileToEdit)
+				setEditingApiConfigName(profileToEdit)
+				// Request the profile's configuration for editing
+				isLoadingProfileForEditing.current = true
+				vscode.postMessage({
+					type: "getProfileConfigurationForEditing",
+					text: profileToEdit,
+				})
+			}
+		}
+
+		window.addEventListener("message", handleMessage)
+		return () => window.removeEventListener("message", handleMessage)
+	}, [])
+	// kilocode_change end
 
 	// Function to scroll the active tab into view for vertical layout
 	const scrollToActiveTab = useCallback(() => {
@@ -830,7 +879,7 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 									isSelected // Use manual isSelected for styling
 										? `${settingsTabTrigger} ${settingsTabTriggerActive}`
 										: settingsTabTrigger,
-									"focus:ring-0", // Remove the focus ring styling
+									"cursor-pointer focus:ring-0", // Remove the focus ring styling
 								)}
 								data-testid={`tab-${id}`}
 								data-compact={isCompactMode}>
@@ -951,14 +1000,16 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 								/>
 								{/* kilocode_change end changes to allow for editting a non-active profile */}
 
+								{/* kilocode_change start - pass editing profile name */}
 								<ApiOptions
 									uriScheme={uriScheme}
 									apiConfiguration={apiConfiguration}
 									setApiConfigurationField={setApiConfigurationField}
 									errorMessage={errorMessage}
 									setErrorMessage={setErrorMessage}
-									currentApiConfigName={currentApiConfigName}
+									currentApiConfigName={editingApiConfigName}
 								/>
+								{/* kilocode_change end - pass editing profile name */}
 							</Section>
 						</div>
 					)}
@@ -1102,6 +1153,12 @@ const SettingsView = forwardRef<SettingsViewRef, SettingsViewProps>(({ onDone, t
 							setCachedStateField={setCachedStateField}
 						/>
 					)}
+
+					{/* Modes Section */}
+					{activeTab === "modes" && <ModesView />}
+
+					{/* MCP Section */}
+					{activeTab === "mcp" && <McpView />}
 
 					{/* Prompts Section */}
 					{activeTab === "prompts" && (
