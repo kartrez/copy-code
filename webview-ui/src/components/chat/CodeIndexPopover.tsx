@@ -722,7 +722,7 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 	const MaybePopoverContent = !contentOnly ? PopoverContent : NoOpWrapper
 	// kilcode_change end - Allow rendering just the content of CodeIndexPopover
 
-	const { apiConfiguration, currentApiConfigName} = useExtensionState()
+	const { currentApiConfigName} = useExtensionState()
 	function disableLocalIndexing(): void {
 		console.info("Logging out...", apiConfiguration)
 		vscode.postMessage({

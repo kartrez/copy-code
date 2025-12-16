@@ -7,12 +7,42 @@ export const gptChatByDefaultModelId: GptChatByModelId = "coder-flash"
 const GTP_CHAT_BY_TAKE_PROFIT_USD = 2.3;
 
 export const gptChatByModels = {
+	"openai-free": {
+		maxTokens: 8000,
+		contextWindow: 65_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0,
+		outputPrice: 0,
+		description: `Free model: Open AI GPT-5 nano - Low performance model.`,
+		isFree: true,
+	},
+	"mistral-free": {
+		maxTokens: 8000,
+		contextWindow: 65_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0,
+		outputPrice: 0,
+		description: `Free model: Mistral Small 3.2 24B - Low performance model.`,
+		isFree: true,
+	},
+	"gemini-free": {
+		maxTokens: 8000,
+		contextWindow: 65_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0,
+		outputPrice: 0,
+		description: `Free model: Gemini 2.5 Flash Lite - Low performance model.`,
+		isFree: true,
+	},
 	"coder": {
 		maxTokens: 65_000,
 		contextWindow: 1_000_000,
 		supportsImages: false,
 		supportsPromptCache: true,
-		inputPrice: 1 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		inputPrice: GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `Coder - High-performance coding model with 1M context window for large codebases.`,
 	},

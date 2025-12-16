@@ -119,10 +119,6 @@ export class ManagedIndexer implements vscode.Disposable {
 	}
 
 	isEnabled(): boolean {
-		if (this.disabledViaConfig) {
-			return false
-		}
-
 		if (!this.config?.gptChatProfileHasSubscription) {
 			return true
 		}
