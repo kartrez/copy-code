@@ -89,6 +89,7 @@ import {
 	fetchKilocodeNotificationsHandler,
 	deviceAuthMessageHandler,
 } from "../kilocode/webview/webviewMessageHandlerUtils"
+import { GhostServiceManager } from "../../services/ghost/GhostServiceManager"
 // kilocode_change end
 
 const ALLOWED_VSCODE_SETTINGS = new Set(["terminal.integrated.inheritEnv"])
@@ -1889,6 +1890,13 @@ export const webviewMessageHandler = async (
 			await updateGlobalState("ghostServiceSettings", ghostServiceSettings)
 			await provider.postStateToWebview()
 			vscode.commands.executeCommand("kilo-code.ghost.reload")
+			break
+		case "snoozeAutocomplete":
+			if (typeof message.value === "number" && message.value > 0) {
+				await GhostServiceManager.getInstance()?.snooze(message.value)
+			} else {
+				await GhostServiceManager.getInstance()?.unsnooze()
+			}
 			break
 		// kilocode_change end
 		// kilocode_change start: AI gatekeeper for YOLO mode
