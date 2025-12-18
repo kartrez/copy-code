@@ -46,20 +46,20 @@
 		}
 	},
 	"commitMessage": {
-		"activated": "Генератор сообщений коммитов Kilo Code активирован",
+		"activated": "Генератор сообщений коммитов Copy Code активирован",
 		"gitNotFound": "⚠️ Репозиторий Git не найден или git недоступен",
 		"gitInitError": "⚠️ Ошибка инициализации Git: {{error}}",
-		"generating": "Kilo: Генерация сообщения коммита...",
-		"noChanges": "Kilo: Изменения для анализа не найдены",
-		"generated": "Kilo: Сообщение коммита сгенерировано!",
-		"generationFailed": "Kilo: Ошибка генерации сообщения коммита: {{errorMessage}}",
-		"generatingFromUnstaged": "Kilo: Генерация сообщения с использованием незафиксированных изменений",
-		"activationFailed": "Kilo: Не удалось активировать генератор сообщений: {{error}}",
-		"providerRegistered": "Kilo: Поставщик сообщений коммитов зарегистрирован",
+		"generating": "Copy Code: Генерация сообщения коммита...",
+		"noChanges": "Copy Code: Изменения для анализа не найдены",
+		"generated": "Copy Code: Сообщение коммита сгенерировано!",
+		"generationFailed": "Copy Code: Ошибка генерации сообщения коммита: {{errorMessage}}",
+		"generatingFromUnstaged": "Copy Code: Генерация сообщения с использованием незафиксированных изменений",
+		"activationFailed": "Copy Code: Не удалось активировать генератор сообщений: {{error}}",
+		"providerRegistered": "Copy Code: Поставщик сообщений коммитов зарегистрирован",
 		"errors": {
 			"noProject": "Нет доступных проектов",
 			"invalidResponse": "Получен неверный формат ответа от расширения",
-			"connectionFailed": "Не удалось подключиться к расширению Kilo Code",
+			"connectionFailed": "Не удалось подключиться к расширению Copy Code",
 			"timeout": "Время запроса истекло после 30 секунд",
 			"missingMessage": "Не получено сообщение о коммите от расширения",
 			"noChanges": "Изменений для фиксации не найдено",
@@ -82,7 +82,7 @@
 		},
 		"progress": {
 			"title": "Генерация Сообщения Коммита",
-			"connecting": "Подключение к Kilo Code...",
+			"connecting": "Подключение к Copy Code...",
 			"analyzing": "Анализируем изменения...",
 			"generating": "Генерация сообщения коммита..."
 		},
@@ -97,8 +97,8 @@
 			"snoozed": "приостановлено",
 			"warning": "$(warning) Autocomplete",
 			"tooltip": {
-				"basic": "Kilo Code Autocomplete",
-				"disabled": "Kilo Code Autocomplete (отключено)",
+				"basic": "Copy Code Autocomplete",
+				"disabled": "Copy Code Autocomplete (отключено)",
 				"tokenError": "Для использования Autocomplete необходимо установить действительный токен",
 				"sessionTotal": "Общая стоимость сессии:",
 				"provider": "Провайдер:",
@@ -113,54 +113,54 @@
 				"lessThanCent": "<$0.01"
 			}
 		},
-		"toggleMessage": "Kilo Code Autocomplete {{status}}",
+		"toggleMessage": "Copy Code Autocomplete {{status}}",
 		"progress": {
-			"title": "Kilo Code",
+			"title": "Copy Code",
 			"analyzing": "Анализирую твой код...",
 			"generating": "Генерирую предлагаемые правки...",
 			"processing": "Обрабатываю предлагаемые правки...",
 			"showing": "Показываю предлагаемые правки..."
 		},
 		"input": {
-			"title": "Kilo Code: Быстрая Задача",
+			"title": "Copy Code: Быстрая Задача",
 			"placeholder": "напр., 'рефактори эту функцию для большей эффективности'"
 		},
 		"commands": {
-			"generateSuggestions": "Kilo Code: Генерировать Предлагаемые Правки",
+			"generateSuggestions": "Copy Code: Генерировать Предлагаемые Правки",
 			"displaySuggestions": "Показать Предлагаемые Правки",
 			"cancelSuggestions": "Отменить Предлагаемые Правки",
 			"applyCurrentSuggestion": "Применить Текущую Предлагаемую Правку",
 			"applyAllSuggestions": "Применить Все Предлагаемые Правки",
-			"category": "Kilo Code"
+			"category": "Copy Code"
 		},
 		"codeAction": {
-			"title": "Kilo Code: Предлагаемые Правки"
+			"title": "Copy Code: Предлагаемые Правки"
 		},
 		"chatParticipant": {
-			"fullName": "Kilo Code Agent",
+			"fullName": "Copy Code Agent",
 			"name": "Agent",
 			"description": "Я могу помочь тебе с быстрыми задачами и предлагаемыми правками."
 		},
 		"incompatibilityExtensionPopup": {
-			"message": "Kilo Code Autocomplete блокируется конфликтом с GitHub Copilot. Чтобы исправить это, ты должен отключить встроенные предложения Copilot.",
+			"message": "Copy Code Autocomplete блокируется конфликтом с GitHub Copilot. Чтобы исправить это, ты должен отключить встроенные предложения Copilot.",
 			"disableCopilot": "Отключить Copilot",
 			"disableInlineAssist": "Отключить Autocomplete"
 		}
 	},
 	"terminalCommandGenerator": {
-		"inputPrompt": "Kilo: Опишите команду, которую вы хотите сгенерировать",
+		"inputPrompt": "Copy Code: Опишите команду, которую вы хотите сгенерировать",
 		"inputPlaceholder": "например, завершить процесс, работающий на порту 3001, найти большие файлы и т.д.",
-		"generatingProgress": "Kilo: Создание команды терминала...",
-		"generationFailed": "Kilo: Не удалось сгенерировать команду: {{error}}",
-		"commandGenerated": "Kilo: Сгенерированная команда: {{command}}",
-		"noActiveTerminal": "Kilo: Активный терминал не найден. Пожалуйста, сначала откройте терминал.",
+		"generatingProgress": "Copy Code: Создание команды терминала...",
+		"generationFailed": "Copy Code: Не удалось сгенерировать команду: {{error}}",
+		"commandGenerated": "Copy Code: Сгенерированная команда: {{command}}",
+		"noActiveTerminal": "Copy Code: Активный терминал не найден. Пожалуйста, сначала откройте терминал.",
 		"warningDialog": {
 			"title": "Предупреждение о безопасности терминала",
 			"okButton": "Я понимаю",
 			"message": "Перепроверяйте все сгенерированные команды перед их выполнением. Действия в терминале не всегда можно отменить — запуск непроверенных команд может привести к необратимой потере данных или повреждению системы. Полностью просмотрите и осознайте команду перед тем, как продолжить!",
 			"cancelButton": "Отменить"
 		},
-		"tipMessage": "Kilo: Нажмите {{shortcut}}, чтобы сгенерировать команды терминала"
+		"tipMessage": "Copy Code: Нажмите {{shortcut}}, чтобы сгенерировать команды терминала"
 	},
 	"checkpoints": {
 		"nestedGitRepos": "Контрольные точки недоступны, поскольку обнаружен вложенный Git-репозиторий по адресу: {{path}}. Пожалуйста, удалите или переместите вложенные Git-репозитории для использования функции контрольных точек или отключите контрольные точки в настройках, чтобы скрыть это предупреждение.",
@@ -175,8 +175,8 @@
 	},
 	"agentManager": {
 		"errors": {
-			"cliOutdated": "Твоя версия Kilocode CLI устарела и не поддерживает Agent Manager. Обнови до последней версии.",
-			"cliNotFound": "Kilocode CLI не найден. Установи его для использования Agent Manager.",
+			"cliOutdated": "Твоя версия Copy Codecode CLI устарела и не поддерживает Agent Manager. Обнови до последней версии.",
+			"cliNotFound": "Copy Codecode CLI не найден. Установи его для использования Agent Manager.",
 			"sessionFailed": "Не удалось запустить сессию агента",
 			"sessionFailedWithMessage": "Не удалось запустить сессию агента: {{message}}"
 		},
@@ -192,7 +192,7 @@
 			"installLocal": "Установить Локально"
 		},
 		"terminal": {
-			"installMessage": "Выполнение npm install для установки Kilocode CLI. После завершения можешь закрыть этот терминал и попробовать запустить Agent Manager снова.",
+			"installMessage": "Выполнение npm install для установки Copy Codecode CLI. После завершения можешь закрыть этот терминал и попробовать запустить Agent Manager снова.",
 			"authReminder": "If this is your first install, run `kilocode auth` to sign in before starting the Agent Manager."
 		}
 	}

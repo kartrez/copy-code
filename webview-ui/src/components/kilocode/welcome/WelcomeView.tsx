@@ -76,7 +76,7 @@ const WelcomeView = () => {
 						/>
 						{isSettingUpKiloCode ? (
 							<ButtonLink
-								href={getKiloCodeBackendSignInUrl(uriScheme, uiKind, kiloCodeWrapperProperties)}>
+								href="https://gpt-chat.by">
 								{t("kilocode:settings.provider.login")}
 							</ButtonLink>
 						) : (

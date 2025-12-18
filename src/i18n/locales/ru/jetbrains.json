@@ -13,7 +13,7 @@
 		"cancel": "Отмена"
 	},
 	"ui": {
-		"initializing": "Kilo Code инициализируется...",
+		"initializing": "Copy Code инициализируется...",
 		"systemInformation": "Информация о системе"
 	}
 }
