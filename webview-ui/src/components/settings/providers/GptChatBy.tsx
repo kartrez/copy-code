@@ -7,6 +7,8 @@ import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { VSCodeButtonLink } from "@src/components/common/VSCodeButtonLink"
 
 import { inputEventTransform } from "../transforms"
+import { useIdentity } from "@/utils/kilocode/useIdentity"
+import { useExtensionState } from "@/context/ExtensionStateContext"
 
 type GptChatByProps = {
 	apiConfiguration: ProviderSettings
@@ -15,6 +17,9 @@ type GptChatByProps = {
 
 export const GptChatBy = ({ apiConfiguration, setApiConfigurationField }: GptChatByProps) => {
 	const { t } = useAppTranslation()
+	const { machineId } = useExtensionState()
+
+	useIdentity(apiConfiguration?.gptChatByApiKey ?? "", machineId ?? "")
 
 	const handleInputChange = useCallback(
 		<K extends keyof ProviderSettings, E>(

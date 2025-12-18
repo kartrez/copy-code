@@ -423,6 +423,7 @@ export type ProfileData = {
 		firstname: string
 		lastname: string
 	}
+	hasTrial: boolean,
 	hasSubscription: boolean,
 	subscriptionExpairedDate: string,
 }

@@ -106,18 +106,24 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 
 	const subscriptionPackages = [
 		{
+			credits: 0,
+			period: 0,
+			gift: 'Trial'
+		},
+		{
 			credits: 5,
-			discount: false,
 			period: 1,
 			gift: ''
 		},
 		{
 			credits: 48,
-			discount: true,
 			period: 12,
 			gift: "$5 на баланс"
 		},
 	]
+	if (!profileData?.hasTrial) {
+		subscriptionPackages.shift()
+	}
 
 	const handleBuyCredits = (credits: number, period?: number) => () => {
 		vscode.postMessage({
@@ -247,7 +253,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 														</div>
 														<div
 															className="text-sm text-[var(--vscode-descriptionForeground)] mb-2">
-															{pkg.discount ? t("kilocode:profile.subcription.period_12") : t("kilocode:profile.subcription.period_1")}
+															{t(`kilocode:profile.subcription.period_${pkg.period}`)}
 														</div>
 														<VSCodeButton
 															appearance={pkg.gift ? "primary" : "secondary"}

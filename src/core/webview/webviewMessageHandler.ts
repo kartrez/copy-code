@@ -2654,10 +2654,10 @@ export const webviewMessageHandler = async (
 				const gptChatByApiKey = apiConfiguration?.gptChatByApiKey
 
 				if (!gptChatByApiKey) {
-					provider.log("KiloCode token not found in extension state.")
+					provider.log("CopyCode token not found in extension state.")
 					provider.postMessageToWebview({
 						type: "profileDataResponse",
-						payload: { success: false, error: "KiloCode API token not configured." },
+						payload: { success: false, error: "Gpt-chat.by API token not configured." },
 					})
 					break
 				}
@@ -2735,15 +2735,21 @@ export const webviewMessageHandler = async (
 					"Content-Type": "application/json",
 				}
 				let url = `https://gpt-chat.by/api/copy-code/balance/top-up?amount=${credits}`
+				if (period === 0) {
+					url = `https://gpt-chat.by/api/copy-code/activate-trial`
+				}
 				if (period === 1) {
-					url = `https://gpt-chat.by/api/copy-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE`
+					url = `https://gpt-chat.by/api/copy-code/balance/top-up?supply=COPI_CODE_SUBSCRIBE`
 				}
 				if (period === 12) {
-					url = `https://gpt-chat.by/api/copy-code/balance/top-up?amount=${credits}&supply=COPI_CODE_SUBSCRIBE_YEAR`
+					url = `https://gpt-chat.by/api/copy-code/balance/top-up?supply=COPI_CODE_SUBSCRIBE_YEAR`
 				}
 
 				const response = await axios.get(url, { headers })
 				if (!response.data.url) {
+					provider.postMessageToWebview({
+						type: "updateProfileData",
+					})
 					return
 				}
 				await vscode.env.openExternal(vscode.Uri.parse(response.data.url))
