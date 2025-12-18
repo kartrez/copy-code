@@ -18,7 +18,7 @@ export const getKiloCodeWrapperProperties = (): KiloCodeWrapperProperties => {
 		kiloCodeWrapperJetbrains = kiloCodeWrapperCode !== "cli"
 		kiloCodeWrapperTitle =
 			kiloCodeWrapperCode === "cli"
-				? "Kilo Code CLI"
+				? "Copy Code CLI"
 				: JETBRAIN_PRODUCTS[kiloCodeWrapperCode as keyof typeof JETBRAIN_PRODUCTS]?.name || "JetBrains IDE"
 	}
 
