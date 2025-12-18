@@ -103,8 +103,8 @@ async function fetchModelsFromProvider(options: GetModelsOptions): Promise<Model
 		// kilocode_change start
 		case "kilocode": {
 			const backendUrl = options.kilocodeOrganizationId
-				? `https://api.kilo.ai/api/organizations/${options.kilocodeOrganizationId}`
-				: "https://api.kilo.ai/api/openrouter"
+				? `https://gpt-chat.by/api/organizations/${options.kilocodeOrganizationId}`
+				: "https://gpt-chat.by/api/openrouter"
 			const openRouterBaseUrl = getKiloUrlFromToken(backendUrl, options.kilocodeToken ?? "")
 			models = await getOpenRouterModels({
 				openRouterBaseUrl,

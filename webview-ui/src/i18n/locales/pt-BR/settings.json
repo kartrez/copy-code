@@ -55,7 +55,7 @@
 		"contact": {
 			"label": "Precisa falar conosco? Escreva"
 		},
-		"community": "Quer dicas ou apenas conversar com outros usuários do Kilo Code? Junte-se a <redditLink>reddit.com/r/kilocode</redditLink> ou <discordLink>kilo.ai/discord</discordLink>",
+		"community": "Quer dicas ou apenas conversar com outros usuários do Kilo Code? Junte-se a <redditLink>reddit.com/r/kilocode</redditLink> ou <discordLink>gpt-chat.by/discord</discordLink>",
 		"contactAndCommunity": "Contato e Comunidade",
 		"manageSettings": "Gerenciar Configurações"
 	},
@@ -1028,8 +1028,8 @@
 		"simplifiedExplanation": "Você pode ajustar as configurações detalhadas do modelo mais tarde."
 	},
 	"footer": {
-		"feedback": "Se tiver alguma dúvida ou feedback, sinta-se à vontade para abrir um problema em <githubLink>github.com/Kilo-Org/kilocode</githubLink> ou juntar-se a <redditLink>reddit.com/r/kilocode</redditLink> ou <discordLink>kilo.ai/discord</discordLink>",
-		"support": "Para questões financeiras, entre em contato com o Suporte ao Cliente em <supportLink>https://kilo.ai/support</supportLink>",
+		"feedback": "Se tiver alguma dúvida ou feedback, sinta-se à vontade para abrir um problema em <githubLink>github.com/Kilo-Org/kilocode</githubLink> ou juntar-se a <redditLink>reddit.com/r/kilocode</redditLink> ou <discordLink>gpt-chat.by/discord</discordLink>",
+		"support": "Para questões financeiras, entre em contato com o Suporte ao Cliente em <supportLink>https://gpt-chat.by/support</supportLink>",
 		"telemetry": {
 			"label": "Permitir relatórios de erros e uso",
 			"description": "Ajude a melhorar o Kilo Code enviando dados de uso e relatórios de erros. Nunca são enviados código, prompts ou informações pessoais. Consulte nossa política de privacidade para mais detalhes."

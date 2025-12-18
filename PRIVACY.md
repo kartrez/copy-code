@@ -21,7 +21,7 @@ We take reasonable measures to secure your data, but no system is 100% secure. I
 
 ### **Contact Us**
 
-For any privacy-related questions, soon you can reach out to us at support@kilo.ai.
+For any privacy-related questions, soon you can reach out to us at support@gpt-chat.by.
 
 ---
 

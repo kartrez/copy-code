@@ -29,7 +29,7 @@ Deploy supports all major package managers: **npm, pnpm, yarn, bun**. Kilo Code 
 
 ### 1. Open the Deploy Tab
 
-- Navigate to your [Organization dashboard](https://app.kilo.ai/organizations) or [Profile](https://app.kilo.ai/profile)
+- Navigate to your [Organization dashboard](https://app.gpt-chat.by/organizations) or [Profile](https://app.gpt-chat.by/profile)
 - Select the **Deploy** tab
 
 ### 2. Select Your Project

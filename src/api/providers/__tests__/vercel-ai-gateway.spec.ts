@@ -96,7 +96,7 @@ describe("VercelAiGatewayHandler", () => {
 			apiKey: mockOptions.vercelAiGatewayApiKey,
 			// kilocode_change start
 			defaultHeaders: expect.objectContaining({
-				"HTTP-Referer": "https://kilocode.ai",
+				"HTTP-Referer": "https://gpt-chat.by",
 				"X-Title": "Kilo Code",
 				"User-Agent": expect.stringContaining("Kilo-Code/"),
 			}),

@@ -163,6 +163,6 @@ For JetBrains-specific issues such as JCEF problems, authentication failures, or
 
 If you encounter issues not covered here:
 
-- Join our [Discord community](https://kilo.ai/discord) for real-time support
+- Join our [Discord community](https://gpt-chat.by/discord) for real-time support
 - Submit issues on [GitHub](https://github.com/Kilo-Org/kilocode/issues)
 - Visit our [Reddit community](https://www.reddit.com/r/KiloCode)

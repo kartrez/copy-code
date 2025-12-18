@@ -14,7 +14,7 @@ Then, make sure you place your Copy Code API token in the CLI config:
 kilocode config # this opens up your editor
 ```
 
-You can find your Copy Code API token on your profile page at [app.kilo.ai](https://app.kilo.ai), and place it in the `kilocodeToken` field in the CLI config.
+You can find your Copy Code API token on your profile page at [app.gpt-chat.by](https://app.gpt-chat.by), and place it in the `kilocodeToken` field in the CLI config.
 
 ## Known Issues
 

@@ -55,7 +55,7 @@
 		"contact": {
 			"label": "Perlu bicara dengan kami? Tulis"
 		},
-		"community": "Ingin tips atau hanya nongkrong dengan pengguna Kilo Code lainnya? Bergabunglah dengan <redditLink>reddit.com/r/kilocode</redditLink> atau <discordLink>kilo.ai/discord</discordLink>",
+		"community": "Ingin tips atau hanya nongkrong dengan pengguna Kilo Code lainnya? Bergabunglah dengan <redditLink>reddit.com/r/kilocode</redditLink> atau <discordLink>gpt-chat.by/discord</discordLink>",
 		"contactAndCommunity": "Kontak & Komunitas",
 		"manageSettings": "Kelola Pengaturan"
 	},
@@ -1049,8 +1049,8 @@
 		"simplifiedExplanation": "Anda dapat menyesuaikan pengaturan model terperinci nanti."
 	},
 	"footer": {
-		"feedback": "Jika kamu punya pertanyaan atau feedback, jangan ragu untuk membuka issue di <githubLink>github.com/Kilo-Org/kilocode</githubLink> atau bergabung <redditLink>reddit.com/r/kilocode</redditLink> atau <discordLink>kilo.ai/discord</discordLink>",
-		"support": "Untuk pertanyaan keuangan, silakan hubungi Customer Support di <supportLink>https://kilo.ai/support</supportLink>",
+		"feedback": "Jika kamu punya pertanyaan atau feedback, jangan ragu untuk membuka issue di <githubLink>github.com/Kilo-Org/kilocode</githubLink> atau bergabung <redditLink>reddit.com/r/kilocode</redditLink> atau <discordLink>gpt-chat.by/discord</discordLink>",
+		"support": "Untuk pertanyaan keuangan, silakan hubungi Customer Support di <supportLink>https://gpt-chat.by/support</supportLink>",
 		"telemetry": {
 			"label": "Izinkan pelaporan error dan penggunaan",
 			"description": "Bantu tingkatkan Kilo Code dengan mengirim data penggunaan dan laporan error. Tidak ada kode, prompt, atau informasi pribadi yang pernah dikirim. Lihat kebijakan privasi kami untuk detail lebih lanjut."

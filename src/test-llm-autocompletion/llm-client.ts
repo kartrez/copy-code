@@ -31,7 +31,7 @@ export function getKiloBaseUriFromToken(kilocodeToken?: string): string {
 			console.warn("Failed to get base URL from Copy Code token")
 		}
 	}
-	return "https://api.kilo.ai"
+	return "https://gpt-chat.by"
 }
 
 export class LLMClient {

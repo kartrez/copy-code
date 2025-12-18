@@ -23,7 +23,7 @@ describe("DeviceAuthService", () => {
 		it("should successfully initiate device auth", async () => {
 			const mockResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -88,7 +88,7 @@ describe("DeviceAuthService", () => {
 
 			const mockInitResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -120,7 +120,7 @@ describe("DeviceAuthService", () => {
 
 			const mockInitResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -157,7 +157,7 @@ describe("DeviceAuthService", () => {
 
 			const mockInitResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -186,7 +186,7 @@ describe("DeviceAuthService", () => {
 
 			const mockInitResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -215,7 +215,7 @@ describe("DeviceAuthService", () => {
 
 			const mockInitResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -244,7 +244,7 @@ describe("DeviceAuthService", () => {
 
 			const mockResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 
@@ -275,7 +275,7 @@ describe("DeviceAuthService", () => {
 		it("should clean up resources", async () => {
 			const mockResponse: DeviceAuthInitiateResponse = {
 				code: "ABC123",
-				verificationUrl: "https://kilo.ai/device/verify",
+				verificationUrl: "https://gpt-chat.by/device/verify",
 				expiresIn: 600,
 			}
 

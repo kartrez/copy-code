@@ -22,7 +22,7 @@ Kilo's **Code Reviews** feature automatically analyzes your pull requests using 
 Before enabling Code Reviews:
 
 - **GitHub Integration must be configured**  
-  Connect your account via the [Integrations tab](https://app.kilo.ai/integrations) so that the Review Agent can access your repositories.
+  Connect your account via the [Integrations tab](https://app.gpt-chat.by/integrations) so that the Review Agent can access your repositories.
 
 ---
 
@@ -37,7 +37,7 @@ Before enabling Code Reviews:
 
 ## How to Use
 
-1. Go to the **Review Agent** section in your Kilo Code [personal](https://app.kilo.ai/profile) or [Organization](https://app.kilo.ai/organizations) dashboard.
+1. Go to the **Review Agent** section in your Kilo Code [personal](https://app.gpt-chat.by/profile) or [Organization](https://app.gpt-chat.by/organizations) dashboard.
 2. Toggle **Enable AI Code Review** to automatically review PRs on open/update.
 3. Choose an **AI Model** (e.g., Grok Code Fast 1).
 4. Select a **Review Style**:

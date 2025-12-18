@@ -22,7 +22,7 @@ Kilo's **App Builder** lets you create end-to-end applications through natural l
 Before using App Builder:
 
 - **Active Kilo Code account**  
-  Sign up or log in at [app.kilo.ai](https://app.kilo.ai)
+  Sign up or log in at [app.gpt-chat.by](https://app.gpt-chat.by)
 
 ---
 
@@ -36,7 +36,7 @@ Before using App Builder:
 
 ## How to Use
 
-1. Navigate to **[App Builder](https://app.kilo.ai/app-builder)** from your Kilo dashboard.
+1. Navigate to **[App Builder](https://app.gpt-chat.by/app-builder)** from your Kilo dashboard.
 2. Choose an **AI Model** for development (e.g., Grok Code Fast 1, Claude Sonnet 4.5, GPT-5.2).
 3. Describe your application in plain language:
    - What it should do

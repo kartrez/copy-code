@@ -159,4 +159,4 @@ If you cannot install JetBrains Toolbox, you can manually configure your API pro
 3. Manually enter your API key or authentication token
 4. Save your settings
 
-_For general Kilo Code support and documentation, visit [kilo.ai/docs](https://kilo.ai/docs)_
+_For general Kilo Code support and documentation, visit [gpt-chat.by/docs](https://gpt-chat.by/docs)_

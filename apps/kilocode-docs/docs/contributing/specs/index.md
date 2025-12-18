@@ -35,7 +35,7 @@ It is useful to start with an outline/template for specs. For that, refer to the
 | [Track Repo URL](./spec-track-repo-url.md)                              | Usage tracking by repository/project       |
 | [Voice Transcription](./spec-voice-transcription.md)                    | Live voice input for chat                  |
 
-Private specs, for example backend non-user facing features, can be found on the [company handbook (Kilo internal)](https://handbook.kilo.ai/engineering/specs/why-specs).
+Private specs, for example backend non-user facing features, can be found on the [company handbook (Kilo internal)](https://handbook.gpt-chat.by/engineering/specs/why-specs).
 
 ## Contributing a Spec
 

@@ -57,7 +57,7 @@ export const About = ({ telemetrySetting, setTelemetrySetting, className, ...pro
 						<Trans
 							i18nKey="settings:footer.telemetry.description"
 							components={{
-								privacyLink: <VSCodeLink href="https://kilo.ai/privacy" />,
+								privacyLink: <VSCodeLink href="https://gpt-chat.by/privacy" />,
 							}}
 						/>
 					</p>
@@ -67,9 +67,7 @@ export const About = ({ telemetrySetting, setTelemetrySetting, className, ...pro
 					<Trans
 						i18nKey="settings:footer.feedback"
 						components={{
-							githubLink: <VSCodeLink href="https://github.com/Kilo-Org/kilocode" />,
-							redditLink: <VSCodeLink href="https://reddit.com/r/kilocode" />,
-							discordLink: <VSCodeLink href="https://kilo.ai/discord" />,
+							discordLink: <VSCodeLink href="https://gpt-chat.by/discord" />,
 						}}
 					/>
 				</div>
@@ -79,7 +77,7 @@ export const About = ({ telemetrySetting, setTelemetrySetting, className, ...pro
 					<Trans
 						i18nKey="settings:footer.support"
 						components={{
-							supportLink: <VSCodeLink href="https://kilo.ai/support" />,
+							supportLink: <VSCodeLink href="https://gpt-chat.by/support" />,
 						}}
 					/>
 				</div>

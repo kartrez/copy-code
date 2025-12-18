@@ -64,7 +64,7 @@ async function listTeams(context: CommandContext): Promise<void> {
 		addMessage({
 			id: Date.now().toString(),
 			type: "system",
-			content: `You're currently not a part of any Copy Code teams. Go to https://app.kilo.ai/get-started/teams to get started with Copy Code for Teams!`,
+			content: `You're currently not a part of any Copy Code teams. Go to https://gpt-chat.by/get-started/teams to get started with Copy Code for Teams!`,
 			ts: Date.now(),
 		})
 		return

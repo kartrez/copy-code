@@ -78,7 +78,7 @@ describe("GeminiCliHandler", () => {
 			await handler["fetchOAuthConfig"]()
 
 			// Assert
-			expect(mockAxios.get).toHaveBeenCalledWith("https://api.kilo.ai/extension-config.json")
+			expect(mockAxios.get).toHaveBeenCalledWith("https://gpt-chat.by/extension-config.json")
 			expect(handler["oauthClientId"]).toBe("test-client-id")
 			expect(handler["oauthClientSecret"]).toBe("test-client-secret")
 		})

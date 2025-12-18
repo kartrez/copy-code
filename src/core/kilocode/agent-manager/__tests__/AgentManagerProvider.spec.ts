@@ -325,7 +325,7 @@ describe("AgentManagerProvider CLI spawning", () => {
 			text: JSON.stringify({
 				title: "Low credit",
 				message: "Balance too low",
-				buyCreditsUrl: "https://kilo.ai/billing",
+				buyCreditsUrl: "https://gpt-chat.by/billing",
 			}),
 		}
 
@@ -343,13 +343,13 @@ describe("AgentManagerProvider CLI spawning", () => {
 				text: JSON.stringify({
 					title: "Payment Required",
 					message: "Please add credits",
-					buyCreditsUrl: "https://kilo.ai/billing",
+					buyCreditsUrl: "https://gpt-chat.by/billing",
 				}),
 			}
 			const result = (provider as any).parsePaymentRequiredPayload(payload)
 			expect(result.title).toBe("Payment Required")
 			expect(result.message).toBe("Please add credits")
-			expect(result.buyCreditsUrl).toBe("https://kilo.ai/billing")
+			expect(result.buyCreditsUrl).toBe("https://gpt-chat.by/billing")
 		})
 
 		it("uses fallback title when not provided in JSON", () => {

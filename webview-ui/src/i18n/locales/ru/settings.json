@@ -55,7 +55,7 @@
 		"contact": {
 			"label": "Нужно с нами связаться? Напишите"
 		},
-		"community": "Хотите получить советы или просто пообщаться с другими пользователями Copy Code? Присоединяйтесь к <redditLink>reddit.com/r/kilocode</redditLink> или <discordLink>kilo.ai/discord</discordLink>",
+		"community": "",
 		"contactAndCommunity": "Контакты и Сообщество",
 		"manageSettings": "Управление Настройками"
 	},
@@ -1029,8 +1029,8 @@
 		"simplifiedExplanation": "Ты сможешь настроить подробные параметры модели позже."
 	},
 	"footer": {
-		"feedback": "Если у вас есть вопросы или предложения, откройте issue на <githubLink>github.com/Copy Code-Org/kilocode</githubLink> или присоединяйтесь к <redditLink>reddit.com/r/kilocode</redditLink> или <discordLink>kilo.ai/discord</discordLink>",
-		"support": "По финансовым вопросам обращайтесь в службу поддержки по адресу <supportLink>https://kilo.ai/support</supportLink>",
+		"feedback": "",
+		"support": "По финансовым вопросам обращайтесь в службу поддержки по адресу <supportLink>https://gpt-chat.by/support</supportLink>",
 		"telemetry": {
 			"label": "Разрешить отправку ошибок и статистики использования",
 			"description": "Помогите улучшить Copy Code, отправляя данные об ошибках и использовании. Код, подсказки и личная информация не отправляются. Подробнее — в политике конфиденциальности."

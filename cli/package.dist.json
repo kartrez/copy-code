@@ -126,13 +126,13 @@
 	"author": {
 		"name": "Copy Code"
 	},
-	"homepage": "https://kilo.ai/cli",
+	"homepage": "https://gpt-chat.by/cli",
 	"bugs": {
-		"url": "https://github.com/Kilo-Org/kilocode/issues"
+		"url": "https://github.com/kartrez/copy-code/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Kilo-Org/kilocode.git",
+		"url": "git+https://github.com/kartrez/copy-code.git",
 		"directory": "cli"
 	},
 	"license": "Apache-2.0",

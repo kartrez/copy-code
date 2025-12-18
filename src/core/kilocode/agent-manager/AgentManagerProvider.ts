@@ -275,7 +275,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 					SessionManager.init()
 						?.shareSession(message.sessionId as string)
 						.then((result) => {
-							const shareUrl = `https://app.kilo.ai/share/${result.share_id}`
+							const shareUrl = `https://app.gpt-chat.by/share/${result.share_id}`
 
 							void vscode.env.clipboard.writeText(shareUrl)
 							vscode.window.showInformationMessage(
@@ -1437,7 +1437,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 							} else if (selection === updateLocal) {
 								this.runLocalUpdateInTerminal()
 							} else if (selection === manualUpdate) {
-								void vscode.env.openExternal(vscode.Uri.parse("https://kilo.ai/docs/cli"))
+								void vscode.env.openExternal(vscode.Uri.parse("https://gpt-chat.by/docs/cli"))
 							}
 						})
 				} else {
@@ -1447,7 +1447,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 						.showErrorMessage(t("kilocode:agentManager.errors.cliOutdated"), actionLabel)
 						.then((selection) => {
 							if (selection === actionLabel) {
-								void vscode.env.openExternal(vscode.Uri.parse("https://kilo.ai/docs/cli"))
+								void vscode.env.openExternal(vscode.Uri.parse("https://gpt-chat.by/docs/cli"))
 							}
 						})
 				}
@@ -1471,7 +1471,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 							} else if (selection === installLocal) {
 								this.runLocalInstallInTerminal()
 							} else if (selection === manualInstall) {
-								void vscode.env.openExternal(vscode.Uri.parse("https://kilo.ai/docs/cli"))
+								void vscode.env.openExternal(vscode.Uri.parse("https://gpt-chat.by/docs/cli"))
 							}
 						})
 				} else {
@@ -1481,7 +1481,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 						.showErrorMessage(t("kilocode:agentManager.errors.cliNotFound"), actionLabel)
 						.then((selection) => {
 							if (selection === actionLabel) {
-								void vscode.env.openExternal(vscode.Uri.parse("https://kilo.ai/docs/cli"))
+								void vscode.env.openExternal(vscode.Uri.parse("https://gpt-chat.by/docs/cli"))
 							}
 						})
 				}
@@ -1494,7 +1494,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 				const actionLabel = t("kilocode:agentManager.actions.getHelp")
 				vscode.window.showErrorMessage(errorMessage, actionLabel).then((selection) => {
 					if (selection === actionLabel) {
-						void vscode.env.openExternal(vscode.Uri.parse("https://kilo.ai/docs/cli"))
+						void vscode.env.openExternal(vscode.Uri.parse("https://gpt-chat.by/docs/cli"))
 					}
 				})
 				break

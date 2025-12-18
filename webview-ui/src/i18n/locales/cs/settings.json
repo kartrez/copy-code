@@ -59,7 +59,7 @@
 		"contactSupportDesc": "Získat pomoc s technickými problémy nebo dotazy k účtu",
 		"joinCommunity": "Připojit se ke komunitě",
 		"joinCommunityDesc": "Připoj se k ostatním uživatelům pro tipy a diskuse",
-		"community": "Chceš tipy nebo si jen popovídat s ostatními uživateli Kilo Code? Připoj se na <redditLink>reddit.com/r/kilocode</redditLink> nebo <discordLink>kilo.ai/discord</discordLink>",
+		"community": "Chceš tipy nebo si jen popovídat s ostatními uživateli Kilo Code? Připoj se na <redditLink>reddit.com/r/kilocode</redditLink> nebo <discordLink>gpt-chat.by/discord</discordLink>",
 		"contactAndCommunity": "Kontakt a komunita",
 		"manageSettings": "Spravovat nastavení"
 	},
@@ -1109,8 +1109,8 @@
 		"simplifiedExplanation": "Podrobná nastavení modelu můžete upravit později."
 	},
 	"footer": {
-		"feedback": "Pokud máte nějaké dotazy nebo zpětnou vazbu, neváhejte otevřít problém na <githubLink>github.com/Kilo-Org/kilocode</githubLink> nebo se připojte k <redditLink>reddit.com/r/kilocode</redditLink> nebo <discordLink>kilo.ai/discord</discordLink>.",
-		"support": "Pro finanční dotazy kontaktujte prosím zákaznickou podporu na <supportLink>https://kilo.ai/support</supportLink>",
+		"feedback": "Pokud máte nějaké dotazy nebo zpětnou vazbu, neváhejte otevřít problém na <githubLink>github.com/Kilo-Org/kilocode</githubLink> nebo se připojte k <redditLink>reddit.com/r/kilocode</redditLink> nebo <discordLink>gpt-chat.by/discord</discordLink>.",
+		"support": "Pro finanční dotazy kontaktujte prosím zákaznickou podporu na <supportLink>https://gpt-chat.by/support</supportLink>",
 		"telemetry": {
 			"label": "Povolit hlášení chyb a používání",
 			"description": "Pomozte vylepšit Kilo Code odesíláním dat o používání a hlášení chyb. Nikdy se neodesílá žádný kód, výzvy ani osobní informace. Další podrobnosti najdete v našich zásadách ochrany osobních údajů."

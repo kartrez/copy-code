@@ -23,7 +23,7 @@ Cloud Agents let you run Kilo Code in the cloud from any device, without relying
 Before using Cloud Agents:
 
 - **GitHub Integration must be configured**  
-  Connect your account via the [Integrations tab](https://app.kilo.ai/integrations) so that Cloud Agents can access your repositories.
+  Connect your account via the [Integrations tab](https://app.gpt-chat.by/integrations) so that Cloud Agents can access your repositories.
 
 ---
 
@@ -38,7 +38,7 @@ Before using Cloud Agents:
 
 ## How to Use
 
-1. **Connect your GitHub account** in the [Integrations](https://app.kilo.ai/integrations) tab of your personal or organization dashboard.
+1. **Connect your GitHub account** in the [Integrations](https://app.gpt-chat.by/integrations) tab of your personal or organization dashboard.
 2. **Select a repository** to use as your workspace.
 3. **Add environment variables** (secrets supported) and set optional startup commands.
 4. **Start chatting with Kilo Code.**

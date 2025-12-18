@@ -65,7 +65,7 @@ describe("URL functions", () => {
 			expect(getExtensionConfigUrl()).toBe("http://localhost:3000/extension-config.json")
 		})
 		it("should use subdomain structure for production", () => {
-			expect(getExtensionConfigUrl()).toBe("https://api.kilo.ai/extension-config.json")
+			expect(getExtensionConfigUrl()).toBe("https://gpt-chat.by/extension-config.json")
 		})
 		it("should use path structure for custom backend URLs", () => {
 			process.env.KILOCODE_BACKEND_BASE_URL = "http://192.168.200.70:3000"
@@ -75,9 +75,9 @@ describe("URL functions", () => {
 
 	describe("getApiUrl", () => {
 		it("should handle production URLs with api subdomain", () => {
-			expect(getApiUrl()).toBe("https://api.kilo.ai/")
-			expect(getApiUrl("/trpc/cliSessions.get")).toBe("https://api.kilo.ai/trpc/cliSessions.get")
-			expect(getApiUrl("/api/profile")).toBe("https://api.kilo.ai/api/profile")
+			expect(getApiUrl()).toBe("https://gpt-chat.by/")
+			expect(getApiUrl("/trpc/cliSessions.get")).toBe("https://gpt-chat.by/trpc/cliSessions.get")
+			expect(getApiUrl("/api/profile")).toBe("https://gpt-chat.by/api/profile")
 		})
 
 		it("should handle localhost development URLs", () => {
@@ -99,12 +99,12 @@ describe("URL functions", () => {
 
 	describe("getAppUrl", () => {
 		it("should handle production URLs correctly", () => {
-			expect(getAppUrl()).toBe("https://kilo.ai/")
-			expect(getAppUrl("/profile")).toBe("https://kilo.ai/profile")
-			expect(getAppUrl("/support")).toBe("https://kilo.ai/support")
-			expect(getAppUrl("/sign-in-to-editor")).toBe("https://kilo.ai/sign-in-to-editor")
+			expect(getAppUrl()).toBe("https://gpt-chat.by/")
+			expect(getAppUrl("/profile")).toBe("https://gpt-chat.by/profile")
+			expect(getAppUrl("/support")).toBe("https://gpt-chat.by/support")
+			expect(getAppUrl("/sign-in-to-editor")).toBe("https://gpt-chat.by/sign-in-to-editor")
 			expect(getAppUrl("/sign-in-to-editor?source=vscode")).toBe(
-				"https://kilo.ai/sign-in-to-editor?source=vscode",
+				"https://gpt-chat.by/sign-in-to-editor?source=vscode",
 			)
 		})
 
@@ -122,8 +122,8 @@ describe("URL functions", () => {
 		})
 
 		it("should handle empty and root paths", () => {
-			expect(getAppUrl("")).toBe("https://kilo.ai/")
-			expect(getAppUrl("/")).toBe("https://kilo.ai/")
+			expect(getAppUrl("")).toBe("https://gpt-chat.by/")
+			expect(getAppUrl("/")).toBe("https://gpt-chat.by/")
 		})
 	})
 
@@ -131,21 +131,21 @@ describe("URL functions", () => {
 		it("should handle production token URLs correctly", () => {
 			const prodToken = createProdToken()
 
-			// Token-based URLs using api.kilo.ai subdomain
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/profile", prodToken)).toBe(
-				"https://api.kilo.ai/api/profile",
+			// Token-based URLs using gpt-chat.by subdomain
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/profile", prodToken)).toBe(
+				"https://gpt-chat.by/api/profile",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/profile/balance", prodToken)).toBe(
-				"https://api.kilo.ai/api/profile/balance",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/profile/balance", prodToken)).toBe(
+				"https://gpt-chat.by/api/profile/balance",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/organizations/123/defaults", prodToken)).toBe(
-				"https://api.kilo.ai/api/organizations/123/defaults",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/organizations/123/defaults", prodToken)).toBe(
+				"https://gpt-chat.by/api/organizations/123/defaults",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/openrouter/", prodToken)).toBe(
-				"https://api.kilo.ai/api/openrouter/",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/openrouter/", prodToken)).toBe(
+				"https://gpt-chat.by/api/openrouter/",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/users/notifications", prodToken)).toBe(
-				"https://api.kilo.ai/api/users/notifications",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/users/notifications", prodToken)).toBe(
+				"https://gpt-chat.by/api/users/notifications",
 			)
 		})
 
@@ -153,19 +153,19 @@ describe("URL functions", () => {
 			const devToken = createDevToken()
 
 			// Development token should map to localhost:3000
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/profile", devToken)).toBe(
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/profile", devToken)).toBe(
 				"http://localhost:3000/api/profile",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/profile/balance", devToken)).toBe(
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/profile/balance", devToken)).toBe(
 				"http://localhost:3000/api/profile/balance",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/organizations/456/defaults", devToken)).toBe(
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/organizations/456/defaults", devToken)).toBe(
 				"http://localhost:3000/api/organizations/456/defaults",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/openrouter/", devToken)).toBe(
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/openrouter/", devToken)).toBe(
 				"http://localhost:3000/api/openrouter/",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/users/notifications", devToken)).toBe(
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/users/notifications", devToken)).toBe(
 				"http://localhost:3000/api/users/notifications",
 			)
 		})
@@ -173,8 +173,8 @@ describe("URL functions", () => {
 		it("should handle invalid tokens gracefully", () => {
 			const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {})
 			// Use a token that looks like JWT but has invalid JSON payload
-			const result = getKiloUrlFromToken("https://api.kilo.ai/api/test", "header.invalid-json.signature")
-			expect(result).toBe("https://api.kilo.ai/api/test")
+			const result = getKiloUrlFromToken("https://gpt-chat.by/api/test", "header.invalid-json.signature")
+			expect(result).toBe("https://gpt-chat.by/api/test")
 			expect(consoleSpy).toHaveBeenCalledWith("Failed to get base URL from Kilo Code token")
 			consoleSpy.mockRestore()
 		})
@@ -183,33 +183,33 @@ describe("URL functions", () => {
 	describe("Real-world URL patterns from application", () => {
 		it("should correctly handle marketplace endpoints", () => {
 			// These are the actual endpoints used in RemoteConfigLoader
-			expect(getAppUrl("/api/marketplace/modes")).toBe("https://kilo.ai/api/marketplace/modes")
-			expect(getAppUrl("/api/marketplace/mcps")).toBe("https://kilo.ai/api/marketplace/mcps")
+			expect(getAppUrl("/api/marketplace/modes")).toBe("https://gpt-chat.by/api/marketplace/modes")
+			expect(getAppUrl("/api/marketplace/mcps")).toBe("https://gpt-chat.by/api/marketplace/mcps")
 		})
 
 		it("should correctly handle app navigation URLs", () => {
 			// These are the actual URLs used in Task.ts and webviewMessageHandler.ts
-			expect(getAppUrl("/profile")).toBe("https://kilo.ai/profile")
-			expect(getAppUrl("/support")).toBe("https://kilo.ai/support")
+			expect(getAppUrl("/profile")).toBe("https://gpt-chat.by/profile")
+			expect(getAppUrl("/support")).toBe("https://gpt-chat.by/support")
 		})
 
 		it("should correctly handle token-based API calls", () => {
 			// These are the actual API endpoints used throughout the application
 			const prodToken = createProdToken()
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/profile", prodToken)).toBe(
-				"https://api.kilo.ai/api/profile",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/profile", prodToken)).toBe(
+				"https://gpt-chat.by/api/profile",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/profile/balance", prodToken)).toBe(
-				"https://api.kilo.ai/api/profile/balance",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/profile/balance", prodToken)).toBe(
+				"https://gpt-chat.by/api/profile/balance",
 			)
-			expect(getKiloUrlFromToken("https://api.kilo.ai/api/users/notifications", prodToken)).toBe(
-				"https://api.kilo.ai/api/users/notifications",
+			expect(getKiloUrlFromToken("https://gpt-chat.by/api/users/notifications", prodToken)).toBe(
+				"https://gpt-chat.by/api/users/notifications",
 			)
 		})
 
 		it("should maintain backwards compatibility for legacy endpoints", () => {
-			expect(getExtensionConfigUrl()).toBe("https://api.kilo.ai/extension-config.json")
-			expect(getAppUrl("/api/extension-config.json")).toBe("https://kilo.ai/api/extension-config.json")
+			expect(getExtensionConfigUrl()).toBe("https://gpt-chat.by/extension-config.json")
+			expect(getAppUrl("/api/extension-config.json")).toBe("https://gpt-chat.by/api/extension-config.json")
 			expect(getAppUrl("/api/extension-config.json")).not.toBe(getExtensionConfigUrl())
 		})
 	})

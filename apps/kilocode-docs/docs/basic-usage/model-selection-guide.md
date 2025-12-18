@@ -10,7 +10,7 @@ Instead of maintaining a static list that's perpetually behind, we built somethi
 
 ## Check the Live Models List
 
-**[👉 See what's working today at kilo.ai/models](https://kilo.ai/models)**
+**[👉 See what's working today at gpt-chat.by/models](https://gpt-chat.by/models)**
 
 This isn't benchmarks from some lab. It's real usage data from developers like you, updated continuously. You'll see which models people are choosing for different tasks, what's delivering results, and how the landscape is shifting in real-time.
 
@@ -39,4 +39,4 @@ Check [our provider docs](/basic-usage/connecting-providers) for specific contex
 
 ## Stay Current
 
-The AI model space moves fast. Bookmark [kilo.ai/models](https://kilo.ai/models) and check back when you're evaluating options. What's best today might not be best next month — and that's actually exciting.
+The AI model space moves fast. Bookmark [gpt-chat.by/models](https://gpt-chat.by/models) and check back when you're evaluating options. What's best today might not be best next month — and that's actually exciting.

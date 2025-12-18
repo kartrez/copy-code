@@ -3983,7 +3983,7 @@ export const webviewMessageHandler = async (
 					throw new Error("SessionManager not initialized")
 				}
 
-				const shareUrl = `https://app.kilo.ai/share/${result.share_id}`
+				const shareUrl = `https://app.gpt-chat.by/share/${result.share_id}`
 
 				// Copy URL to clipboard and show success notification
 				await vscode.env.clipboard.writeText(shareUrl)
@@ -4014,7 +4014,7 @@ export const webviewMessageHandler = async (
 					throw new Error("SessionManager not initialized")
 				}
 
-				const shareUrl = `https://app.kilo.ai/share/${result.share_id}`
+				const shareUrl = `https://app.gpt-chat.by/share/${result.share_id}`
 
 				await vscode.env.clipboard.writeText(shareUrl)
 				vscode.window.showInformationMessage(

@@ -103,7 +103,7 @@ npx docusaurus build
 
 ### Community Platforms
 
-- **Discord**: https://kilo.ai/discord
+- **Discord**: https://gpt-chat.by/discord
 - **Reddit**: https://www.reddit.com/r/kilocode/
 - **Twitter**: https://x.com/kilocode
 - **YouTube**: https://www.youtube.com/@Kilo-Code
@@ -117,7 +117,7 @@ npx docusaurus build
 
 ### Static Site Hosting
 
-- **Production URL**: https://kilo.ai/docs
+- **Production URL**: https://gpt-chat.by/docs
 - **Base Path**: /docs (configured in docusaurus.config.ts)
 - **CDN**: Static file distribution for global performance
 

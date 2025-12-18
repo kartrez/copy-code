@@ -25,7 +25,7 @@ const config: Config = {
 	favicon: "img/favicon.ico",
 
 	// Set the production url of your site here
-	url: "https://kilo.ai",
+	url: "https://gpt-chat.by",
 	// Set the /<baseUrl>/ pathname under which your site is served
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/docs",
@@ -256,7 +256,7 @@ const config: Config = {
 				{
 					title: "Community",
 					items: [
-						{
+/*						{
 							label: "Discord",
 							href: DISCORD_URL,
 						},
@@ -267,7 +267,7 @@ const config: Config = {
 						{
 							label: "Twitter",
 							href: TWITTER_URL,
-						},
+						},*/
 					],
 				},
 				{

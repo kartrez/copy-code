@@ -29,7 +29,7 @@ Before connecting:
 
 ### 1. Open the Integrations Page
 
-Go to your **Personal** or **Organization Dashboard**, and navigate to the [Integrations](https://app.kilo.ai/integrations) tab
+Go to your **Personal** or **Organization Dashboard**, and navigate to the [Integrations](https://app.gpt-chat.by/integrations) tab
 
 ### 2. Start the Connection Flow
 
