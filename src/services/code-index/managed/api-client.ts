@@ -46,6 +46,7 @@ export async function getProfile(
 		const response = await fetchWithRetries({
 			url: `${baseUrl}/api/copy-code/profile`,
 			method: "GET",
+			retries: 2,
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",
@@ -83,6 +84,7 @@ export async function searchCode(
 		const response = await fetchWithRetries({
 			url: `${baseUrl}/api/code-indexing/search`,
 			method: "POST",
+			retries: 2,
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",
@@ -204,6 +206,7 @@ export async function upsertFile(params: UpsertFileParams, signal?: AbortSignal)
 		const response = await fetchWithRetries({
 			url: `${baseUrl}/api/code-indexing/upsert-by-file`,
 			method: "PUT",
+			retries: 2,
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -299,6 +302,7 @@ export async function getServerManifest(
 		const response = await fetchWithRetries({
 			url: `${baseUrl}/api/code-indexing/manifest?${params.toString()}`,
 			method: "GET",
+			retries: 2,
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",

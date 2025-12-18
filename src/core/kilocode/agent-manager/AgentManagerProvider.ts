@@ -30,6 +30,8 @@ import {
 	captureAgentManagerSessionCompleted,
 	captureAgentManagerSessionStopped,
 	captureAgentManagerSessionError,
+	captureAgentManagerLoginIssue,
+	getPlatformDiagnostics,
 } from "./telemetry"
 import type { ClineProvider } from "../../webview/ClineProvider"
 import { extractSessionConfigs, MAX_VERSION_COUNT } from "./multiVersionUtils"
@@ -238,6 +240,9 @@ export class AgentManagerProvider implements vscode.Disposable {
 						message.sessionLabel as string | undefined,
 					)
 					break
+				case "agentManager.resumeSession":
+					void this.resumeSession(message.sessionId as string, message.content as string)
+					break
 				case "agentManager.cancelSession":
 					void this.cancelSession(message.sessionId as string)
 					break
@@ -315,7 +320,6 @@ export class AgentManagerProvider implements vscode.Disposable {
 			const config = configs[0]
 			await this.startAgentSession(config.prompt, {
 				parallelMode: config.parallelMode,
-				autoMode: config.autoMode,
 				labelOverride: config.label,
 				existingBranch: config.existingBranch,
 			})
@@ -332,7 +336,6 @@ export class AgentManagerProvider implements vscode.Disposable {
 
 			await this.startAgentSession(config.prompt, {
 				parallelMode: config.parallelMode,
-				autoMode: config.autoMode,
 				labelOverride: config.label,
 				existingBranch: config.existingBranch,
 			})
@@ -407,7 +410,6 @@ export class AgentManagerProvider implements vscode.Disposable {
 		prompt: string,
 		options?: {
 			parallelMode?: boolean
-			autoMode?: boolean
 			labelOverride?: string
 			existingBranch?: string
 		},
@@ -417,41 +419,78 @@ export class AgentManagerProvider implements vscode.Disposable {
 			return
 		}
 
-		// Get workspace folder - require a valid workspace
+		// Get workspace folder early to fetch git URL before spawning
+		// Note: we intentionally allow starting parallel mode from within an existing git worktree.
+		// Git worktrees share a common .git dir, so `git worktree add/remove` still works from a worktree root.
+		const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath
+
+		// Get git URL for the workspace (used for filtering sessions)
+		let gitUrl: string | undefined
+		if (workspaceFolder) {
+			try {
+				gitUrl = normalizeGitUrl(await getRemoteUrl(workspaceFolder))
+			} catch (error) {
+				this.outputChannel.appendLine(
+					`[AgentManager] Could not get git URL: ${error instanceof Error ? error.message : String(error)}`,
+				)
+			}
+		}
+
+		const onSetupFailed = () => {
+			if (!workspaceFolder) {
+				void vscode.window.showErrorMessage("Please open a folder before starting an agent.")
+			}
+			this.postMessage({ type: "agentManager.startSessionFailed" })
+		}
+
+		await this.spawnCliWithCommonSetup(
+			prompt,
+			{
+				parallelMode: options?.parallelMode,
+				label: options?.labelOverride,
+				gitUrl,
+				existingBranch: options?.existingBranch,
+			},
+			onSetupFailed,
+		)
+	}
+
+	private async getApiConfigurationForCli(): Promise<ProviderSettings | undefined> {
+		const { apiConfiguration } = await this.provider.getState()
+		return apiConfiguration
+	}
+
+	/**
+	 * Common helper to spawn a CLI process with standard setup.
+	 * Handles CLI path lookup, workspace folder validation, API config, and event callback wiring.
+	 * @returns true if process was spawned, false if setup failed
+	 */
+	private async spawnCliWithCommonSetup(
+		prompt: string,
+		options: {
+			parallelMode?: boolean
+			label?: string
+			gitUrl?: string
+			existingBranch?: string
+			sessionId?: string
+		},
+		onSetupFailed?: () => void,
+	): Promise<boolean> {
 		const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath
 		if (!workspaceFolder) {
 			this.outputChannel.appendLine("ERROR: No workspace folder open")
-			void vscode.window.showErrorMessage("Please open a folder before starting an agent.")
-			this.postMessage({ type: "agentManager.startSessionFailed" })
-			return
+			onSetupFailed?.()
+			return false
 		}
-
-		// Note: we intentionally allow starting parallel mode from within an existing git worktree.
-		// Git worktrees share a common .git dir, so `git worktree add/remove` still works from a worktree root.
 
 		const cliPath = await findKilocodeCli((msg) => this.outputChannel.appendLine(`[AgentManager] ${msg}`))
 		if (!cliPath) {
 			this.outputChannel.appendLine("ERROR: kilocode CLI not found")
 			this.showCliNotFoundError()
-			this.postMessage({ type: "agentManager.startSessionFailed" })
-			return
+			onSetupFailed?.()
+			return false
 		}
 
-		// Determine label override (used for multi-version mode)
-		const existingLabel = options?.labelOverride
-
-		// Get git URL for the workspace (used for filtering sessions)
-		let gitUrl: string | undefined
-		try {
-			gitUrl = normalizeGitUrl(await getRemoteUrl(workspaceFolder))
-		} catch (error) {
-			this.outputChannel.appendLine(
-				`[AgentManager] Could not get git URL: ${error instanceof Error ? error.message : String(error)}`,
-			)
-		}
-
-		// Record process start time to filter out replayed history events
-		// This is set before spawning so any events older than this are from history
 		const processStartTime = Date.now()
 		let apiConfiguration: ProviderSettings | undefined
 		try {
@@ -468,27 +507,16 @@ export class AgentManagerProvider implements vscode.Disposable {
 			cliPath,
 			workspaceFolder,
 			prompt,
-			{
-				parallelMode: options?.parallelMode,
-				autoMode: options?.autoMode,
-				label: existingLabel,
-				gitUrl,
-				apiConfiguration,
-				existingBranch: options?.existingBranch,
-			},
-			(sessionId, event) => {
-				// For new sessions, set the start time when we first see the session
-				if (!this.processStartTimes.has(sessionId)) {
-					this.processStartTimes.set(sessionId, processStartTime)
+			{ ...options, apiConfiguration },
+			(sid, event) => {
+				if (!this.processStartTimes.has(sid)) {
+					this.processStartTimes.set(sid, processStartTime)
 				}
-				this.handleCliEvent(sessionId, event)
+				this.handleCliEvent(sid, event)
 			},
 		)
-	}
 
-	private async getApiConfigurationForCli(): Promise<ProviderSettings | undefined> {
-		const { apiConfiguration } = await this.provider.getState()
-		return apiConfiguration
+		return true
 	}
 
 	/**
@@ -759,16 +787,6 @@ export class AgentManagerProvider implements vscode.Disposable {
 	 * Send a follow-up message to a running agent session via stdin.
 	 */
 	public async sendMessage(sessionId: string, content: string, sessionLabel?: string): Promise<void> {
-		const session = this.registry.getSession(sessionId)
-
-		// Auto-mode sessions are non-interactive
-		if (session?.autoMode) {
-			this.outputChannel.appendLine(
-				`[AgentManager] Session ${sessionId} is running in auto mode; user input is disabled`,
-			)
-			return
-		}
-
 		if (!this.processHandler.hasStdin(sessionId)) {
 			// Session is not running - ignore the message
 			this.outputChannel.appendLine(`[AgentManager] Session ${sessionId} not running, ignoring follow-up message`)
@@ -803,20 +821,10 @@ export class AgentManagerProvider implements vscode.Disposable {
 	}
 
 	/**
-	 * Validate that a message can be sent (not auto-mode, session running, no other message sending).
+	 * Validate that a message can be sent (session running, no other message sending).
 	 * Returns error message if validation fails, undefined if valid.
 	 */
 	private validateMessagePrerequisites(sessionId: string, messageId: string): void | undefined {
-		// Check auto-mode
-		const session = this.registry.getSession(sessionId)
-		if (session?.autoMode) {
-			this.outputChannel.appendLine(
-				`[AgentManager] Session ${sessionId} is running in auto mode; user input is disabled`,
-			)
-			this.notifyMessageStatus(sessionId, messageId, "failed", "Session is in auto mode")
-			return
-		}
-
 		// Check if session is running
 		if (!this.processHandler.hasStdin(sessionId)) {
 			this.outputChannel.appendLine(`[AgentManager] Session ${sessionId} not running, message send failed`)
@@ -878,6 +886,31 @@ export class AgentManagerProvider implements vscode.Disposable {
 			messageId,
 			status,
 			error,
+		})
+	}
+
+	/**
+	 * Resume a completed session by spawning a new CLI process with --session flag.
+	 */
+	public async resumeSession(sessionId: string, content: string): Promise<void> {
+		const session = this.registry.getSession(sessionId)
+		if (!session) {
+			this.outputChannel.appendLine(`[AgentManager] Session ${sessionId} not found, cannot resume`)
+			return
+		}
+
+		// If session is still running, send as regular message instead
+		if (this.processHandler.hasStdin(sessionId)) {
+			await this.sendMessage(sessionId, content)
+			return
+		}
+
+		this.outputChannel.appendLine(`[AgentManager] Resuming session ${sessionId} with new prompt`)
+
+		await this.spawnCliWithCommonSetup(content, {
+			sessionId, // This triggers --session=<id> flag
+			parallelMode: session.parallelMode?.enabled,
+			gitUrl: session.gitUrl,
 		})
 	}
 
@@ -1125,6 +1158,10 @@ export class AgentManagerProvider implements vscode.Disposable {
 	private showPaymentRequiredPrompt(payload?: KilocodePayload | { text?: string; content?: string }): void {
 		const { title, message, buyCreditsUrl, rawText } = this.parsePaymentRequiredPayload(payload)
 
+		captureAgentManagerLoginIssue({
+			issueType: "payment_required",
+		})
+
 		const actionLabel = buyCreditsUrl ? "Open billing" : undefined
 		const actions = actionLabel ? [actionLabel] : []
 
@@ -1138,6 +1175,14 @@ export class AgentManagerProvider implements vscode.Disposable {
 	}
 
 	private showCliNotFoundError(): void {
+		const hasNpm = canInstallCli((msg) => this.outputChannel.appendLine(`[AgentManager] ${msg}`))
+		const { platform, shell } = getPlatformDiagnostics()
+		captureAgentManagerLoginIssue({
+			issueType: "cli_not_found",
+			hasNpm,
+			platform,
+			shell,
+		})
 		this.showCliError({ type: "spawn_error", message: "CLI not found" })
 	}
 
@@ -1203,6 +1248,11 @@ export class AgentManagerProvider implements vscode.Disposable {
 	}
 
 	private handleStartSessionApiFailure(error: { message?: string; authError?: boolean }): void {
+		captureAgentManagerLoginIssue({
+			issueType: error.authError ? "auth_error" : "api_error",
+			httpStatusCode: error.authError ? 401 : undefined,
+		})
+
 		const message =
 			error.authError === true
 				? this.buildAuthReminderMessage(error.message || t("kilocode:agentManager.errors.sessionFailed"))
@@ -1349,6 +1399,23 @@ export class AgentManagerProvider implements vscode.Disposable {
 
 	private showCliError(error?: { type: "cli_outdated" | "spawn_error" | "unknown"; message: string }): void {
 		const hasNpm = canInstallCli((msg) => this.outputChannel.appendLine(`[AgentManager] ${msg}`))
+
+		const { platform, shell } = getPlatformDiagnostics()
+		if (error?.type === "cli_outdated") {
+			captureAgentManagerLoginIssue({
+				issueType: "cli_outdated",
+				hasNpm,
+				platform,
+				shell,
+			})
+		} else if (error?.type === "spawn_error" && error.message !== "CLI not found") {
+			captureAgentManagerLoginIssue({
+				issueType: "cli_spawn_error",
+				hasNpm,
+				platform,
+				shell,
+			})
+		}
 
 		switch (error?.type) {
 			case "cli_outdated":
