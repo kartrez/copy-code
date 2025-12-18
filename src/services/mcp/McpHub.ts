@@ -683,7 +683,7 @@ export class McpHub {
 		try {
 			const client = new Client(
 				{
-					name: "Kilo Code",
+					name: "Copy Code",
 					version: this.providerRef.deref()?.context.extension?.packageJSON?.version ?? "1.0.0",
 				},
 				{
