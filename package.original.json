@@ -17,7 +17,7 @@
     "workspace"
   ],
   "author": {
-    "name": "Kilo Code"
+    "name": "Copy Code"
   },
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
     "sonnet",
     "ai",
     "llama",
-    "Kilo Code",
+    "Copy Code",
     "kilocode"
   ],
   "activationEvents": [
@@ -57,13 +57,13 @@
     "walkthroughs": [
       {
         "id": "kiloCodeWalkthrough",
-        "title": "5 ways Kilo Code helps you code",
+        "title": "5 ways Copy Code helps you code",
         "description": "You now have a personal AI coding assistant.",
         "steps": [
           {
             "id": "welcome",
             "title": "Write code for you",
-            "description": "Describe what you want to build. Kilo Code will write it from scratch, generate the files, and run them for you.",
+            "description": "Describe what you want to build. Copy Code will write it from scratch, generate the files, and run them for you.",
             "media": {
               "markdown": "./dist/walkthrough/step1.md"
             }
@@ -71,7 +71,7 @@
           {
             "id": "getting-started",
             "title": "Understand your codebase",
-            "description": "Need clarity on how something works? Ask Kilo Code about any part of your files and get a clear explanation.",
+            "description": "Need clarity on how something works? Ask Copy Code about any part of your files and get a clear explanation.",
             "media": {
               "markdown": "./dist/walkthrough/step2.md"
             },
@@ -82,7 +82,7 @@
           {
             "id": "modes",
             "title": "Get things working again",
-            "description": "Stuck on an error? Kilo Code can find the issue, fix it, and get your code running.",
+            "description": "Stuck on an error? Copy Code can find the issue, fix it, and get your code running.",
             "media": {
               "markdown": "./dist/walkthrough/step3.md"
             }
@@ -633,7 +633,7 @@
     },
     "icons": {
       "kilo-logo": {
-        "description": "Kilo Code logo",
+        "description": "Copy Code logo",
         "default": {
           "fontPath": "assets/icons/kilo-icon-font.woff2",
           "fontCharacter": "\\F101"

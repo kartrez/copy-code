@@ -25,10 +25,10 @@ export function createConfigErrorInstructions(validation: ValidationResult): str
 
 	instructions.push(
 		"\nTo fix this issue:",
-		`  1. Run: kilocode config`,
+		`  1. Run: code config`,
 		`  2. Or edit: ${configPath}`,
 		"\n",
-		"The CLI will exit now. Please configure your Kilo Code and try again.",
+		"The CLI will exit now. Please configure your Copy Code and try again.",
 	)
 
 	return instructions
