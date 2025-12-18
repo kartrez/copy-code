@@ -31,7 +31,7 @@ export const gptChatByModels = {
 		maxTokens: 8000,
 		contextWindow: 65_000,
 		supportsImages: false,
-		supportsPromptCache: false,
+		supportsPromptCache: true,
 		inputPrice: 0,
 		outputPrice: 0,
 		description: `Free model: Gemini 2.5 Flash Lite - Low performance model.`,
