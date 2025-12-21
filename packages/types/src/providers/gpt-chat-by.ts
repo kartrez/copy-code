@@ -8,8 +8,8 @@ const GTP_CHAT_BY_TAKE_PROFIT_USD = 2.3;
 
 export const gptChatByModels = {
 	"mimo-free": {
-		maxTokens: 128_000,
-		contextWindow: 250_000,
+		maxTokens: 65_000,
+		contextWindow: 180_000,
 		supportsImages: false,
 		supportsPromptCache: true,
 		inputPrice: 0,
