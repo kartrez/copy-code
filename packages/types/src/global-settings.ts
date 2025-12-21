@@ -38,12 +38,12 @@ export const MIN_CHECKPOINT_TIMEOUT_SECONDS = 10
 /**
  * Maximum checkpoint timeout in seconds.
  */
-export const MAX_CHECKPOINT_TIMEOUT_SECONDS = 60
+export const MAX_CHECKPOINT_TIMEOUT_SECONDS = 180
 
 /**
  * Default checkpoint timeout in seconds.
  */
-export const DEFAULT_CHECKPOINT_TIMEOUT_SECONDS = 15
+export const DEFAULT_CHECKPOINT_TIMEOUT_SECONDS = 60
 
 /**
  * GlobalSettings

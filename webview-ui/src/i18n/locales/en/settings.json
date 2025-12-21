@@ -668,7 +668,7 @@
 	"checkpoints": {
 		"timeout": {
 			"label": "Checkpoint initialization timeout (seconds)",
-			"description": "Maximum time to wait for checkpoint service initialization. Default is 15 seconds. Range: 10-60 seconds."
+			"description": "Maximum time to wait for checkpoint service initialization. Default is 60 seconds. Range: 10-180 seconds."
 		},
 		"enable": {
 			"label": "Enable automatic checkpoints",
