@@ -33,7 +33,7 @@ export class KilocodeOpenrouterHandler extends OpenRouterHandler {
 	}
 
 	constructor(options: ApiHandlerOptions) {
-		const baseApiUrl = getKiloUrlFromToken("https://gpt-chat.by/api/", options.kilocodeToken ?? "")
+		const baseApiUrl = getKiloUrlFromToken("https://api.kilo.ai/api/", options.kilocodeToken ?? "")
 
 		options = {
 			...options,

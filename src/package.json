@@ -21,7 +21,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Kilo-Org/kilocode"
+		"url": "https://github.com/kartrez/copy"
 	},
 	"homepage": "https://gpt-chat.by",
 	"categories": [
@@ -33,7 +33,7 @@
 		"Testing"
 	],
 	"keywords": [
-		"kilo",
+		"copy",
 		"claude",
 		"dev",
 		"mcp",
@@ -46,7 +46,8 @@
 		"ai",
 		"llama",
 		"Copy Code",
-		"kilocode"
+		"copycode",
+		"gpt-chat.by"
 	],
 	"activationEvents": [
 		"onLanguage",

@@ -1071,7 +1071,7 @@ export class CustomModesManager {
 			}
 
 			const url = getKiloUrlFromToken(
-				`https://gpt-chat.by/api/organizations/${organizationId}/modes`,
+				`https://api.kilo.ai/api/organizations/${organizationId}/modes`,
 				kilocodeToken,
 			)
 			const response = await axios.get(url, { headers })

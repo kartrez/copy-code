@@ -7,8 +7,6 @@ import { useAppTranslation } from "../../../i18n/TranslationContext"
 import { ButtonPrimary } from "../common/ButtonPrimary"
 import { ButtonLink } from "../common/ButtonLink"
 import ApiOptions from "../../settings/ApiOptions"
-import KiloCodeAuth from "../common/KiloCodeAuth"
-import { getKiloCodeBackendSignInUrl } from "../helpers"
 
 const WelcomeView = () => {
 	const {
@@ -16,11 +14,8 @@ const WelcomeView = () => {
 		currentApiConfigName,
 		setApiConfiguration,
 		uriScheme,
-		uiKind,
-		kiloCodeWrapperProperties,
 	} = useExtensionState()
 	const [errorMessage, setErrorMessage] = useState<string | undefined>()
-	const [manualConfig, setManualConfig] = useState(false)
 	const { t } = useAppTranslation()
 	const pendingActivation = useRef<string | null | undefined>(null)
 
@@ -63,31 +58,25 @@ const WelcomeView = () => {
 	return (
 		<Tab>
 			<TabContent className="flex flex-col gap-5">
-				{manualConfig ? (
-					<>
-						<ApiOptions
-							fromWelcomeView
-							apiConfiguration={apiConfiguration || {}}
-							uriScheme={uriScheme}
-							setApiConfigurationField={(field, value) => setApiConfiguration({ [field]: value })}
-							errorMessage={errorMessage}
-							setErrorMessage={setErrorMessage}
-							hideKiloCodeButton
-						/>
-						{isSettingUpKiloCode ? (
-							<ButtonLink
-								href="https://gpt-chat.by">
-								{t("kilocode:settings.provider.login")}
-							</ButtonLink>
-						) : (
-							<ButtonPrimary onClick={handleSubmit}>{t("welcome:start")}</ButtonPrimary>
-						)}
-					</>
-				) : (
-					<div className="bg-vscode-sideBar-background p-4">
-						<KiloCodeAuth onManualConfigClick={() => setManualConfig(true)} />
-					</div>
-				)}
+				<>
+					<ApiOptions
+						fromWelcomeView
+						apiConfiguration={apiConfiguration || {}}
+						uriScheme={uriScheme}
+						setApiConfigurationField={(field, value) => setApiConfiguration({ [field]: value })}
+						errorMessage={errorMessage}
+						setErrorMessage={setErrorMessage}
+						hideKiloCodeButton
+					/>
+					{isSettingUpKiloCode ? (
+						<ButtonLink
+							href="https://gpt-chat.by/doc-api">
+							{t("kilocode:settings.provider.login")}
+						</ButtonLink>
+					) : (
+						<ButtonPrimary onClick={handleSubmit}>{t("welcome:start")}</ButtonPrimary>
+					)}
+				</>
 			</TabContent>
 		</Tab>
 	)

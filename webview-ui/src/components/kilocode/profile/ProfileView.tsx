@@ -13,7 +13,6 @@ import { useExtensionState } from "@/context/ExtensionStateContext"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { Tab, TabContent, TabHeader } from "@src/components/common/Tab"
 import { Button } from "@src/components/ui"
-import KiloCodeAuth from "../common/KiloCodeAuth"
 
 interface ProfileViewProps {
 	onDone: () => void
@@ -333,7 +332,16 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 							</div>
 						) : (
 							<div className="flex flex-col items-center pr-3">
-								<KiloCodeAuth className="w-full" />
+								<Button
+									variant="secondary"
+									onClick={() => {
+										vscode.postMessage({
+											type: "switchTab",
+											tab: "settings",
+										})
+									}}>
+									{t("kilocode:settings.provider.login")}
+								</Button>
 							</div>
 						)}
 					</div>
