@@ -112,7 +112,7 @@
 					"id": "kilo-code-ActivityBar",
 					"title": "%views.activitybar.title%",
 					"icon": "assets/icons/kilo.png",
-					"darkIcon": "assets/icons/kilo.png"
+					"darkIcon": "assets/icons/kilo-dark.png"
 				}
 			]
 		},
@@ -123,7 +123,7 @@
 					"id": "kilo-code.SidebarProvider",
 					"name": "%views.sidebar.name%",
 					"icon": "assets/icons/kilo.png",
-					"darkIcon": "assets/icons/kilo.png"
+					"darkIcon": "assets/icons/kilo-dark.png"
 				}
 			]
 		},
@@ -258,8 +258,8 @@
 				"command": "kilo-code.vsc.generateCommitMessage",
 				"title": "%command.generateCommitMessage.title%",
 				"icon": {
-					"light": "assets/icons/kilo.svg",
-					"dark": "assets/icons/kilo.svg"
+					"light": "assets/icons/kilo-light.svg",
+					"dark": "assets/icons/kilo-dark.svg"
 				},
 				"category": "%configuration.title%"
 			},

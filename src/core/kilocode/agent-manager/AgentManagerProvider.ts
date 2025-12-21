@@ -189,8 +189,8 @@ export class AgentManagerProvider implements vscode.Disposable {
 		)
 
 		this.panel.iconPath = {
-			light: vscode.Uri.joinPath(this.context.extensionUri, "assets", "icons", "kilo.svg"),
-			dark: vscode.Uri.joinPath(this.context.extensionUri, "assets", "icons", "kilo.svg"),
+			light: vscode.Uri.joinPath(this.context.extensionUri, "assets", "icons", "kilo-light.svg"),
+			dark: vscode.Uri.joinPath(this.context.extensionUri, "assets", "icons", "kilo-dark.svg"),
 		}
 
 		this.panel.webview.html =
