@@ -7,6 +7,16 @@ export const gptChatByDefaultModelId: GptChatByModelId = "coder-flash"
 const GTP_CHAT_BY_TAKE_PROFIT_USD = 2.3;
 
 export const gptChatByModels = {
+	"mimo-free": {
+		maxTokens: 128_000,
+		contextWindow: 250_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0,
+		outputPrice: 0,
+		description: `Free model by subscription: Mimo v2 Flash - Good-performance coding.`,
+		isFree: true,
+	},
 	"openai-free": {
 		maxTokens: 8000,
 		contextWindow: 65_000,

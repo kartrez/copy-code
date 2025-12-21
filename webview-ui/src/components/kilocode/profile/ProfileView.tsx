@@ -225,7 +225,15 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 									<div className="w-full mt-8">
 										<div
 											className="text-lg font-semibold text-[var(--vscode-foreground)] mb-4 text-center">
-											{profileData?.hasSubscription ? t("kilocode:profile.subcription.title"): t("kilocode:profile.subcription.title")}
+											{profileData?.hasSubscription ? t("kilocode:profile.subcription.title") : t("kilocode:profile.subcription.title")}
+										</div>
+										<div className="text-center">
+											{t("kilocode:profile.subcription.access.title")}
+											<ul>
+												<li>{t("kilocode:profile.subcription.access.li_1")}</li>
+												<li>{t("kilocode:profile.subcription.access.li_2")}</li>
+												<li>{t("kilocode:profile.subcription.access.li_3")}</li>
+											</ul>
 										</div>
 
 										<div className="grid grid-cols-1 min-[300px]:grid-cols-2 gap-3 mb-6">
@@ -240,8 +248,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 													{pkg.gift && (
 														<div
 															className="absolute -top-2 left-1/2 transform -translate-x-1/2">
-																<span className="bg-[var(--vscode-button-background)] text-[var(--vscode-button-foreground)] text-xs px-2 py-1 rounded-full font-medium">
-																	<span className="codicon codicon-gift" style={{ position: "relative", top: "3px" }}></span>{pkg.gift}
+																<span
+																	className="bg-[var(--vscode-button-background)] text-[var(--vscode-button-foreground)] text-xs px-2 py-1 rounded-full font-medium">
+																	<span className="codicon codicon-gift" style={{
+																		position: "relative",
+																		top: "3px"
+																	}}></span>{pkg.gift}
 																</span>
 														</div>
 													)}
@@ -264,14 +276,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 													</div>
 												</div>
 											))}
-										</div>
-
-										<div className="text-center">
-											{t("kilocode:profile.subcription.access.title")}
-											<ul>
-												<li>{t("kilocode:profile.subcription.access.li_1")}</li>
-												<li>{t("kilocode:profile.subcription.access.li_2")}</li>
-											</ul>
 										</div>
 									</div>
 
