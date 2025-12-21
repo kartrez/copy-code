@@ -90,6 +90,8 @@ import {
 	deviceAuthMessageHandler,
 } from "../kilocode/webview/webviewMessageHandlerUtils"
 import { GhostServiceManager } from "../../services/ghost/GhostServiceManager"
+import { handleChatCompletionRequest } from "../../services/ghost/chat-autocomplete/handleChatCompletionRequest"
+import { handleChatCompletionAccepted } from "../../services/ghost/chat-autocomplete/handleChatCompletionAccepted"
 // kilocode_change end
 
 const ALLOWED_VSCODE_SETTINGS = new Set(["terminal.integrated.inheritEnv"])
@@ -861,7 +863,7 @@ export const webviewMessageHandler = async (
 						"io-intelligence": {},
 						requesty: {},
 						unbound: {},
-						glama: {},
+						glama: {}, // kilocode_change
 						ollama: {},
 						lmstudio: {},
 						roo: {},
@@ -910,7 +912,7 @@ export const webviewMessageHandler = async (
 						baseUrl: apiConfiguration.requestyBaseUrl,
 					},
 				},
-				{ key: "glama", options: { provider: "glama" } },
+				{ key: "glama", options: { provider: "glama" } }, // kilocode_change
 				{ key: "unbound", options: { provider: "unbound", apiKey: apiConfiguration.unboundApiKey } },
 				{
 					key: "kilocode",
@@ -1330,6 +1332,10 @@ export const webviewMessageHandler = async (
 		}
 		case "cancelTask":
 			await provider.cancelTask()
+			break
+		case "cancelAutoApproval":
+			// Cancel any pending auto-approval timeout for the current task
+			provider.getCurrentTask()?.cancelAutoApprovalTimeout()
 			break
 		case "killBrowserSession":
 			{
@@ -3636,14 +3642,15 @@ export const webviewMessageHandler = async (
 			break
 		} // kilocode_change start: Chat text area FIM autocomplete
 		case "requestChatCompletion": {
-			const { handleChatCompletionRequest } = await import(
-				"../../services/ghost/chat-autocomplete/handleChatCompletionRequest"
-			)
 			await handleChatCompletionRequest(
 				message as WebviewMessage & { type: "requestChatCompletion" },
 				provider,
 				getCurrentCwd,
 			)
+			break
+		}
+		case "chatCompletionAccepted": {
+			handleChatCompletionAccepted(message as WebviewMessage & { type: "chatCompletionAccepted" })
 			break
 		}
 		// kilocode_change end: Chat text area FIM autocomplete
