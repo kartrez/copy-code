@@ -551,20 +551,16 @@ export class ManagedIndexer implements vscode.Disposable {
 						return
 					}
 
-					const { filePath } = file
+					const { filePath, fileHash } = file
+
+					// Also remove from manifest check set if present
+					manifestFilesToCheck.delete(filePath)
 
 					if (file.type === "file-deleted") {
 						// Track deleted files for removal from backend
 						filesToDelete.push(filePath)
-						// Also remove from manifest check set if present
-						manifestFilesToCheck.delete(filePath)
 						return
 					}
-
-					const { fileHash } = file
-
-					// Remove this file from the manifest check set since we encountered it in git
-					manifestFilesToCheck.delete(filePath)
 
 					// Check if file extension is supported
 					const ext = path.extname(filePath).toLowerCase()
@@ -671,6 +667,10 @@ export class ManagedIndexer implements vscode.Disposable {
 
 			// Delete files that are no longer in git or were explicitly deleted
 			if (filesToDelete.length > 0) {
+				if (!this.isActive) {
+					return
+				}
+
 				console.info(`[ManagedIndexer] Deleting ${filesToDelete.length} files from manifest`)
 				try {
 					await deleteFiles(
