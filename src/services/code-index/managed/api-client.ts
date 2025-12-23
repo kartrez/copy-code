@@ -18,6 +18,8 @@ const baseUrl = 'https://gpt-chat.by'
  * Parameters for upserting a file to the server
  */
 export interface UpsertFileParams {
+	/** The file content as a Buffer */
+	fileBuffer: Buffer
 	/** Project ID */
 	projectId: string
 	/** Relative file path from workspace root */

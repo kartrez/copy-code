@@ -46,7 +46,8 @@ export interface ServerManifest {
 	/** Total number of chunks across all files */
 	totalChunks: number
 	/** When manifest was last updated */
-	lastUpdated: string
+	lastUpdated: string,
+	inProgress: boolean,
 }
 
 /**

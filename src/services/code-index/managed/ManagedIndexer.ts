@@ -551,7 +551,7 @@ export class ManagedIndexer implements vscode.Disposable {
 						return
 					}
 
-					const { filePath, fileHash } = file
+					const { filePath } = file
 
 					// Also remove from manifest check set if present
 					manifestFilesToCheck.delete(filePath)
@@ -561,6 +561,8 @@ export class ManagedIndexer implements vscode.Disposable {
 						filesToDelete.push(filePath)
 						return
 					}
+
+					const { fileHash } = file
 
 					// Check if file extension is supported
 					const ext = path.extname(filePath).toLowerCase()
@@ -702,7 +704,59 @@ export class ManagedIndexer implements vscode.Disposable {
 			}
 
 			// Force a re-fetch of the manifest
-			await this.getManifest(state, event.branch, true)
+			manifest = await this.getManifest(state, event.branch, true)
+			if (manifest.inProgress) {
+				console.info(`[ManagedIndexer] Manifest is in progress for branch ${event.branch}, starting polling...`)
+
+				const POLLING_INTERVAL_MS = 10_000 // 10 seconds
+				let pollCount = 0
+
+				// Poll until inProgress is false or operation is aborted
+				while (manifest.inProgress && !signal.aborted) {
+					try {
+						// Wait for interval using a promise with timeout
+						await new Promise((resolve, reject) => {
+							const timeoutId = setTimeout(resolve, POLLING_INTERVAL_MS)
+							// Cleanup on abort
+							signal.addEventListener("abort", () => {
+								clearTimeout(timeoutId)
+								reject(new Error("AbortError"))
+							})
+						})
+
+						// Re-fetch manifest
+						manifest = await this.getManifest(state, event.branch, true)
+						pollCount++
+
+						console.info(
+							`[ManagedIndexer] Polling manifest (${pollCount}) - inProgress: ${manifest.inProgress}`
+						)
+
+						// Update UI state during polling
+						this.sendStateToWebview()
+					} catch (error) {
+						if (error instanceof Error && error.message === "AbortError") {
+							console.info("[ManagedIndexer] Polling aborted due to signal")
+							throw error
+						}
+
+						console.error(`[ManagedIndexer] Error during manifest polling:`, error)
+						state.error = {
+							type: "manifest",
+							message: `Polling failed: ${error instanceof Error ? error.message : String(error)}`,
+							timestamp: new Date().toISOString(),
+							context: { branch: event.branch, operation: "poll-manifest" },
+							details: error instanceof Error ? error.stack : undefined
+						}
+						this.sendStateToWebview()
+						break
+					}
+				}
+
+				if (!manifest.inProgress) {
+					console.info(`[ManagedIndexer] Manifest is now complete after ${pollCount} polls`)
+				}
+			}
 		} finally {
 			// Always clear indexing state when done
 			state.isIndexing = false
