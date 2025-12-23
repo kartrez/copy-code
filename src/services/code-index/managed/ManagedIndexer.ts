@@ -666,11 +666,7 @@ export class ManagedIndexer implements vscode.Disposable {
 			}
 
 			// Delete files that are no longer in git or were explicitly deleted
-			if (filesToDelete.length > 0) {
-				if (!this.isActive) {
-					return
-				}
-
+			if (filesToDelete.length > 0 && this.isActive) {
 				console.info(`[ManagedIndexer] Deleting ${filesToDelete.length} files from manifest`)
 				try {
 					await deleteFiles(
