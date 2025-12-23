@@ -18,8 +18,6 @@ const baseUrl = 'https://gpt-chat.by'
  * Parameters for upserting a file to the server
  */
 export interface UpsertFileParams {
-	/** The file content as a Buffer */
-	fileBuffer: Buffer
 	/** Project ID */
 	projectId: string
 	/** Relative file path from workspace root */
@@ -248,7 +246,7 @@ export async function deleteFiles(
 	try {
 		const response = await fetchWithRetries({
 			url: `${baseUrl}/api/code-indexing/delete`,
-			method: "PUT",
+			method: "DELETE",
 			headers: {
 				Authorization: `Bearer ${token}`,
 				"Content-Type": "application/json",
