@@ -86,7 +86,7 @@ export const gptChatByModels = {
 		maxTokens: 65_000,
 		contextWindow: 150_000,
 		supportsImages: false,
-		supportsPromptCache: true,
+		supportsPromptCache: false,
 		inputPrice: 0.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 3 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `Google: Gemini 3 Flash Preview.`,
