@@ -4,17 +4,27 @@ export type GptChatByModelId = keyof typeof gptChatByModels
 
 export const gptChatByDefaultModelId: GptChatByModelId = "coder-flash"
 
-const GTP_CHAT_BY_TAKE_PROFIT_USD = 2.3;
+const GTP_CHAT_BY_TAKE_PROFIT_USD = 1.15;
 
 export const gptChatByModels = {
 	"mimo-free": {
 		maxTokens: 65_000,
-		contextWindow: 180_000,
+		contextWindow: 150_000,
 		supportsImages: false,
 		supportsPromptCache: true,
 		inputPrice: 0,
 		outputPrice: 0,
-		description: `Free model by subscription: Mimo v2 Flash - Good-performance coding.`,
+		description: `Mimo v2 Flash.`,
+		isFree: true,
+	},
+	"kat-coder-free": {
+		maxTokens: 32_000,
+		contextWindow: 150_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0,
+		outputPrice: 0,
+		description: `Mimo v2 Flash.`,
 		isFree: true,
 	},
 	"openai-free": {
@@ -24,27 +34,7 @@ export const gptChatByModels = {
 		supportsPromptCache: true,
 		inputPrice: 0,
 		outputPrice: 0,
-		description: `Free model: Open AI GPT-5 nano - Low performance model.`,
-		isFree: true,
-	},
-	"mistral-free": {
-		maxTokens: 8000,
-		contextWindow: 65_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 0,
-		outputPrice: 0,
-		description: `Free model: Mistral Small 3.2 24B - Low performance model.`,
-		isFree: true,
-	},
-	"gemini-free": {
-		maxTokens: 8000,
-		contextWindow: 65_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 0,
-		outputPrice: 0,
-		description: `Free model: Gemini 2.5 Flash Lite - Low performance model.`,
+		description: `Open AI GPT-5 nano`,
 		isFree: true,
 	},
 	"coder": {
@@ -91,6 +81,15 @@ export const gptChatByModels = {
 		inputPrice: 1.2 * GTP_CHAT_BY_TAKE_PROFIT_USD, // Updated Oct 29, 2025
 		outputPrice: 6 * GTP_CHAT_BY_TAKE_PROFIT_USD, // Updated Oct 29, 2025
 		description: `Coder - Super high-performance model.`,
+	},
+	"gemini-3-flash": {
+		maxTokens: 65_000,
+		contextWindow: 150_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 3 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Google: Gemini 3 Flash Preview.`,
 	},
 } as const satisfies Record<string, ModelInfo>
 
