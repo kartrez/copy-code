@@ -36,7 +36,7 @@ export const GhostServiceSettingsView = ({
 		provider,
 		model,
 	} = ghostServiceSettings || {}
-	const keybindings = useKeybindings(["kilo-code.addToContextAndFocus", "kilo-code.ghost.generateSuggestions"])
+	const keybindings = useKeybindings(["copy-code.addToContextAndFocus", "copy-code.ghost.generateSuggestions"])
 	const [snoozeDuration, setSnoozeDuration] = useState<number>(300)
 	const [currentTime, setCurrentTime] = useState<number>(Date.now())
 
@@ -175,7 +175,7 @@ export const GhostServiceSettingsView = ({
 									onChange={onEnableQuickInlineTaskKeybindingChange}>
 									<span className="font-medium">
 										{t("kilocode:ghost.settings.enableQuickInlineTaskKeybinding.label", {
-											keybinding: keybindings["kilo-code.addToContextAndFocus"],
+											keybinding: keybindings["copy-code.addToContextAndFocus"],
 										})}
 									</span>
 								</VSCodeCheckbox>
@@ -187,7 +187,7 @@ export const GhostServiceSettingsView = ({
 												<a
 													href="#"
 													onClick={() =>
-														openGlobalKeybindings("kilo-code.addToContextAndFocus")
+														openGlobalKeybindings("copy-code.addToContextAndFocus")
 													}
 													className="text-[var(--vscode-list-highlightForeground)] hover:underline cursor-pointer"></a>
 											),
@@ -201,20 +201,20 @@ export const GhostServiceSettingsView = ({
 									onChange={onEnableSmartInlineTaskKeybindingChange}>
 									<span className="font-medium">
 										{t("kilocode:ghost.settings.enableSmartInlineTaskKeybinding.label", {
-											keybinding: keybindings["kilo-code.ghost.generateSuggestions"],
+											keybinding: keybindings["copy-code.ghost.generateSuggestions"],
 										})}
 									</span>
 								</VSCodeCheckbox>
 								<div className="text-vscode-descriptionForeground text-sm mt-1">
 									<Trans
 										i18nKey="kilocode:ghost.settings.enableSmartInlineTaskKeybinding.description"
-										values={{ keybinding: keybindings["kilo-code.ghost.generateSuggestions"] }}
+										values={{ keybinding: keybindings["copy-code.ghost.generateSuggestions"] }}
 										components={{
 											DocsLink: (
 												<a
 													href="#"
 													onClick={() =>
-														openGlobalKeybindings("kilo-code.ghost.generateSuggestions")
+														openGlobalKeybindings("copy-code.ghost.generateSuggestions")
 													}
 													className="text-[var(--vscode-list-highlightForeground)] hover:underline cursor-pointer"></a>
 											),
