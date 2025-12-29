@@ -93,9 +93,9 @@ export const registerCommands = (options: RegisterCommandOptions) => {
 const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Record<CommandId, any> => ({
 	activationCompleted: () => {},
 	// kilocode_change start
-	agentManagerOpen: () => {
+/*	agentManagerOpen: () => {
 		agentManagerProvider?.openPanel()
-	},
+	},*/
 	// kilocode_change end
 	cloudButtonClicked: () => {
 		const visibleProvider = getVisibleProviderOrLog(outputChannel)

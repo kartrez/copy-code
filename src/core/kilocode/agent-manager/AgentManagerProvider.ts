@@ -27,7 +27,7 @@ import { normalizeGitUrl } from "./normalizeGitUrl"
 import type { ClineMessage } from "@roo-code/types"
 import type { ProviderSettings } from "@roo-code/types"
 import {
-	captureAgentManagerOpened,
+	// captureAgentManagerOpened,
 	captureAgentManagerSessionStarted,
 	captureAgentManagerSessionCompleted,
 	captureAgentManagerSessionStopped,
@@ -210,7 +210,7 @@ export class AgentManagerProvider implements vscode.Disposable {
 		this.outputChannel.appendLine("Agent Manager panel opened")
 
 		// Track Agent Manager panel opened
-		captureAgentManagerOpened()
+		// captureAgentManagerOpened()
 	}
 
 	/** Rename session key in all session-keyed maps when provisional session is upgraded. */

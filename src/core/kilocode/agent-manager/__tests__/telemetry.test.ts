@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import { TelemetryEventName } from "@roo-code/types"
 import {
-	captureAgentManagerOpened,
+	// captureAgentManagerOpened,
 	captureAgentManagerSessionStarted,
 	captureAgentManagerSessionCompleted,
 	captureAgentManagerSessionStopped,
@@ -32,7 +32,7 @@ describe("Agent Manager Telemetry", () => {
 		vi.resetAllMocks()
 	})
 
-	describe("captureAgentManagerOpened", () => {
+/*	describe("captureAgentManagerOpened", () => {
 		it("does not capture when TelemetryService has no instance", () => {
 			vi.mocked(TelemetryService.hasInstance).mockReturnValue(false)
 
@@ -48,7 +48,7 @@ describe("Agent Manager Telemetry", () => {
 
 			expect(TelemetryService.instance.captureEvent).toHaveBeenCalledWith(TelemetryEventName.AGENT_MANAGER_OPENED)
 		})
-	})
+	})*/
 
 	describe("captureAgentManagerSessionStarted", () => {
 		it("captures event with sessionId and useWorktree", () => {

@@ -42,10 +42,12 @@ export interface AgentManagerLoginIssueProperties {
 	cliPathExtension?: string
 }
 
+/*
 export function captureAgentManagerOpened(): void {
 	if (!TelemetryService.hasInstance()) return
 	TelemetryService.instance.captureEvent(TelemetryEventName.AGENT_MANAGER_OPENED)
 }
+*/
 
 export function captureAgentManagerSessionStarted(sessionId: string, useWorktree: boolean): void {
 	if (!TelemetryService.hasInstance()) return

@@ -9,7 +9,7 @@ const MOCK_CLI_PATH = isWindows ? "C:\\mock\\path\\to\\kilocode" : "/mock/path/t
 // Mock the local telemetry module
 vi.mock("../telemetry", () => ({
 	getPlatformDiagnostics: vi.fn(() => ({ platform: "darwin", shell: "bash" })),
-	captureAgentManagerOpened: vi.fn(),
+	// captureAgentManagerOpened: vi.fn(),
 	captureAgentManagerSessionStarted: vi.fn(),
 	captureAgentManagerSessionCompleted: vi.fn(),
 	captureAgentManagerSessionStopped: vi.fn(),
