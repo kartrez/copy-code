@@ -84,7 +84,7 @@ export const gptChatByModels = {
 	},
 	"gemini-3-flash": {
 		maxTokens: 65_000,
-		contextWindow: 150_000,
+		contextWindow: 1_000_000,
 		supportsImages: false,
 		supportsPromptCache: false,
 		inputPrice: 0.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
