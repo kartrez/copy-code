@@ -154,9 +154,9 @@
 			"expiredAt": "Your subscription is active until",
 			"access": {
 				"title": "Subscription opens access:",
-				"li_1": "Local code indexing, which allows you to save code indexes only on your computer. Is important for private projects!!!",
-				"li_2": "The free Mimo v2 model for high-performance coding is comparable in class to Grok 4.1 and Claude Sonnet 4.5",
-				"li_3": "You can connect various artificial intelligence models from a large list, such as Claude Sonnet 4.5, Gemini 3 Pro, GPT-5.2 and more than 400 others."
+				"li_1": "You are opening access to indexing the project based on RAG",
+				"li_2": "The free Mimo v2/Kat Coder model for high-performance coding is comparable in class to Grok 4.1 and Claude Sonnet 4.5",
+				"li_3": "You can connect from a large list of connections to other providers such as Claude Sonnet 4.5, Gemini 3 Pro, GPT-5.2 and more than 400 others."
 			}
 		},
 		"detailedUsage": "Detailed Usage",

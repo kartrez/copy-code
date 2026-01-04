@@ -55,33 +55,6 @@ export const gptChatByModels = {
 		outputPrice: 1.5 * GTP_CHAT_BY_TAKE_PROFIT_USD, // $0.42 per million tokens - Updated Oct 29, 2025
 		description: `Coder Flash - Fast coding model with 1M context window optimized for speed.`,
 	},
-	"turbo": {
-		maxTokens: 16_000,
-		contextWindow: 1_000_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 0.05 * GTP_CHAT_BY_TAKE_PROFIT_USD, // $0.28 per million tokens (cache miss) - Updated Oct 29, 2025
-		outputPrice: 0.2 * GTP_CHAT_BY_TAKE_PROFIT_USD, // $0.42 per million tokens - Updated Oct 29, 2025
-		description: `Turbo - Fast model with 1M context window for large codebases.`,
-	},
-	"plus": {
-		maxTokens: 32_000,
-		contextWindow: 1_000_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 0.4 * GTP_CHAT_BY_TAKE_PROFIT_USD, // Updated Oct 29, 2025
-		outputPrice: 1.2 * GTP_CHAT_BY_TAKE_PROFIT_USD, // Updated Oct 29, 2025
-		description: `Plus - High-performance coding model with 1M context window for large requests.`,
-	},
-	"max": {
-		maxTokens: 65_000,
-		contextWindow: 262_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 1.2 * GTP_CHAT_BY_TAKE_PROFIT_USD, // Updated Oct 29, 2025
-		outputPrice: 6 * GTP_CHAT_BY_TAKE_PROFIT_USD, // Updated Oct 29, 2025
-		description: `Coder - Super high-performance model.`,
-	},
 	"gemini-3-flash": {
 		maxTokens: 65_000,
 		contextWindow: 1_000_000,
@@ -90,6 +63,87 @@ export const gptChatByModels = {
 		inputPrice: 0.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 3 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `Google: Gemini 3 Flash Preview.`,
+	},
+	"deepseek/deepseek-v3.2": {
+		maxTokens: 65_000,
+		contextWindow: 160_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.28 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 0.45 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `deepseek 3.2`,
+	},
+	"minimax/m2.1": {
+		maxTokens: 120_000,
+		contextWindow: 180_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0.12 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 0.48 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `MiniMax M2.1`,
+	},
+	"minimax/m2": {
+		maxTokens: 65_000,
+		contextWindow: 180_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0.2 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `MiniMax M2`,
+	},
+	"x/grok-code": {
+		maxTokens: 65_000,
+		contextWindow: 1_000_000,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.2 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 1.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Google: Gemini 3 Flash Preview.`,
+	},
+	"anthropic/claude-opus-4.5": {
+		maxTokens: 64_000,
+		contextWindow: 200_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 25 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Google: Gemini 3 Flash Preview.`,
+	},
+	"anthropic/claude-sonnet-4.5": {
+		maxTokens: 64_000,
+		contextWindow: 1_000_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 3 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 15 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Google: Gemini 3 Flash Preview.`,
+	},
+	"openai/gpt-5-codex": {
+		maxTokens: 65_000,
+		contextWindow: 1_000_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 1.25 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 10 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Open AI gpt 5`,
+	},
+	"openai/gpt-5.1": {
+		maxTokens: 65_000,
+		contextWindow: 1_000_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 1.25 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 10 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Open AI gpt 5.1`,
+	},
+	"openai/gpt-5.2": {
+		maxTokens: 128_000,
+		contextWindow: 400_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 1.75 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 14 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `Open AI gpt 5.2`,
 	},
 } as const satisfies Record<string, ModelInfo>
 

@@ -149,6 +149,10 @@ export const IndexingStatusBadge: React.FC<IndexingStatusBadgeProps> = ({ classN
 	// Use ManagedCodeIndexPopover when organization is available, otherwise use regular CodeIndexPopover
 	const PopoverComponent = isEnableLocalIndexing ? CodeIndexPopover: ManagedCodeIndexPopover // kilocode_change
 
+	return(
+		<></>
+	)
+
 	return (
 		<PopoverComponent indexingStatus={indexingStatus}>
 			<StandardTooltip content={tooltipText}>
