@@ -2,8 +2,8 @@
 	"name": "copy-code",
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
-	"publisher": "copycode",
-	"version": "0.0.1",
+	"publisher": "kilocode",
+	"version": "4.140.3",
 	"icon": "assets/icons/logo-outline-black.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
