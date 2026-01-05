@@ -2571,7 +2571,7 @@ ${prompt}
 			), // kilocode_change
 			lastShownAnnouncementId: stateValues.lastShownAnnouncementId,
 			customInstructions: stateValues.customInstructions,
-			apiModelId: stateValues.apiModelId ?? "coder-flash",
+			apiModelId: stateValues.apiModelId ?? "openai-free",
 			alwaysAllowReadOnly: stateValues.alwaysAllowReadOnly ?? true,
 			alwaysAllowReadOnlyOutsideWorkspace: stateValues.alwaysAllowReadOnlyOutsideWorkspace ?? false,
 			alwaysAllowWrite: stateValues.alwaysAllowWrite ?? true,

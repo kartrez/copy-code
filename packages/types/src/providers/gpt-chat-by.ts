@@ -2,7 +2,7 @@ import type { ModelInfo } from "../model.js"
 
 export type GptChatByModelId = keyof typeof gptChatByModels
 
-export const gptChatByDefaultModelId: GptChatByModelId = "coder-flash"
+export const gptChatByDefaultModelId: GptChatByModelId = "openai-free"
 
 const GTP_CHAT_BY_TAKE_PROFIT_USD = 1.15;
 
@@ -91,15 +91,6 @@ export const gptChatByModels = {
 		outputPrice: GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `MiniMax M2`,
 	},
-	"x/grok-code": {
-		maxTokens: 65_000,
-		contextWindow: 1_000_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.2 * GTP_CHAT_BY_TAKE_PROFIT_USD,
-		outputPrice: 1.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
-		description: `Google: Gemini 3 Flash Preview.`,
-	},
 	"anthropic/claude-opus-4.5": {
 		maxTokens: 64_000,
 		contextWindow: 200_000,
@@ -107,7 +98,7 @@ export const gptChatByModels = {
 		supportsPromptCache: true,
 		inputPrice: 5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 25 * GTP_CHAT_BY_TAKE_PROFIT_USD,
-		description: `Google: Gemini 3 Flash Preview.`,
+		description: `anthropic claude opus 4.5.`,
 	},
 	"anthropic/claude-sonnet-4.5": {
 		maxTokens: 64_000,
@@ -116,9 +107,18 @@ export const gptChatByModels = {
 		supportsPromptCache: true,
 		inputPrice: 3 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 15 * GTP_CHAT_BY_TAKE_PROFIT_USD,
-		description: `Google: Gemini 3 Flash Preview.`,
+		description: `anthropic claude sonnet 4.5.`,
 	},
-	"openai/gpt-5-codex": {
+	"grok/code": {
+		maxTokens: 65_000,
+		contextWindow: 1_000_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0.2 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		outputPrice: 1.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
+		description: `grok code.`,
+	},
+	"openai/codex": {
 		maxTokens: 65_000,
 		contextWindow: 1_000_000,
 		supportsImages: false,
