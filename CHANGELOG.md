@@ -1,3 +1,4 @@
 # copy-coder
 
-## 0.0.1
+## Releases LOG
+https://github.com/kartrez/copy-code/releases
