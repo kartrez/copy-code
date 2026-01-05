@@ -161,7 +161,7 @@ class RooToolWindowFactory : ToolWindowFactory {
 
             return buildString {
                 append("<html><body style='width: 400px; padding: 8px;'>")
-                append("<h3>Copy Code Initialization</h3>")
+                append("<h3>Copy Coder Initialization</h3>")
                 append("<p><b>Status:</b> $initStateText</p>")
                 append("<h3>System Information</h3>")
                 append("<table>")

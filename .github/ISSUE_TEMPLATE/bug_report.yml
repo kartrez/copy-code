@@ -16,7 +16,7 @@ body:
           options:
               - VSCode Extension
               - JetBrains Plugin
-              - Copy Code CLI
+              - Copy Coder CLI
           default: 0
       validations:
           required: true

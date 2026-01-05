@@ -122,7 +122,7 @@ class WecoderPlugin : StartupActivity.DumbAware {
         val osArch = System.getProperty("os.arch")
 
         LOG.info(
-            "Initializing Copy Code plugin for project: ${project.name}, " +
+            "Initializing Copy Coder plugin for project: ${project.name}, " +
                 "OS: $osName $osVersion ($osArch), " +
                 "IDE: ${appInfo.fullApplicationName} (build ${appInfo.build}), " +
                 "Plugin version: $pluginVersion, " +
@@ -142,15 +142,15 @@ class WecoderPlugin : StartupActivity.DumbAware {
             Disposer.register(
                 project,
                 Disposable {
-                    LOG.info("Disposing Copy Code plugin for project: ${project.name}")
+                    LOG.info("Disposing Copy Coder plugin for project: ${project.name}")
                     pluginService.dispose()
                     // SystemObjectProvider is now project-scoped and will be disposed automatically
                 },
             )
 
-            LOG.info("Copy Code plugin initialized successfully for project: ${project.name}")
+            LOG.info("Copy Coder plugin initialized successfully for project: ${project.name}")
         } catch (e: Exception) {
-            LOG.error("Failed to initialize Copy Code plugin", e)
+            LOG.error("Failed to initialize Copy Coder plugin", e)
         }
     }
 }

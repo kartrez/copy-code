@@ -28,7 +28,7 @@ export function getKiloBaseUriFromToken(kilocodeToken?: string): string {
 			// Note: this is UNTRUSTED, so we need to make sure we're OK with this being manipulated by an attacker
 			if (payload.env === "development") return "http://localhost:3000"
 		} catch (_error) {
-			console.warn("Failed to get base URL from Copy Code token")
+			console.warn("Failed to get base URL from Copy Coder token")
 		}
 	}
 	return "https://gpt-chat.by"

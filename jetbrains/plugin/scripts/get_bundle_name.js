@@ -23,8 +23,8 @@ function getBundleName() {
 
 		const version = gradleVersionMatch[1].trim()
 
-		// Generate the bundle name following the pattern: Copy Code-{version}.zip
-		const bundleName = `Copy Code-${version}.zip`
+		// Generate the bundle name following the pattern: Copy Coder-{version}.zip
+		const bundleName = `Copy Coder-${version}.zip`
 
 		// Output just the filename for CI usage
 		process.stdout.write(bundleName)

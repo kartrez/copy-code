@@ -10,7 +10,7 @@ vi.mock("../../../i18n/TranslationContext", () => ({
 		t: (key: string) => {
 			// Return fixed English strings for tests
 			const translations: { [key: string]: string } = {
-				"chat:codeblock.tooltips.copy_code": "Copy code",
+				"chat:codeblock.tooltips.copy_code": "Copy Coder",
 				"chat:codeblock.tooltips.expand": "Expand code block",
 				"chat:codeblock.tooltips.collapse": "Collapse code block",
 			}

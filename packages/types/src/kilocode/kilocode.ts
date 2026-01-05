@@ -70,7 +70,7 @@ export function getKiloBaseUriFromToken(kilocodeToken?: string) {
 				return "http://localhost:3000"
 			}
 		} catch (_error) {
-			console.warn("Failed to get base URL from Copy Code token")
+			console.warn("Failed to get base URL from Copy Coder token")
 		}
 	}
 	return "https://api.kilo.ai"

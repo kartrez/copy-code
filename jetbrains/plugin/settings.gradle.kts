@@ -2,4 +2,4 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-rootProject.name = "Copy Code"
+rootProject.name = "Copy Coder"

@@ -279,7 +279,7 @@ function printSystemInfo(info: SystemInfo): void {
 }
 
 export const debugOS = async () => {
-	console.log("Copy Code - OS Debug Tool")
+	console.log("Copy Coder - OS Debug Tool")
 
 	try {
 		const systemInfo = gatherSystemInfo()

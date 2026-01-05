@@ -1,7 +1,7 @@
 {
 	"welcome": {
-		"greeting": "Welcome to Copy Code!",
-		"introText1": "Copy Code is a free, open source AI coding agent.",
+		"greeting": "Welcome to Copy Coder!",
+		"introText1": "Copy Coder is a free, open source AI coding agent.",
 		"introText2": "It works with the latest AI models like Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5, and 450+ more.",
 		"introText3": "Create a free account and get access to free models of OpenAI GPT-5 Nano, Gemeni 2.5 Flash, Mistral 3.2 Small. You can also get a trial subscription that allows you to use a wide range of third-party APIs and local code indexing.",
 		"ctaButton": "Get Started",
@@ -11,8 +11,8 @@
 	},
 	"lowCreditWarning": {
 		"addCredit": "Add Credit",
-		"lowBalance": "Your Copy Code balance is low",
-		"newOrganization": "Using Copy Code for work?"
+		"lowBalance": "Your Copy Coder balance is low",
+		"newOrganization": "Using Copy Coder for work?"
 	},
 	"memoryWarning": {
 		"message": "Memory usage is at {{percentage}}%. Please restart your IDE to prevent crashes."
@@ -49,10 +49,10 @@
 			"mcp": "MCP Servers"
 		},
 		"provider": {
-			"account": "Copy Code Account",
-			"apiKey": "Copy Code API Key",
-			"login": "Log in at Copy Code",
-			"logout": "Log out from Copy Code",
+			"account": "Copy Coder Account",
+			"apiKey": "Copy Coder API Key",
+			"login": "Log in at Copy Coder",
+			"logout": "Log out from Copy Coder",
 			"providerRouting": {
 				"title": "Provider Routing",
 				"managedByOrganization": "Manage Organization-level Provider Routing",
@@ -71,12 +71,12 @@
 					"zdr": "Zero data retention"
 				}
 			},
-			"automaticFetch": "The latest models are automatically available in Copy Code. If you're unsure which model to choose, Copy Code works best with the recommended models listed at the top in <strong>bold face</strong>."
+			"automaticFetch": "The latest models are automatically available in Copy Coder. If you're unsure which model to choose, Copy Coder works best with the recommended models listed at the top in <strong>bold face</strong>."
 		},
 		"modelInfo": {
 			"contextWindow": "Context window",
 			"providerBreakdown": "Provider Price and Capability Breakdown",
-			"averageKiloCodeCost": "This is the average actual spent for Copy Code using this model over the last week. It may be lower than the listed price due to prompt cache utilization.",
+			"averageKiloCodeCost": "This is the average actual spent for Copy Coder using this model over the last week. It may be lower than the listed price due to prompt cache utilization.",
 			"table": {
 				"provider": "Provider",
 				"context": "The endpoint can process this number of tokens (input + output).",
@@ -89,15 +89,15 @@
 		"contextManagement": {
 			"allowVeryLargeReads": {
 				"label": "Allow very large file reads",
-				"description": "When enabled, Copy Code will perform very large file or MCP output reads even if there is a high chance of overflowing the context window (content size >80% of context window)."
+				"description": "When enabled, Copy Coder will perform very large file or MCP output reads even if there is a high chance of overflowing the context window (content size >80% of context window)."
 			}
 		},
 		"systemNotifications": {
 			"label": "Enable System Notifications",
-			"description": "When enabled, Copy Code will send system notifications for important events like task completion or errors.",
+			"description": "When enabled, Copy Coder will send system notifications for important events like task completion or errors.",
 			"testButton": "Test Notification",
-			"testTitle": "Copy Code",
-			"testMessage": "This is a test notification from Copy Code."
+			"testTitle": "Copy Coder",
+			"testMessage": "This is a test notification from Copy Coder."
 		},
 		"terminal": {
 			"commandGenerator": {
@@ -118,7 +118,7 @@
 	},
 	"chat": {
 		"condense": {
-			"wantsToCondense": "Copy Code wants to condense your conversation",
+			"wantsToCondense": "Copy Coder wants to condense your conversation",
 			"condenseConversation": "Condense Conversation"
 		},
 		"seeNewChanges": "See New Changes",
@@ -164,15 +164,15 @@
 	},
 	"docs": "Docs",
 	"rules": {
-		"tooltip": "Manage Copy Code Rules & Workflows",
-		"ariaLabel": "Copy Code Rules",
+		"tooltip": "Manage Copy Coder Rules & Workflows",
+		"ariaLabel": "Copy Coder Rules",
 		"tabs": {
 			"rules": "Rules",
 			"workflows": "Workflows"
 		},
 		"description": {
-			"rules": "Rules allow you to provide Copy Code with instructions it should follow in all modes and for all prompts. They are a persistent way to include context and preferences for all conversations in your workspace or globally.",
-			"workflows": "Workflows are a prepared template for a conversation. Workflows can allow you to define prompts you use frequently, and can include a series of steps to guide Copy Code through repetitive tasks, such as deploying a service or submitting a PR. To invoke a workflow, type",
+			"rules": "Rules allow you to provide Copy Coder with instructions it should follow in all modes and for all prompts. They are a persistent way to include context and preferences for all conversations in your workspace or globally.",
+			"workflows": "Workflows are a prepared template for a conversation. Workflows can allow you to define prompts you use frequently, and can include a series of steps to guide Copy Coder through repetitive tasks, such as deploying a service or submitting a PR. To invoke a workflow, type",
 			"workflowsInChat": "in the chat."
 		},
 		"sections": {
@@ -238,7 +238,7 @@
 	"toolCallStyle": {
 		"title": "Tool Call Style",
 		"description": "Choose how tool calls are formatted in the system prompt. JSON is currently experimental and mostly intended for users interested in contributing to its development.",
-		"automatic": "Let Copy Code decide",
+		"automatic": "Let Copy Coder decide",
 		"xml": "XML",
 		"json": "JSON"
 	},
@@ -250,11 +250,11 @@
 			"provider": "Provider",
 			"enableAutoTrigger": {
 				"label": "Pause to Complete",
-				"description": "When enabled, Copy Code will automatically trigger Autocomplete when you pause typing. This can be useful for quick fixes and suggestions."
+				"description": "When enabled, Copy Coder will automatically trigger Autocomplete when you pause typing. This can be useful for quick fixes and suggestions."
 			},
 			"autoTriggerDelay": {
 				"label": "Auto Trigger Delay",
-				"description": "The delay in seconds before Copy Code triggers Autocomplete after you pause typing. A shorter delay means quicker suggestions, but may be more resource-intensive."
+				"description": "The delay in seconds before Copy Coder triggers Autocomplete after you pause typing. A shorter delay means quicker suggestions, but may be more resource-intensive."
 			},
 			"enableQuickInlineTaskKeybinding": {
 				"label": "Quick Task ({{keybinding}})",
@@ -262,11 +262,11 @@
 			},
 			"enableSmartInlineTaskKeybinding": {
 				"label": "Manual Autocomplete ({{keybinding}})",
-				"description": "Need a quick fix, completion, or refactor? Copy Code will use the surrounding context to offer immediate improvements, keeping you in the flow. <DocsLink>Edit shortcut</DocsLink>"
+				"description": "Need a quick fix, completion, or refactor? Copy Coder will use the surrounding context to offer immediate improvements, keeping you in the flow. <DocsLink>Edit shortcut</DocsLink>"
 			},
 			"enableChatAutocomplete": {
 				"label": "Chat Input Autocomplete",
-				"description": "When enabled, Copy Code will suggest completions as you type in the chat input. Press Tab to accept suggestions."
+				"description": "When enabled, Copy Coder will suggest completions as you type in the chat input. Press Tab to accept suggestions."
 			},
 			"snooze": {
 				"label": "Snooze Autocomplete",
@@ -321,7 +321,7 @@
 		"shareModesNewBanner": "New: Share modes by creating an organization"
 	},
 	"deviceAuth": {
-		"title": "Sign in to Copy Code",
+		"title": "Sign in to Copy Coder",
 		"step1": "Open the following URL on your browser",
 		"step2": "Verify the code and authorize this device on your browser",
 		"scanQr": "Or scan this QR code with your phone",

@@ -46,20 +46,20 @@
 		}
 	},
 	"commitMessage": {
-		"activated": "Генератор сообщений коммитов Copy Code активирован",
+		"activated": "Генератор сообщений коммитов Copy Coder активирован",
 		"gitNotFound": "⚠️ Репозиторий Git не найден или git недоступен",
 		"gitInitError": "⚠️ Ошибка инициализации Git: {{error}}",
-		"generating": "Copy Code: Генерация сообщения коммита...",
-		"noChanges": "Copy Code: Изменения для анализа не найдены",
-		"generated": "Copy Code: Сообщение коммита сгенерировано!",
-		"generationFailed": "Copy Code: Ошибка генерации сообщения коммита: {{errorMessage}}",
-		"generatingFromUnstaged": "Copy Code: Генерация сообщения с использованием незафиксированных изменений",
-		"activationFailed": "Copy Code: Не удалось активировать генератор сообщений: {{error}}",
-		"providerRegistered": "Copy Code: Поставщик сообщений коммитов зарегистрирован",
+		"generating": "Copy Coder: Генерация сообщения коммита...",
+		"noChanges": "Copy Coder: Изменения для анализа не найдены",
+		"generated": "Copy Coder: Сообщение коммита сгенерировано!",
+		"generationFailed": "Copy Coder: Ошибка генерации сообщения коммита: {{errorMessage}}",
+		"generatingFromUnstaged": "Copy Coder: Генерация сообщения с использованием незафиксированных изменений",
+		"activationFailed": "Copy Coder: Не удалось активировать генератор сообщений: {{error}}",
+		"providerRegistered": "Copy Coder: Поставщик сообщений коммитов зарегистрирован",
 		"errors": {
 			"noProject": "Нет доступных проектов",
 			"invalidResponse": "Получен неверный формат ответа от расширения",
-			"connectionFailed": "Не удалось подключиться к расширению Copy Code",
+			"connectionFailed": "Не удалось подключиться к расширению Copy Coder",
 			"timeout": "Время запроса истекло после 30 секунд",
 			"missingMessage": "Не получено сообщение о коммите от расширения",
 			"noChanges": "Изменений для фиксации не найдено",
@@ -82,7 +82,7 @@
 		},
 		"progress": {
 			"title": "Генерация Сообщения Коммита",
-			"connecting": "Подключение к Copy Code...",
+			"connecting": "Подключение к Copy Coder...",
 			"analyzing": "Анализируем изменения...",
 			"generating": "Генерация сообщения коммита..."
 		},
@@ -97,8 +97,8 @@
 			"snoozed": "приостановлено",
 			"warning": "$(warning) Autocomplete",
 			"tooltip": {
-				"basic": "Copy Code Autocomplete",
-				"disabled": "Copy Code Autocomplete (отключено)",
+				"basic": "Copy Coder Autocomplete",
+				"disabled": "Copy Coder Autocomplete (отключено)",
 				"tokenError": "Для использования Autocomplete необходимо установить действительный токен",
 				"sessionTotal": "Общая стоимость сессии:",
 				"provider": "Провайдер:",
@@ -113,54 +113,54 @@
 				"lessThanCent": "<$0.01"
 			}
 		},
-		"toggleMessage": "Copy Code Autocomplete {{status}}",
+		"toggleMessage": "Copy Coder Autocomplete {{status}}",
 		"progress": {
-			"title": "Copy Code",
+			"title": "Copy Coder",
 			"analyzing": "Анализирую твой код...",
 			"generating": "Генерирую предлагаемые правки...",
 			"processing": "Обрабатываю предлагаемые правки...",
 			"showing": "Показываю предлагаемые правки..."
 		},
 		"input": {
-			"title": "Copy Code: Быстрая Задача",
+			"title": "Copy Coder: Быстрая Задача",
 			"placeholder": "напр., 'рефактори эту функцию для большей эффективности'"
 		},
 		"commands": {
-			"generateSuggestions": "Copy Code: Генерировать Предлагаемые Правки",
+			"generateSuggestions": "Copy Coder: Генерировать Предлагаемые Правки",
 			"displaySuggestions": "Показать Предлагаемые Правки",
 			"cancelSuggestions": "Отменить Предлагаемые Правки",
 			"applyCurrentSuggestion": "Применить Текущую Предлагаемую Правку",
 			"applyAllSuggestions": "Применить Все Предлагаемые Правки",
-			"category": "Copy Code"
+			"category": "Copy Coder"
 		},
 		"codeAction": {
-			"title": "Copy Code: Предлагаемые Правки"
+			"title": "Copy Coder: Предлагаемые Правки"
 		},
 		"chatParticipant": {
-			"fullName": "Copy Code Agent",
+			"fullName": "Copy Coder Agent",
 			"name": "Agent",
 			"description": "Я могу помочь тебе с быстрыми задачами и предлагаемыми правками."
 		},
 		"incompatibilityExtensionPopup": {
-			"message": "Copy Code Autocomplete блокируется конфликтом с GitHub Copilot. Чтобы исправить это, ты должен отключить встроенные предложения Copilot.",
+			"message": "Copy Coder Autocomplete блокируется конфликтом с GitHub Copilot. Чтобы исправить это, ты должен отключить встроенные предложения Copilot.",
 			"disableCopilot": "Отключить Copilot",
 			"disableInlineAssist": "Отключить Autocomplete"
 		}
 	},
 	"terminalCommandGenerator": {
-		"inputPrompt": "Copy Code: Опишите команду, которую вы хотите сгенерировать",
+		"inputPrompt": "Copy Coder: Опишите команду, которую вы хотите сгенерировать",
 		"inputPlaceholder": "например, завершить процесс, работающий на порту 3001, найти большие файлы и т.д.",
-		"generatingProgress": "Copy Code: Создание команды терминала...",
-		"generationFailed": "Copy Code: Не удалось сгенерировать команду: {{error}}",
-		"commandGenerated": "Copy Code: Сгенерированная команда: {{command}}",
-		"noActiveTerminal": "Copy Code: Активный терминал не найден. Пожалуйста, сначала откройте терминал.",
+		"generatingProgress": "Copy Coder: Создание команды терминала...",
+		"generationFailed": "Copy Coder: Не удалось сгенерировать команду: {{error}}",
+		"commandGenerated": "Copy Coder: Сгенерированная команда: {{command}}",
+		"noActiveTerminal": "Copy Coder: Активный терминал не найден. Пожалуйста, сначала откройте терминал.",
 		"warningDialog": {
 			"title": "Предупреждение о безопасности терминала",
 			"okButton": "Я понимаю",
 			"message": "Перепроверяйте все сгенерированные команды перед их выполнением. Действия в терминале не всегда можно отменить — запуск непроверенных команд может привести к необратимой потере данных или повреждению системы. Полностью просмотрите и осознайте команду перед тем, как продолжить!",
 			"cancelButton": "Отменить"
 		},
-		"tipMessage": "Copy Code: Нажмите {{shortcut}}, чтобы сгенерировать команды терминала"
+		"tipMessage": "Copy Coder: Нажмите {{shortcut}}, чтобы сгенерировать команды терминала"
 	},
 	"checkpoints": {
 		"nestedGitRepos": "Контрольные точки недоступны, поскольку обнаружен вложенный Git-репозиторий по адресу: {{path}}. Пожалуйста, удалите или переместите вложенные Git-репозитории для использования функции контрольных точек или отключите контрольные точки в настройках, чтобы скрыть это предупреждение.",
@@ -175,8 +175,8 @@
 	},
 	"agentManager": {
 		"errors": {
-			"cliOutdated": "Твоя версия Copy Code CLI устарела и не поддерживает Agent Manager. Обнови до последней версии.",
-			"cliNotFound": "Copy Code CLI не найден. Установи его для использования Agent Manager.",
+			"cliOutdated": "Твоя версия Copy Coder CLI устарела и не поддерживает Agent Manager. Обнови до последней версии.",
+			"cliNotFound": "Copy Coder CLI не найден. Установи его для использования Agent Manager.",
 			"cliMisconfigured": "Code CLI не настроен. Выполни 'kilocode auth' для входа или 'kilocode config' для настройки.",
 			"sessionFailed": "Не удалось запустить сессию агента",
 			"sessionFailedWithMessage": "Не удалось запустить сессию агента: {{message}}"
@@ -194,7 +194,7 @@
 			"installLocal": "Установить Локально"
 		},
 		"terminal": {
-			"installMessage": "Выполнение npm install для установки Copy Copy Code CLI. После завершения можешь закрыть этот терминал и попробовать запустить Agent Manager снова.",
+			"installMessage": "Выполнение npm install для установки Copy Copy Coder CLI. После завершения можешь закрыть этот терминал и попробовать запустить Agent Manager снова.",
 			"authReminder": "If this is your first install, run `kilocode auth` to sign in before starting the Agent Manager."
 		}
 	}

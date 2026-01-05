@@ -345,11 +345,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// kilocode_change start
 	if (!context.globalState.get("firstInstallCompleted")) {
-		outputChannel.appendLine("First installation detected, opening Copy Code sidebar!")
+		outputChannel.appendLine("First installation detected, opening Copy Coder sidebar!")
 		try {
 			await vscode.commands.executeCommand("copy-code.SidebarProvider.focus")
 
-			outputChannel.appendLine("Opening Copy Code walkthrough")
+			outputChannel.appendLine("Opening Copy Coder walkthrough")
 
 			// this can crash, see:
 			// https://discord.com/channels/1349288496988160052/1395865796026040470
@@ -461,7 +461,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		}),
 	)
 
-	// kilocode_change start - Copy Code specific registrations
+	// kilocode_change start - Copy Coder specific registrations
 	const { kiloCodeWrapped, kiloCodeWrapperCode } = getKiloCodeWrapperProperties()
 	if (kiloCodeWrapped) {
 		// Only foward logs in Jetbrains
@@ -472,12 +472,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		registerGhostProvider(context, provider)
 	}
 	registerCommitMessageProvider(context, outputChannel) // kilocode_change
-	// kilocode_change end - Copy Code specific registrations
+	// kilocode_change end - Copy Coder specific registrations
 
 	registerCodeActions(context)
 	registerTerminalActions(context)
 
-	// Allows other extensions to activate once Copy Code is ready.
+	// Allows other extensions to activate once Copy Coder is ready.
 	vscode.commands.executeCommand(`${Package.name}.activationCompleted`)
 
 	// Implements the `RooCodeAPI` interface.

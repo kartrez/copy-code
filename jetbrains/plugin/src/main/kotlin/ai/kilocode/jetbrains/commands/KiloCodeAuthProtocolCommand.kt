@@ -49,7 +49,7 @@ class KiloCodeAuthProtocolCommand : JBProtocolCommand("ai.kilocode.jetbrains.aut
      * @return null on success, error message on failure
      */
     override suspend fun execute(target: String?, parameters: Map<String, String>, fragment: String?): String? {
-        logger.info("Handling Copy Code auth protocol command: target=$target, parameters=$parameters")
+        logger.info("Handling Copy Coder auth protocol command: target=$target, parameters=$parameters")
 
         return try {
             // Extract token from parameters
@@ -67,7 +67,7 @@ class KiloCodeAuthProtocolCommand : JBProtocolCommand("ai.kilocode.jetbrains.aut
 
             null // Success
         } catch (e: Exception) {
-            val errorMsg = "Error handling Copy Code auth protocol command: ${e.message}"
+            val errorMsg = "Error handling Copy Coder auth protocol command: ${e.message}"
             logger.error(errorMsg, e)
             errorMsg
         }

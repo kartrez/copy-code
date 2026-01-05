@@ -51,18 +51,18 @@
 		}
 	},
 	"commitMessage": {
-		"activated": "Copy Code commit message generator activated",
+		"activated": "Copy Coder commit message generator activated",
 		"gitNotFound": "⚠️ Git repository not found or git not available",
 		"gitInitError": "⚠️ Git initialization error: {{error}}",
-		"generating": "Copy Code: Generating commit message...",
-		"noChanges": "Copy Code: No changes found to analyze",
-		"generated": "Copy Code: Commit message generated!",
-		"generationFailed": "Copy Code: Failed to generate commit message: {{errorMessage}}",
-		"generatingFromUnstaged": "Copy Code: Generating message using unstaged changes",
-		"activationFailed": "Copy Code: Failed to activate message generator: {{error}}",
-		"providerRegistered": "Copy Code: Commit message provider registered",
+		"generating": "Copy Coder: Generating commit message...",
+		"noChanges": "Copy Coder: No changes found to analyze",
+		"generated": "Copy Coder: Commit message generated!",
+		"generationFailed": "Copy Coder: Failed to generate commit message: {{errorMessage}}",
+		"generatingFromUnstaged": "Copy Coder: Generating message using unstaged changes",
+		"activationFailed": "Copy Coder: Failed to activate message generator: {{error}}",
+		"providerRegistered": "Copy Coder: Commit message provider registered",
 		"errors": {
-			"connectionFailed": "Failed to connect to Copy Code extension",
+			"connectionFailed": "Failed to connect to Copy Coder extension",
 			"timeout": "Request timed out after 30 seconds",
 			"invalidResponse": "Invalid response format received from extension",
 			"missingMessage": "No commit message received from extension",
@@ -88,7 +88,7 @@
 		"progress": {
 			"title": "Generating Commit Message",
 			"analyzing": "Analyzing changes...",
-			"connecting": "Connecting to Copy Code...",
+			"connecting": "Connecting to Copy Coder...",
 			"generating": "Generating commit message..."
 		},
 		"ui": {
@@ -102,8 +102,8 @@
 			"snoozed": "snoozed",
 			"warning": "$(warning) Autocomplete",
 			"tooltip": {
-				"basic": "Copy Code Autocomplete",
-				"disabled": "Copy Code Autocomplete (disabled)",
+				"basic": "Copy Coder Autocomplete",
+				"disabled": "Copy Coder Autocomplete (disabled)",
 				"tokenError": "A valid token must be set to use Autocomplete",
 				"sessionTotal": "Session total cost:",
 				"provider": "Provider:",
@@ -118,36 +118,36 @@
 				"lessThanCent": "<$0.01"
 			}
 		},
-		"toggleMessage": "Copy Code Autocomplete {{status}}",
+		"toggleMessage": "Copy Coder Autocomplete {{status}}",
 		"progress": {
-			"title": "Copy Code",
+			"title": "Copy Coder",
 			"analyzing": "Analyzing your code...",
 			"generating": "Generating suggested edits...",
 			"processing": "Processing suggested edits...",
 			"showing": "Displaying suggested edits..."
 		},
 		"input": {
-			"title": "Copy Code: Quick Task",
+			"title": "Copy Coder: Quick Task",
 			"placeholder": "e.g., 'refactor this function to be more efficient'"
 		},
 		"commands": {
-			"generateSuggestions": "Copy Code: Generate Suggested Edits",
+			"generateSuggestions": "Copy Coder: Generate Suggested Edits",
 			"displaySuggestions": "Display Suggested Edits",
 			"cancelSuggestions": "Cancel Suggested Edits",
 			"applyCurrentSuggestion": "Apply Current Suggested Edit",
 			"applyAllSuggestions": "Apply All Suggested Edits",
-			"category": "Copy Code"
+			"category": "Copy Coder"
 		},
 		"codeAction": {
-			"title": "Copy Code: Suggested Edits"
+			"title": "Copy Coder: Suggested Edits"
 		},
 		"chatParticipant": {
-			"fullName": "Copy Code Agent",
+			"fullName": "Copy Coder Agent",
 			"name": "Agent",
 			"description": "I can help you with quick tasks and suggested edits."
 		},
 		"incompatibilityExtensionPopup": {
-			"message": "The Copy Code Autocomplete is being blocked by a conflict with GitHub Copilot. To fix this, you must disable Copilot's inline suggestions.",
+			"message": "The Copy Coder Autocomplete is being blocked by a conflict with GitHub Copilot. To fix this, you must disable Copilot's inline suggestions.",
 			"disableCopilot": "Disable Copilot",
 			"disableInlineAssist": "Disable Autocomplete"
 		}
@@ -160,8 +160,8 @@
 	},
 	"agentManager": {
 		"errors": {
-			"cliOutdated": "Your Copy Code CLI version is outdated and doesn't support the Agent Manager. Please update to the latest version.",
-			"cliNotFound": "Copy Code CLI not found. Please install it to use the Agent Manager.",
+			"cliOutdated": "Your Copy Coder CLI version is outdated and doesn't support the Agent Manager. Please update to the latest version.",
+			"cliNotFound": "Copy Coder CLI not found. Please install it to use the Agent Manager.",
 			"cliMisconfigured": "Code CLI is not configured. Please run 'kilocode auth' to sign in or 'kilocode config' to configure.",
 			"sessionFailed": "Failed to start agent session",
 			"sessionFailedWithMessage": "Failed to start agent session: {{message}}"
@@ -175,22 +175,22 @@
 			"updateLocal": "Update Local",
 			"installGlobal": "Install Global",
 			"installLocal": "Install Local",
-			"loginCli": "Run Copy Code auth",
-			"configureCli": "Run Copy Code config"
+			"loginCli": "Run Copy Coder auth",
+			"configureCli": "Run Copy Coder config"
 		},
 		"terminal": {
-			"installMessage": "Running npm install to install the Copy Copy Code CLI. Once complete, you can close this terminal and try starting the Agent Manager again.",
+			"installMessage": "Running npm install to install the Copy Copy Coder CLI. Once complete, you can close this terminal and try starting the Agent Manager again.",
 			"authReminder": "If this is your first install, run `kilocode auth` to sign in before starting the Agent Manager."
 		}
 	},
 	"terminalCommandGenerator": {
-		"tipMessage": "Copy Code: Press {{shortcut}} to generate terminal commands",
-		"inputPrompt": "Copy Code: Describe the command you want to generate",
+		"tipMessage": "Copy Coder: Press {{shortcut}} to generate terminal commands",
+		"inputPrompt": "Copy Coder: Describe the command you want to generate",
 		"inputPlaceholder": "e.g., kill the process running on port 3001, find large files, etc",
-		"noActiveTerminal": "Copy Code: No active terminal found. Please open a terminal first.",
-		"generatingProgress": "Copy Code: Generating terminal command...",
-		"commandGenerated": "Copy Code: Generated command: {{command}}",
-		"generationFailed": "Copy Code: Failed to generate command: {{error}}",
+		"noActiveTerminal": "Copy Coder: No active terminal found. Please open a terminal first.",
+		"generatingProgress": "Copy Coder: Generating terminal command...",
+		"commandGenerated": "Copy Coder: Generated command: {{command}}",
+		"generationFailed": "Copy Coder: Failed to generate command: {{error}}",
 		"warningDialog": {
 			"title": "Terminal Safety Warning",
 			"message": "Double-check all generated commands before running them. Terminal actions cannot always be undone— running unverified commands can result in irreversible data loss or system damage. Review and understand the command completely before proceeding!",

@@ -11,7 +11,7 @@ type SettingsFooterProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SettingsFooter = ({ version, className, ...props }: SettingsFooterProps) => (
 	<div className={cn("text-vscode-descriptionForeground p-5", className)} {...props}>
-		<p className="italic">Copy Code v{version}</p>
+		<p className="italic">Copy Coder v{version}</p>
 		<div className="flex justify-between items-center gap-3">
 			<p>Reset all global state and secret storage in the extension.</p>
 			<VSCodeButton

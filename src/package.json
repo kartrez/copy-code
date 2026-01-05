@@ -1,9 +1,9 @@
 {
-	"name": "copy-code",
+	"name": "copy-coder",
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
-	"publisher": "kilocode",
-	"version": "4.140.3",
+	"publisher": "copy-code",
+	"version": "0.0.1",
 	"icon": "assets/icons/logo-outline-black.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
@@ -17,7 +17,7 @@
 		"workspace"
 	],
 	"author": {
-		"name": "Copy Code"
+		"name": "Copy Coder"
 	},
 	"repository": {
 		"type": "git",
@@ -45,7 +45,7 @@
 		"sonnet",
 		"ai",
 		"llama",
-		"Copy Code",
+		"Copy Coder",
 		"copycode",
 		"gpt-chat.by"
 	],
@@ -58,13 +58,13 @@
 		"walkthroughs": [
 			{
 				"id": "kiloCodeWalkthrough",
-				"title": "5 ways Copy Code helps you code",
+				"title": "5 ways Copy Coder helps you code",
 				"description": "You now have a personal AI coding assistant.",
 				"steps": [
 					{
 						"id": "welcome",
 						"title": "Write code for you",
-						"description": "Describe what you want to build. Copy Code will write it from scratch, generate the files, and run them for you.",
+						"description": "Describe what you want to build. Copy Coder will write it from scratch, generate the files, and run them for you.",
 						"media": {
 							"markdown": "./dist/walkthrough/step1.md"
 						}
@@ -72,7 +72,7 @@
 					{
 						"id": "getting-started",
 						"title": "Understand your codebase",
-						"description": "Need clarity on how something works? Ask Copy Code about any part of your files and get a clear explanation.",
+						"description": "Need clarity on how something works? Ask Copy Coder about any part of your files and get a clear explanation.",
 						"media": {
 							"markdown": "./dist/walkthrough/step2.md"
 						},
@@ -83,7 +83,7 @@
 					{
 						"id": "modes",
 						"title": "Get things working again",
-						"description": "Stuck on an error? Copy Code can find the issue, fix it, and get your code running.",
+						"description": "Stuck on an error? Copy Coder can find the issue, fix it, and get your code running.",
 						"media": {
 							"markdown": "./dist/walkthrough/step3.md"
 						}
@@ -623,7 +623,7 @@
 		},
 		"icons": {
 			"kilo-logo": {
-				"description": "Copy Code logo",
+				"description": "Copy Coder logo",
 				"default": {
 					"fontPath": "assets/icons/kilo-icon-font.woff2",
 					"fontCharacter": "\\F101"

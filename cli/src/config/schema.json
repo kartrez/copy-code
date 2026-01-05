@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "Copy Code CLI Configuration",
-	"description": "Configuration file for Copy Code CLI",
+	"title": "Copy Coder CLI Configuration",
+	"description": "Configuration file for Copy Coder CLI",
 	"type": "object",
 	"required": ["version", "mode", "telemetry", "provider", "providers"],
 	"properties": {

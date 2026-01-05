@@ -1,4 +1,4 @@
-name: Code QA Copy Code
+name: Code QA Copy Coder
 
 on:
     workflow_dispatch:

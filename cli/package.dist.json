@@ -1,7 +1,7 @@
 {
 	"name": "@kilocode/cli",
 	"version": "0.18.1",
-	"description": "Terminal User Interface for Copy Code",
+	"description": "Terminal User Interface for Copy Coder",
 	"type": "module",
 	"main": "index.js",
 	"bin": {
@@ -124,7 +124,7 @@
 	},
 	"keywords": ["cli", "tui", "terminal", "ai", "assistant", "kilocode", "kilo", "ink"],
 	"author": {
-		"name": "Copy Code"
+		"name": "Copy Coder"
 	},
 	"homepage": "https://gpt-chat.by/cli",
 	"bugs": {
