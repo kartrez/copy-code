@@ -14,7 +14,6 @@
 !dist
 
 # Include the built webview
-!**/*.map
 !webview-ui/audio
 !webview-ui/build/assets/*.js
 !webview-ui/build/assets/*.ttf
@@ -27,10 +26,11 @@
 !integrations/theme/default-themes/**
 
 # Include icons and images
-!assets/codicons/**
-!assets/vscode-material-icons/**
 !assets/icons/**
 !assets/images/**
+
+# Exclude unnecessary node_modules if any were accidentally included
+node_modules/**
 
 # Include .env file for telemetry
 !.env

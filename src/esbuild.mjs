@@ -16,7 +16,7 @@ async function main() {
 	const production = process.argv.includes("--production")
 	const watch = process.argv.includes("--watch")
 	const minify = production
-	const sourcemap = true // Always generate source maps for error handling
+	const sourcemap = !production // Only generate source maps in development
 
 	/**
 	 * @type {import('esbuild').BuildOptions}
