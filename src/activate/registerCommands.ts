@@ -248,7 +248,7 @@ const getCommandsMap = ({ context, outputChannel }: RegisterCommandOptions): Rec
 	}, // kilocode_change begin
 	focusChatInput: async () => {
 		try {
-			await vscode.commands.executeCommand("copy-code.SidebarProvider.focus")
+			await vscode.commands.executeCommand("copy-coder.SidebarProvider.focus")
 			await delay(100)
 
 			let visibleProvider = getVisibleProviderOrLog(outputChannel)

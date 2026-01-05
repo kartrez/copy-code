@@ -805,7 +805,7 @@ ${prompt}
 				invoke: "setChatBoxMessage",
 				text: messageText,
 			})
-			await vscode.commands.executeCommand("copy-code.focusChatInput")
+			await vscode.commands.executeCommand("copy-coder.focusChatInput")
 			return
 		}
 		// kilocode_change end

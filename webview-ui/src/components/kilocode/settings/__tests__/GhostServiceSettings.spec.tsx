@@ -45,8 +45,8 @@ vi.mock("@/utils/vscode", () => ({
 // Mock useKeybindings hook
 vi.mock("@/hooks/useKeybindings", () => ({
 	useKeybindings: () => ({
-		"copy-code.addToContextAndFocus": "Cmd+K",
-		"copy-code.ghost.generateSuggestions": "Cmd+Shift+G",
+		"copy-coder.addToContextAndFocus": "Cmd+K",
+		"copy-coder.ghost.generateSuggestions": "Cmd+Shift+G",
 	}),
 }))
 

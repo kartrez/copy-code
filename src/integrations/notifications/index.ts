@@ -23,7 +23,7 @@ async function showMacOSNotification(options: NotificationOptions): Promise<void
 		args.push("-sound", "Tink")
 
 		// Add Copy Coderr logo
-		const extensionUri = vscode.extensions.getExtension(`copycode.copy-code`)!.extensionUri
+		const extensionUri = vscode.extensions.getExtension(`copycode.copy-coder`)!.extensionUri
 		const iconPath = vscode.Uri.joinPath(extensionUri, "assets", "icons", "kilo.png").fsPath
 		args.push("-appIcon", iconPath)
 

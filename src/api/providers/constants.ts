@@ -7,5 +7,5 @@ export const DEFAULT_HEADERS = {
 	"HTTP-Referer": "https://gpt-chat.by",
 	"X-Title": "Copy Coder",
 	[X_KILOCODE_VERSION]: Package.version,
-	"User-Agent": `Copy-Code/${Package.version}`,
+	"User-Agent": `copy-coder/${Package.version}`,
 }

@@ -2,8 +2,8 @@
 
 build_extension() {
   echo "🔨 Building the Copy Coder extension..."
-  pnpm -w vsix -- --out ../bin/copy-code-$(git rev-parse --short HEAD).vsix || exit 1
-  code --install-extension ../../bin/copy-code-$(git rev-parse --short HEAD).vsix || exit 1
+  pnpm -w vsix -- --out ../bin/copy-coder-$(git rev-parse --short HEAD).vsix || exit 1
+  code --install-extension ../../bin/copy-coder-$(git rev-parse --short HEAD).vsix || exit 1
   cd evals
 }
 
@@ -287,8 +287,8 @@ code --install-extension redhat.java &>/dev/null || exit 1
 code --install-extension ms-python.python&>/dev/null || exit 1
 code --install-extension rust-lang.rust-analyzer &>/dev/null || exit 1
 
-if ! code --list-extensions 2>/dev/null | grep -q "copycode.Copy-Code"; then
-  code --install-extension copycode.Copy-Code &>/dev/null || exit 1
+if ! code --list-extensions 2>/dev/null | grep -q "copycode.copy-coder"; then
+  code --install-extension copycode.copy-coder &>/dev/null || exit 1
 fi
 
 echo "✅ Done"

@@ -35,19 +35,19 @@ object ActionNames {
  */
 object CommandIds {
     /** Command ID for explaining code */
-    const val EXPLAIN = "copy-code.explainCode"
+    const val EXPLAIN = "copy-coder.explainCode"
 
     /** Command ID for fixing code */
-    const val FIX = "copy-code.fixCode"
+    const val FIX = "copy-coder.fixCode"
 
     /** Command ID for improving code */
-    const val IMPROVE = "copy-code.improveCode"
+    const val IMPROVE = "copy-coder.improveCode"
 
     /** Command ID for adding to context */
-    const val ADD_TO_CONTEXT = "copy-code.addToContext"
+    const val ADD_TO_CONTEXT = "copy-coder.addToContext"
 
     /** Command ID for creating a new task */
-    const val NEW_TASK = "copy-code.newTask"
+    const val NEW_TASK = "copy-coder.newTask"
 }
 
 /** Type alias for prompt type identifiers */

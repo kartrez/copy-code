@@ -41,16 +41,16 @@ describe("SettingsSyncService", () => {
 			await SettingsSyncService.initialize(mockContext, mockOutputChannel)
 
 			expect(mockGlobalState.setKeysForSync).toHaveBeenCalledWith([
-				"copy-code.allowedCommands",
-				"copy-code.deniedCommands",
-				"copy-code.autoApprovalEnabled",
-				"copy-code.fuzzyMatchThreshold",
-				"copy-code.diffEnabled",
-				"copy-code.directoryContextAddedContext",
-				"copy-code.language",
-				"copy-code.customModes",
-				"copy-code.firstInstallCompleted",
-				"copy-code.telemetrySetting",
+				"copy-coder.allowedCommands",
+				"copy-coder.deniedCommands",
+				"copy-coder.autoApprovalEnabled",
+				"copy-coder.fuzzyMatchThreshold",
+				"copy-coder.diffEnabled",
+				"copy-coder.directoryContextAddedContext",
+				"copy-coder.language",
+				"copy-coder.customModes",
+				"copy-coder.firstInstallCompleted",
+				"copy-coder.telemetrySetting",
 			])
 			expect(mockOutputChannel.appendLine).toHaveBeenCalledWith(
 				expect.stringContaining("[SettingsSyncService] Registered 10 keys for synchronization"),
@@ -81,7 +81,7 @@ describe("SettingsSyncService", () => {
 
 			expect(mockConfiguration.get).toHaveBeenCalledWith("enableSettingsSync", true)
 			expect(mockGlobalState.setKeysForSync).toHaveBeenCalledWith(
-				expect.arrayContaining(["copy-code.allowedCommands", "copy-code.deniedCommands"]),
+				expect.arrayContaining(["copy-coder.allowedCommands", "copy-coder.deniedCommands"]),
 			)
 		})
 
@@ -94,7 +94,7 @@ describe("SettingsSyncService", () => {
 			await SettingsSyncService.initialize(mockContext)
 
 			expect(mockGlobalState.setKeysForSync).toHaveBeenCalledWith(
-				expect.arrayContaining(["copy-code.allowedCommands"]),
+				expect.arrayContaining(["copy-coder.allowedCommands"]),
 			)
 		})
 	})
@@ -120,16 +120,16 @@ describe("SettingsSyncService", () => {
 			const syncKeys = SettingsSyncService.getSyncKeys()
 
 			expect(syncKeys).toEqual([
-				"copy-code.allowedCommands",
-				"copy-code.deniedCommands",
-				"copy-code.autoApprovalEnabled",
-				"copy-code.fuzzyMatchThreshold",
-				"copy-code.diffEnabled",
-				"copy-code.directoryContextAddedContext",
-				"copy-code.language",
-				"copy-code.customModes",
-				"copy-code.firstInstallCompleted",
-				"copy-code.telemetrySetting",
+				"copy-coder.allowedCommands",
+				"copy-coder.deniedCommands",
+				"copy-coder.autoApprovalEnabled",
+				"copy-coder.fuzzyMatchThreshold",
+				"copy-coder.diffEnabled",
+				"copy-coder.directoryContextAddedContext",
+				"copy-coder.language",
+				"copy-coder.customModes",
+				"copy-coder.firstInstallCompleted",
+				"copy-coder.telemetrySetting",
 			])
 		})
 	})

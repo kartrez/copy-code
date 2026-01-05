@@ -17,7 +17,7 @@ export class GhostCodeActionProvider implements vscode.CodeActionProvider {
 			this.providedCodeActionKinds["quickfix"],
 		)
 		action.command = {
-			command: "copy-code.ghost.generateSuggestions",
+			command: "copy-coder.ghost.generateSuggestions",
 			title: "",
 			arguments: [document.uri, range],
 		}
