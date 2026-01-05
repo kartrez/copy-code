@@ -49,4 +49,4 @@ jobs:
                   title: "Changeset version bump"
                   version: pnpm changeset:version # This performs the changeset version bump
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.G_TOKEN }}
