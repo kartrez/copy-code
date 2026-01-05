@@ -4,15 +4,7 @@ import { z } from "zod"
  * CodeAction
  */
 
-export const kiloCodeActionIds = ["addToContextAndFocus"] as const // kilocode_change
-export const codeActionIds = [
-	...kiloCodeActionIds, // kilocode_change
-	"explainCode",
-	"fixCode",
-	"improveCode",
-	"addToContext",
-	"newTask",
-] as const
+export const codeActionIds = ["explainCode", "fixCode", "improveCode", "addToContext", "newTask"] as const
 
 export type CodeActionId = (typeof codeActionIds)[number]
 

@@ -205,11 +205,6 @@
 				"category": "%configuration.title%"
 			},
 			{
-				"command": "copy-coder.addToContextAndFocus",
-				"title": "Add to Context and Focus",
-				"category": "%configuration.title%"
-			},
-			{
 				"command": "copy-coder.newTask",
 				"title": "%command.newTask.title%",
 				"category": "%configuration.title%"
@@ -464,20 +459,6 @@
 				"win": "ctrl+k ctrl+a",
 				"linux": "ctrl+k ctrl+a",
 				"when": "editorTextFocus && editorHasSelection"
-			},
-			{
-				"command": "copy-coder.addToContextAndFocus",
-				"key": "ctrl+i",
-				"mac": "cmd+i",
-				"win": "ctrl+i",
-				"linux": "ctrl+i",
-				"when": "editorTextFocus && !github.copilot.completions.enabled && kilocode.ghost.enableQuickInlineTaskKeybinding"
-			},
-			{
-				"command": "copy-coder.ghost.showIncompatibilityExtensionPopup",
-				"key": "ctrl+i",
-				"mac": "cmd+i",
-				"when": "editorTextFocus && github.copilot.completions.enabled && kilocode.ghost.enableQuickInlineTaskKeybinding"
 			},
 			{
 				"command": "copy-coder.toggleAutoApprove",
