@@ -44,6 +44,7 @@
 			"account": "Аккаунт Copy Coder",
 			"apiKey": "API-ключ gpt-chat.by",
 			"login": "Войти на сайт gpt-chat.by",
+			"loginTelegram": "Войти через Telegram",
 			"logout": "Выйти из Copy Coder",
 			"automaticFetch": "Новейшие модели автоматически доступны в Copy Coder. Если вы не уверены, какую модель выбрать, Copy Coder лучше всего работает с рекомендуемыми моделями, перечисленными вверху <strong>жирным шрифтом</strong>.",
 			"providerRouting": {

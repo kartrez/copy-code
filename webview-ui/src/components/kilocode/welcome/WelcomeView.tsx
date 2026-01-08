@@ -4,8 +4,6 @@ import { validateApiConfiguration } from "../../../utils/validate"
 import { vscode } from "../../../utils/vscode"
 import { Tab, TabContent } from "../../common/Tab"
 import { useAppTranslation } from "../../../i18n/TranslationContext"
-import { ButtonPrimary } from "../common/ButtonPrimary"
-import { ButtonLink } from "../common/ButtonLink"
 import ApiOptions from "../../settings/ApiOptions"
 
 const WelcomeView = () => {
@@ -51,10 +49,6 @@ const WelcomeView = () => {
 		vscode.postMessage({ type: "upsertApiConfiguration", text: currentApiConfigName, apiConfiguration })
 	}, [apiConfiguration, currentApiConfigName])
 
-	const isSettingUpKiloCode =
-		!apiConfiguration?.apiProvider ||
-		(apiConfiguration?.apiProvider === "kilocode" && !apiConfiguration?.kilocodeToken)
-
 	return (
 		<Tab>
 			<TabContent className="flex flex-col gap-5">
@@ -68,14 +62,15 @@ const WelcomeView = () => {
 						setErrorMessage={setErrorMessage}
 						hideKiloCodeButton
 					/>
-					{isSettingUpKiloCode ? (
-						<ButtonLink
-							href="https://gpt-chat.by/doc-api">
-							{t("kilocode:settings.provider.login")}
-						</ButtonLink>
-					) : (
-						<ButtonPrimary onClick={handleSubmit}>{t("welcome:start")}</ButtonPrimary>
-					)}
+					<ButtonPrimary onClick={handleSubmit}>{t("welcome:start")}</ButtonPrimary>
+					Или
+					<ButtonPrimary
+						onClick={() => {
+							vscode.postMessage({type: "telegramAuthButtonClicked",})
+						}
+						}>
+						{t("kilocode:settings.provider.loginTelegram")}
+					</ButtonPrimary>
 				</>
 			</TabContent>
 		</Tab>

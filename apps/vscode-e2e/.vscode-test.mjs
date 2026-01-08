@@ -12,5 +12,5 @@ export default defineConfig({
 		ui: "tdd",
 		timeout: 60000,
 	},
-	launchArgs: ["--enable-proposed-api=copycode.copy-coder", "--disable-extensions"],
+	launchArgs: ["--enable-proposed-api=copy-code.copy-coder", "--disable-extensions"],
 })

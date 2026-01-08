@@ -1,6 +1,6 @@
 // npx vitest services/marketplace/__tests__/marketplace-setting-check.spec.ts
 
-import { webviewMessageHandler } from "../../../core/webview/webviewMessageHandler"
+import webviewMessageHandler from "../../../core/webview/webviewMessageHandler"
 
 // Mock the provider and marketplace manager
 const mockProvider = {

@@ -1731,22 +1731,25 @@ export class ClineProvider
 	}
 
 	// kilocode_change start
-	async handleKiloCodeCallback(token: string) {
-		const kilocode: ProviderName = "kilocode"
+	async handleLoginCallback(token: string) {
+		const provider: ProviderName = "gpt-chat-by"
 		let { apiConfiguration, currentApiConfigName = "default" } = await this.getState()
 
 		await this.upsertProviderProfile(currentApiConfigName, {
 			...apiConfiguration,
-			apiProvider: "kilocode",
-			kilocodeToken: token,
+			apiProvider: "gpt-chat-by",
+			gptChatByApiKey: token,
 		})
 
 		vscode.window.showInformationMessage("Copy Coder successfully configured!")
 
+		await this.postStateToWebview()
+		await vscode.commands.executeCommand("copy-coder.SidebarProvider.focus")
+
 		if (this.getCurrentTask()) {
 			this.getCurrentTask()!.api = buildApiHandler({
-				apiProvider: kilocode,
-				kilocodeToken: token,
+				apiProvider: provider,
+				gptChatByApiKey: token,
 			})
 		}
 	}

@@ -52,6 +52,7 @@
 			"account": "Copy Coder Account",
 			"apiKey": "Copy Coder API Key",
 			"login": "Log in at Copy Coder",
+			"loginTelegram": "Log in with Telegram",
 			"logout": "Log out from Copy Coder",
 			"providerRouting": {
 				"title": "Provider Routing",

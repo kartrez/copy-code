@@ -21,15 +21,15 @@ else
     VSCODE_DIR="$HOME/Library/Application Support/$VSCODE_DIR"
 fi
 
-echo "copycode state is being reset for: $VSCODE_DIR"
+echo "copy-code state is being reset for: $VSCODE_DIR"
 echo "This probably doesn't work while VS Code is running."
 
 # Reset the secrets:
 sqlite3 "$VSCODE_DIR/User/globalStorage/state.vscdb" \
 "DELETE FROM ItemTable WHERE \
-    key = 'copycode.copy-coder' OR \
+    key = 'copy-code.copy-coder' OR \
     key LIKE 'workbench.view.extension.copy-coder%' OR \
-    key LIKE 'secret://{\"extensionId\":\"copycode.copy-coder\",%';"
+    key LIKE 'secret://{\"extensionId\":\"copy-code.copy-coder\",%';"
 
 # delete all kilocode state files:
 rm -rf "$VSCODE_DIR/User/globalStorage/copycode.copy-coder/"

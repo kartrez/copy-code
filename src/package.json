@@ -51,10 +51,15 @@
 	],
 	"activationEvents": [
 		"onLanguage",
-		"onStartupFinished"
+		"onStartupFinished",
+		"onUri"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"authentication": {
+			"id": "copycode-auth",
+			"label": "CopyCode Auth"
+		},
 		"walkthroughs": [
 			{
 				"id": "kiloCodeWalkthrough",

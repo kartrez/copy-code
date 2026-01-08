@@ -4183,6 +4183,16 @@ export const webviewMessageHandler = async (
 			await deviceAuthMessageHandler(provider, message)
 			break
 		}
+		case "telegramAuthButtonClicked": {
+			const authUrl = 'https://gpt-chat.by/vscode-auth'
+			try {
+				await vscode.env.openExternal(vscode.Uri.parse(authUrl))
+			} catch (error) {
+				console.error("Failed to open Telegram auth page", error)
+				vscode.window.showErrorMessage("Не удалось открыть страницу авторизации Telegram.")
+			}
+			break
+		}
 		// kilocode_change end
 		default: {
 			// console.log(`Unhandled message type: ${message.type}`)

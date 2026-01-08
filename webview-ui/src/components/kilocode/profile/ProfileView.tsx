@@ -333,14 +333,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 						) : (
 							<div className="flex flex-col items-center pr-3">
 								<Button
-									variant="secondary"
 									onClick={() => {
-										vscode.postMessage({
-											type: "switchTab",
-											tab: "settings",
-										})
-									}}>
-									{t("kilocode:settings.provider.login")}
+										vscode.postMessage({type: "telegramAuthButtonClicked",})
+									}
+									}>
+									{t("kilocode:settings.provider.loginTelegram")}
 								</Button>
 							</div>
 						)}

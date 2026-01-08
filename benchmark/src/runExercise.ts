@@ -28,7 +28,7 @@ export async function run() {
 	 * Activate the extension.
 	 */
 
-	const extension = vscode.extensions.getExtension<RooCodeAPI>("copycode.copy-coder")
+	const extension = vscode.extensions.getExtension<RooCodeAPI>("copy-code.copy-coder")
 
 	if (!extension) {
 		throw new Error("Extension not found.")

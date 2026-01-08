@@ -40,7 +40,7 @@ export class TerminalWelcomeService {
 
 	private async showWelcomeMessage(terminal: vscode.Terminal): Promise<void> {
 		const shortcut = await getKeybindingForCommand("copy-coder.generateTerminalCommand")
-		const message = t("kilocode:terminalCommandGenerator.tipMessage", { shortcut })
+		const message = t("copy-coder:terminalCommandGenerator.tipMessage", { shortcut })
 		vscode.window.showInformationMessage(message)
 	}
 

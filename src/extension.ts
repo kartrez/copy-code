@@ -35,21 +35,18 @@ import { autoImportSettings } from "./utils/autoImportSettings"
 import { API } from "./extension/api"
 
 import {
-	handleUri,
 	registerCommands,
 	registerCodeActions,
 	registerTerminalActions,
-	CodeActionProvider,
 } from "./activate"
 import { initializeI18n } from "./i18n"
-import { registerGhostProvider } from "./services/ghost" // kilocode_change
-import { registerMainThreadForwardingLogger } from "./utils/fowardingLogger" // kilocode_change
 import { getKiloCodeWrapperProperties } from "./core/kilocode/wrapper" // kilocode_change
 import { checkAnthropicApiKeyConflict } from "./utils/anthropicApiKeyWarning" // kilocode_change
 import { SettingsSyncService } from "./services/settings-sync/SettingsSyncService" // kilocode_change
 import { ManagedIndexer } from "./services/code-index/managed/ManagedIndexer" // kilocode_change
 import { flushModels, getModels, initializeModelCacheRefresh } from "./api/providers/fetchers/modelCache"
-import { kilo_initializeSessionManager } from "./shared/kilocode/cli-sessions/extension/session-manager-utils" // kilocode_change
+import { kilo_initializeSessionManager } from "./shared/kilocode/cli-sessions/extension/session-manager-utils"
+import { UriEventHandler } from "./core/auth/UriEventHandler" // kilocode_change
 
 // kilocode_change start
 async function findKilocodeTokenFromAnyProfile(provider: ClineProvider): Promise<string | undefined> {
@@ -355,7 +352,7 @@ export async function activate(context: vscode.ExtensionContext) {
 			// https://discord.com/channels/1349288496988160052/1395865796026040470
 			await vscode.commands.executeCommand(
 				"workbench.action.openWalkthrough",
-				"kilocode.copy-coder#kiloCodeWalkthrough",
+				"copy-code.copy-coder#kiloCodeWalkthrough",
 				false,
 			)
 
@@ -451,27 +448,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.registerTextDocumentContentProvider(DIFF_VIEW_URI_SCHEME, diffContentProvider),
 	)
 
-	context.subscriptions.push(vscode.window.registerUriHandler({ handleUri }))
+	// Другие регистрации...
+    const uriHandler = new UriEventHandler(context);
 
-	// Register code actions provider.
-	context.subscriptions.push(
-		vscode.languages.registerCodeActionsProvider({ pattern: "**/*" }, new CodeActionProvider(), {
-			providedCodeActionKinds: CodeActionProvider.providedCodeActionKinds,
-		}),
-	)
-
-	// kilocode_change start - Copy Coder specific registrations
-	const { kiloCodeWrapped, kiloCodeWrapperCode } = getKiloCodeWrapperProperties()
-	if (kiloCodeWrapped) {
-		// Only foward logs in Jetbrains
-		registerMainThreadForwardingLogger(context)
-	}
-	// Don't register the ghost provider for the CLI
-	if (kiloCodeWrapperCode !== "cli") {
-		registerGhostProvider(context, provider)
-	}
-	registerCommitMessageProvider(context, outputChannel) // kilocode_change
-	// kilocode_change end - Copy Coder specific registrations
+    // Регистрируем обработчик URI
+    context.subscriptions.push(
+        vscode.window.registerUriHandler(uriHandler)
+    );
 
 	registerCodeActions(context)
 	registerTerminalActions(context)

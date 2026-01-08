@@ -29,7 +29,7 @@ function getGlobalModesPath(): string {
 			"Code",
 			"User",
 			"globalStorage",
-			"copycode.copy-coder",
+			"copy-code.copy-coder",
 			"settings",
 			"custom_modes.yaml",
 		)
@@ -42,7 +42,7 @@ function getGlobalModesPath(): string {
 			"Code",
 			"User",
 			"globalStorage",
-			"copycode.copy-coder",
+			"copy-code.copy-coder",
 			"settings",
 			"custom_modes.yaml",
 		)
