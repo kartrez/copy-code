@@ -4,6 +4,7 @@ import { validateApiConfiguration } from "../../../utils/validate"
 import { vscode } from "../../../utils/vscode"
 import { Tab, TabContent } from "../../common/Tab"
 import { useAppTranslation } from "../../../i18n/TranslationContext"
+import { ButtonPrimary } from "../common/ButtonPrimary"
 import ApiOptions from "../../settings/ApiOptions"
 
 const WelcomeView = () => {
