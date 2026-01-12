@@ -45,8 +45,6 @@ export const GhostServiceSettingsView = ({
 		model,
 		hasKilocodeProfileWithNoBalance,
 	} = ghostServiceSettings || {}
-	const { enableAutoTrigger, enableSmartInlineTaskKeybinding, enableChatAutocomplete, provider, model } =
-		ghostServiceSettings || {}
 	const keybindings = useKeybindings(["copy-coder.ghost.generateSuggestions"])
 	const [snoozeDuration, setSnoozeDuration] = useState<number>(300)
 	const [currentTime, setCurrentTime] = useState<number>(Date.now())
