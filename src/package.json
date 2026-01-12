@@ -3,7 +3,7 @@
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
 	"publisher": "copy-code",
-	"version": "0.0.3",
+	"version": "0.0.15",
 	"icon": "assets/icons/logo-outline-black.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
@@ -293,6 +293,25 @@
 				"command": "copy-coder.ghost.goToPreviousSuggestion",
 				"title": "%ghost.commands.goToPreviousSuggestion%",
 				"category": "%configuration.title%"
+			},
+			{
+				"command": "copy-coder.agentManagerOpen",
+				"title": "Open Agent Manager",
+				"icon": "$(circuit-board)",
+				"category": "%configuration.title%"
+			},
+			{
+				"command": "copy-coder.popoutButtonClicked",
+				"title": "%command.openInEditor.title%",
+				"icon": "$(link-external)"
+			},
+			{
+				"command": "copy-coder.open",
+				"title": "%views.activitybar.title%",
+				"icon": {
+					"light": "assets/icons/kilo-light.svg",
+					"dark": "assets/icons/kilo-dark.svg"
+				}
 			}
 		],
 		"menus": {
@@ -399,11 +418,6 @@
 					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
 				},
 				{
-					"command": "copy-coder.popoutButtonClicked",
-					"group": "navigation@4",
-					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
-				},
-				{
 					"command": "copy-coder.settingsButtonClicked",
 					"group": "navigation@5",
 					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
@@ -412,6 +426,11 @@
 					"command": "copy-coder.helpButtonClicked",
 					"group": "navigation@6",
 					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
+				},
+				{
+					"command": "copy-coder.open",
+					"group": "navigation",
+					"when": "true"
 				}
 			],
 			"scm/input": [
@@ -630,7 +649,7 @@
 	"scripts": {
 		"lint": "eslint . --ext=ts --max-warnings=0",
 		"check-types": "tsc --noEmit",
-		"pretest": "turbo run kilo-code#bundle --cwd ..",
+		"pretest": "turbo run copy-coder#bundle --cwd ..",
 		"test": "vitest run",
 		"format": "prettier --write .",
 		"bundle": "node esbuild.mjs",
@@ -731,7 +750,6 @@
 		"tmp": "^0.2.3",
 		"tree-sitter-wasms": "^0.1.12",
 		"turndown": "^7.2.0",
-		"undici": "^7.13.0",
 		"uri-js": "^4.4.1",
 		"uuid": "^11.1.0",
 		"vscode-material-icons": "^0.1.1",

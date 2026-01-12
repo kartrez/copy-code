@@ -1027,7 +1027,9 @@
 		"searchPlaceholder": "Поиск",
 		"noMatchFound": "Совпадений не найдено",
 		"useCustomModel": "Использовать пользовательскую: {{modelId}}",
-		"simplifiedExplanation": "Ты сможешь настроить подробные параметры модели позже."
+		"simplifiedExplanation": "Ты сможешь настроить подробные параметры модели позже.",
+		"recommendedModels": "Рекомендуемые модели",
+		"allModels": "Все модели"
 	},
 	"footer": {
 		"feedback": "",

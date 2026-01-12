@@ -1059,7 +1059,9 @@
 		"searchPlaceholder": "Search",
 		"noMatchFound": "No match found",
 		"useCustomModel": "Use custom: {{modelId}}",
-		"simplifiedExplanation": "You can adjust detailed model settings later."
+		"simplifiedExplanation": "You can adjust detailed model settings later.",
+		"recommendedModels": "Recommended models",
+		"allModels": "All models"
 	},
 	"footer": {
 		"feedback": "",
