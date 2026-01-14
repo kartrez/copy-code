@@ -4,7 +4,7 @@
 	"description": "%extension.description%",
 	"publisher": "copy-code",
 	"version": "0.0.15",
-	"icon": "assets/icons/icon.png",
+	"icon": "assets/icons/kilo.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
 		"theme": "light"
