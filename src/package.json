@@ -4,7 +4,7 @@
 	"description": "%extension.description%",
 	"publisher": "copy-code",
 	"version": "0.0.15",
-	"icon": "https://gpt-chat.by/icon.webp",
+	"icon": "assets/icons/icon.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
 		"theme": "light"
@@ -117,7 +117,7 @@
 				{
 					"id": "copy-coder-ActivityBar",
 					"title": "%views.activitybar.title%",
-					"icon": "assets/icons/kilo.png",
+					"icon": "assets/icons/icon.png",
 					"darkIcon": "assets/icons/kilo-dark.png"
 				}
 			]
@@ -128,7 +128,7 @@
 					"type": "webview",
 					"id": "copy-coder.SidebarProvider",
 					"name": "%views.sidebar.name%",
-					"icon": "assets/icons/kilo.png",
+					"icon": "assets/icons/icon.png",
 					"darkIcon": "assets/icons/kilo-dark.png"
 				}
 			]
