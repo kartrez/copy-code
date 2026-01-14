@@ -229,7 +229,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 										<div className="text-center">
 											{t("kilocode:profile.subcription.access.title")}
 											<ul>
-												<li>{t("kilocode:profile.subcription.access.li_1")}</li>
 												<li>{t("kilocode:profile.subcription.access.li_2")}</li>
 												<li>{t("kilocode:profile.subcription.access.li_3")}</li>
 											</ul>
