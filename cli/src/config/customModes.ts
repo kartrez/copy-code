@@ -76,7 +76,7 @@ function getGlobalModesPath(): string {
 			"Code",
 			"User",
 			"globalStorage",
-			"kilocode.kilo-code",
+			"copy-code.copy-coder",
 			"settings",
 			"custom_modes.yaml",
 		)
