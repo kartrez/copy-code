@@ -3609,7 +3609,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						let extraFeedback = ""
 						if (isNativeProtocol(this._taskToolProtocol ?? "xml")) {
 							const hasXmlTags = this.assistantMessageContent.some(
-								(block) => block.type === "text" && /<[\w_]+>/.test(block.text),
+								(block) => block.type === "text" && /<[\w_]+>/.test(block.content),
 							)
 							if (hasXmlTags) {
 								extraFeedback =
