@@ -59,7 +59,7 @@ import type { FimHandler } from "./providers/kilocode/FimHandler" // kilocode_ch
 export type { FimHandler } from "./providers/kilocode/FimHandler"
 // kilocode_change end
 import { NativeOllamaHandler } from "./providers/native-ollama"
-import { GtpChatByHandler } from "./providers/gptchatby"
+import { GptChatByHandler } from "./providers/gptchatby"
 
 export interface SingleCompletionHandler {
 	completePrompt(prompt: string): Promise<string>
@@ -157,7 +157,7 @@ export function buildApiHandler(configuration: ProviderSettings): ApiHandler {
 	switch (apiProvider) {
 		// kilocode_change start
 		case "gpt-chat-by":
-			return new GtpChatByHandler(options)
+			return new GptChatByHandler(options)
 		case "kilocode":
 			return new KilocodeOpenrouterHandler(options)
 		case "gemini-cli":
