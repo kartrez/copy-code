@@ -3613,7 +3613,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 							)
 							if (hasXmlTags) {
 								extraFeedback =
-									"\n\nIMPORTANT: I detected XML-style tags in your response. You MUST NOT use XML tags for tool calls in this mode. Use the API's native function-calling mechanism instead."
+									"\n\nIMPORTANT: I detected XML-style tags in your response. You MUST NOT use XML tags for tool calls in this mode. You MUST use the API's native function-calling feature instead. XML tags are not supported and will be ignored."
 							}
 						}
 

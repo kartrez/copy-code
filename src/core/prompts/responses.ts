@@ -77,8 +77,12 @@ export const formatResponse = {
 	noToolsUsed: (protocol?: ToolProtocol) => {
 		const instructions = getToolInstructionsReminder(protocol)
 
+		const nativeSpecificMessage = isNativeProtocol(protocol ?? TOOL_PROTOCOL.XML)
+			? "\n\nCRITICAL: You MUST use the API's native function-calling feature for tool calls. DO NOT use XML tags (like <read_file>...</read_file>) as they will not be processed."
+			: ""
+
 		return `[ERROR] You did not use a tool in your previous response! Please retry with a tool use.
-Remember: You MUST use a tool in EVERY response to interact with the environment, explore the codebase, or complete the task.
+Remember: You MUST use a tool in EVERY response to interact with the environment, explore the codebase, or complete the task.${nativeSpecificMessage}
 
 ${instructions}
 
