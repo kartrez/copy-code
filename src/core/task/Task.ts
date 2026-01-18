@@ -3605,6 +3605,18 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						// Increment consecutive no-tool-use counter
 						this.consecutiveNoToolUseCount++
 
+						// Check if the model tried to use XML tags in native mode
+						let extraFeedback = ""
+						if (isNativeProtocol(this._taskToolProtocol ?? "xml")) {
+							const hasXmlTags = this.assistantMessageContent.some(
+								(block) => block.type === "text" && /<[\w_]+>/.test(block.text),
+							)
+							if (hasXmlTags) {
+								extraFeedback =
+									"\n\nIMPORTANT: I detected XML-style tags in your response. You MUST NOT use XML tags for tool calls in this mode. Use the API's native function-calling mechanism instead."
+							}
+						}
+
 						// Only show error and count toward mistake limit after 2 consecutive failures
 						if (this.consecutiveNoToolUseCount >= 2) {
 							await this.say("error", "MODEL_NO_TOOLS_USED")
@@ -3615,7 +3627,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						// Use the task's locked protocol for consistent behavior
 						this.userMessageContent.push({
 							type: "text",
-							text: formatResponse.noToolsUsed(this._taskToolProtocol ?? "xml"),
+							text: formatResponse.noToolsUsed(this._taskToolProtocol ?? "xml") + extraFeedback,
 						})
 					} else {
 						// Reset counter when tools are used successfully

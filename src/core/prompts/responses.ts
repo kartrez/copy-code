@@ -295,6 +295,8 @@ const toolUseInstructionsReminderNative = `# Reminder: Instructions for Tool Use
 
 Tools are invoked using the platform's native tool calling mechanism. Each tool requires specific parameters as defined in the tool descriptions. Refer to the tool definitions provided in your system instructions for the correct parameter structure and usage examples.
 
+CRITICAL: DO NOT use XML tags (e.g., <read_file>...</read_file>) for tool calls. You MUST use the API's native function-calling feature.
+
 Always ensure you provide all required parameters for the tool you wish to use.`
 
 /**

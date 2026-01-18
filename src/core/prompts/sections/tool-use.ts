@@ -21,7 +21,9 @@ export function getSharedToolUseSection(
 
 TOOL USE
 
-You have access to a set of tools that are executed upon the user's approval. Use the provider-native tool-calling mechanism. Do not include XML markup or examples.${toolUseGuidance}
+You have access to a set of tools that are executed upon the user's approval. Use the provider-native tool-calling mechanism.
+
+CRITICAL: DO NOT use XML tags (e.g., <read_file>...</read_file>) for tool calls. Instead, use the API's native function-calling feature. Any tool call using XML tags will FAIL.${toolUseGuidance}
 
 IMPORTANT: You MUST use a tool in EVERY response to interact with the environment, explore the codebase, or complete the task. The only way to succeed is through tool use.
 
