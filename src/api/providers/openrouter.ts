@@ -318,7 +318,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 
 		// Convert Anthropic messages to OpenAI format.
 		// Pass model info for automatic tool call ID normalization (e.g. Mistral requires 9-char alphanumeric IDs)
-		const openAiMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+		let openAiMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
 			{ role: "system", content: systemPrompt },
 			...convertToOpenAiMessages(messages, { modelInfo: model.info }),
 		]
