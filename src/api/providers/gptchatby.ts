@@ -41,21 +41,25 @@ export class GptChatByHandler extends OpenAiHandler {
 		const openAiMessages = convertToOpenAiMessages(messages, {
 			modelInfo,
 			mergeToolResultText: true,
+			normalizeToolCallId: normalizeMistralToolCallId,
 		})
 
+		// Ensure every tool message has a tool_call_id
 		const messagesToSend: OpenAI.Chat.ChatCompletionMessageParam[] = []
 
-		// Some providers (like those behind gpt-chat.by) might have issues with
-		// system message placement or need it to be the first message.
-		// However, if there are already messages, we should be careful about
-		// repeating the system message or its placement.
-		// For OpenAI-style APIs, the system message usually goes first.
 		messagesToSend.push({
 			role: "system",
 			content: systemPrompt,
 		})
 
-		messagesToSend.push(...openAiMessages)
+		for (const msg of openAiMessages) {
+			if (msg.role === "tool" && !("tool_call_id" in msg)) {
+				// Generate a dummy 9-char alphanumeric ID if missing
+				const id = normalizeMistralToolCallId(`call_${Date.now()}`) // Will trim/normalize to 9 chars
+				;(msg as any).tool_call_id = id
+			}
+			messagesToSend.push(msg)
+		}
 
 		const requestOptions: OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming = {
 			model: modelId,

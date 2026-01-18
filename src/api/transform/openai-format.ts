@@ -135,9 +135,10 @@ export function convertToOpenAiMessages(
 						})
 					} else {
 						// Fallback if normalization returned empty - but still provide the ID
+						const fallbackId = toolMessage.tool_use_id || "dummy_id"
 						openAiMessages.push({
 							role: "tool",
-							tool_call_id: toolMessage.tool_use_id || "dummy_id",
+							tool_call_id: normalizeId(fallbackId) || fallbackId,
 							content: content,
 						})
 					}
@@ -249,8 +250,9 @@ export function convertToOpenAiMessages(
 					}
 					// Return a dummy tool call with the original ID if normalization failed,
 					// to avoid "tool_call_id is not set" or "mismatch" errors
+					const fallbackId = toolMessage.id || "dummy_id"
 					return {
-						id: toolMessage.id || "dummy_id",
+						id: normalizeId(fallbackId) || fallbackId,
 						type: "function",
 						function: {
 							name: toolMessage.name,
