@@ -122,10 +122,9 @@ export class GptChatByHandler extends OpenAiHandler {
 		// Подготовка параметров tools с возможностью выбора режима
 		const toolsParams = metadata?.tools ? {
 			tools: this.convertToolsForOpenAI(metadata.tools),
-			...(metadata.tool_choice && {
-				tool_choice: metadata.tool_choice === 'auto' ? 'auto' :
-					metadata.tool_choice === 'none' ? 'none' :
-						metadata.tool_choice
+			...(metadata.tool_choice && metadata.tool_choice !== "auto" && {
+				tool_choice: metadata.tool_choice === 'none' ? 'none' :
+					metadata.tool_choice
 			}),
 			parallel_tool_calls: metadata?.parallelToolCalls ?? false,
 		} : {}
