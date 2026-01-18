@@ -30,7 +30,7 @@ const search_replace = {
 				file_path: {
 					type: "string",
 					description:
-						"The path to the file you want to search and replace in. You can use either a relative path in the workspace or an absolute path. If an absolute path is provided, it will be preserved as is.",
+						"The path to the file to modify, relative to the current workspace directory. If an absolute path is provided, it will be used as is.",
 				},
 				old_string: {
 					type: "string",

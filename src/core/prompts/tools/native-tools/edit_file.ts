@@ -42,7 +42,7 @@ const edit_file = {
 				file_path: {
 					type: "string",
 					description:
-						"The path to the file to modify or create. You can use either a relative path in the workspace or an absolute path. If an absolute path is provided, it will be preserved as is.",
+						"The path to the file to modify or create, relative to the current workspace directory. If an absolute path is provided, it will be used as is.",
 				},
 				old_string: {
 					type: "string",

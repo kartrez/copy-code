@@ -25,32 +25,34 @@ export function createReadFileTool(options: ReadFileToolOptions = {}): OpenAI.Ch
 
 	// Build description intro with concurrent reads limit message
 	const descriptionIntro = isMultipleReadsEnabled
-		? `Read one or more files and return their contents with line numbers for diffing or discussion. IMPORTANT: You can read a maximum of ${maxConcurrentFileReads} files in a single request. If you need to read more files, use multiple sequential read_file requests. `
-		: "Read a file and return its contents with line numbers for diffing or discussion. IMPORTANT: Multiple file reads are currently disabled. You can only read one file at a time. "
+		? `Request to read the contents of one or more files. The tool outputs line-numbered content (e.g. "1 | const x = 1") for easy reference when creating diffs or discussing code. IMPORTANT: You can read a maximum of ${maxConcurrentFileReads} files in a single request. If you need to read more files, use multiple sequential read_file requests. `
+		: `Request to read the contents of a file. The tool outputs line-numbered content (e.g. "1 | const x = 1") for easy reference when creating diffs or discussing code. IMPORTANT: Multiple file reads are currently disabled. You can only read one file at a time. `
+
+	const strategy = `
+IMPORTANT: You MUST use this Efficient Reading Strategy:
+- ${isMultipleReadsEnabled ? `You MUST read all related files and implementations together in a single operation (up to ${maxConcurrentFileReads} files at once)` : "You MUST read files one at a time, as multiple file reads are currently disabled"}
+- You MUST obtain all necessary context before proceeding with changes
+${
+	partialReadsEnabled
+		? `- You MUST use line_ranges to read specific portions of large files, rather than reading entire files when not needed
+- You MUST combine adjacent line ranges (<10 lines apart)
+- You MUST use multiple ranges for content separated by >10 lines
+- You MUST include sufficient line context for planned modifications while keeping ranges minimal`
+		: ""
+}`
 
 	const baseDescription =
 		descriptionIntro +
-		"Structure: { files: [{ path: 'relative/path.ts'" +
-		(partialReadsEnabled ? ", line_ranges: [[1, 50], [100, 150]]" : "") +
-		" }] }. " +
-		"The 'path' is required and relative to workspace. "
-
-	const optionalRangesDescription = partialReadsEnabled
-		? "The 'line_ranges' is optional for reading specific sections. Each range is a [start, end] tuple (1-based inclusive). "
-		: ""
-
-	const examples = partialReadsEnabled
-		? "Example single file: { files: [{ path: 'src/app.ts' }] }. " +
-			"Example with line ranges: { files: [{ path: 'src/app.ts', line_ranges: [[1, 50], [100, 150]] }] }. " +
-			(isMultipleReadsEnabled
-				? `Example multiple files (within ${maxConcurrentFileReads}-file limit): { files: [{ path: 'file1.ts', line_ranges: [[1, 50]] }, { path: 'file2.ts' }] }`
-				: "")
-		: "Example single file: { files: [{ path: 'src/app.ts' }] }. " +
-			(isMultipleReadsEnabled
-				? `Example multiple files (within ${maxConcurrentFileReads}-file limit): { files: [{ path: 'file1.ts' }, { path: 'file2.ts' }] }`
-				: "")
-
-	const description = baseDescription + optionalRangesDescription + READ_FILE_SUPPORTS_NOTE + " " + examples
+		(partialReadsEnabled ? "Use line ranges to efficiently read specific portions of large files. " : "") +
+		READ_FILE_SUPPORTS_NOTE +
+		strategy +
+		"\n\nExample single file: { files: [{ path: 'src/app.ts' }] }. " +
+		(partialReadsEnabled
+			? "Example with line ranges: { files: [{ path: 'src/app.ts', line_ranges: [[1, 50], [100, 150]] }] }. "
+			: "") +
+		(isMultipleReadsEnabled
+			? `Example multiple files (within ${maxConcurrentFileReads}-file limit): { files: [{ path: 'file1.ts'${partialReadsEnabled ? ", line_ranges: [[1, 50]]" : ""} }, { path: 'file2.ts' }] }`
+			: "")
 
 	// Build the properties object conditionally
 	const fileProperties: Record<string, any> = {
@@ -83,7 +85,7 @@ export function createReadFileTool(options: ReadFileToolOptions = {}): OpenAI.Ch
 		type: "function",
 		function: {
 			name: "read_file",
-			description,
+			description: baseDescription,
 			strict: true,
 			parameters: {
 				type: "object",
