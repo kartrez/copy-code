@@ -53,10 +53,17 @@ export class GptChatByHandler extends OpenAiHandler {
 		})
 
 		for (const msg of openAiMessages) {
-			if (msg.role === "tool" && !("tool_call_id" in msg)) {
-				// Generate a dummy 9-char alphanumeric ID if missing
-				const id = normalizeMistralToolCallId(`call_${Date.now()}`) // Will trim/normalize to 9 chars
+			if (msg.role === "tool" && (!msg.tool_call_id || msg.tool_call_id === "")) {
+				// Generate a dummy 9-char alphanumeric ID if missing or empty
+				const id = normalizeMistralToolCallId(`call_${Date.now()}_${Math.random()}`)
 				;(msg as any).tool_call_id = id
+			}
+			if (msg.role === "assistant" && msg.tool_calls) {
+				for (const toolCall of msg.tool_calls) {
+					if (!toolCall.id || toolCall.id === "") {
+						toolCall.id = normalizeMistralToolCallId(`call_${Date.now()}_${Math.random()}`)
+					}
+				}
 			}
 			messagesToSend.push(msg)
 		}
