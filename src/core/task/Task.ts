@@ -561,12 +561,12 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			this._taskToolProtocol = resolveToolProtocol(this.apiConfiguration, modelInfo)
 		}
 
-		// Initialize the assistant message parser based on the locked tool protocol.
-		// For native protocol, tool calls come as tool_call chunks, not XML.
+		// Initialize the assistant message parser.
 		// For history items without a persisted protocol, we default to XML parser
 		// and will update it in resumeTaskFromHistory after detection.
-		const effectiveProtocol = this._taskToolProtocol || "xml"
-		this.assistantMessageParser = effectiveProtocol !== "native" ? new AssistantMessageParser() : undefined
+		// Always enable AssistantMessageParser even in native mode as a fallback/safety measure
+		// for models that ignore NTC and output XML tags anyway.
+		this.assistantMessageParser = new AssistantMessageParser()
 
 		this.messageQueueService = new MessageQueueService()
 
@@ -1968,12 +1968,10 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			}
 
 			// Update parser state to match the detected/resolved protocol
-			const shouldUseXmlParser = this._taskToolProtocol === "xml"
-			if (shouldUseXmlParser && !this.assistantMessageParser) {
+			// Always enable AssistantMessageParser even in native mode as a fallback/safety measure
+			// for models that ignore NTC and output XML tags anyway.
+			if (!this.assistantMessageParser) {
 				this.assistantMessageParser = new AssistantMessageParser()
-			} else if (!shouldUseXmlParser && this.assistantMessageParser) {
-				this.assistantMessageParser.reset()
-				this.assistantMessageParser = undefined
 			}
 		} else {
 		}
@@ -3035,25 +3033,33 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 							}
 							case "text": {
 								assistantMessage += chunk.text
+								const prevLength = this.assistantMessageContent.length
 
-								// Use the protocol determined at the start of streaming
-								// Don't rely solely on parser existence - parser might exist from previous state
-								if (shouldUseXmlParser && this.assistantMessageParser) {
-									// XML protocol: Parse raw assistant message chunk into content blocks
-									const prevLength = this.assistantMessageContent.length
+								if (this.assistantMessageParser) {
+									// Parse raw assistant message chunk into content blocks
+									// In XML mode, this is the primary way to get tool calls.
+									// In Native mode, this serves as a fallback to detect XML tool calls
+									// if the model ignores native function calling instructions.
 									this.assistantMessageContent = this.assistantMessageParser.processChunk(chunk.text)
+								}
 
-									if (this.assistantMessageContent.length > prevLength) {
-										// New content we need to present, reset to
-										// false in case previous content set this to true.
-										this.userMessageContentReady = false
+								if (this.assistantMessageContent.length > prevLength) {
+									// New content we need to present (could be new text block or new tool use)
+									this.userMessageContentReady = false
+
+									// If we detected a new tool call in native mode via XML fallback,
+									// it won't have an ID. We should log this for debugging.
+									if (!shouldUseXmlParser) {
+										const lastBlock = this.assistantMessageContent[this.assistantMessageContent.length - 1]
+										if (lastBlock?.type === "tool_use" && !(lastBlock as any).id) {
+											console.log(`[Task] Detected XML tool use fallback in native mode: ${lastBlock.name}`)
+										}
 									}
 
-									// Present content to user.
 									presentAssistantMessage(this)
-								} else {
+								} else if (!shouldUseXmlParser) {
 									// Native protocol: Text chunks are plain text, not XML tool calls
-									// Create or update a text content block directly
+									// If the parser didn't add new blocks, we update the existing text block directly
 									const lastBlock =
 										this.assistantMessageContent[this.assistantMessageContent.length - 1]
 
@@ -3071,6 +3077,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 									}
 
 									// Present content to user
+									presentAssistantMessage(this)
+								} else {
+									// XML protocol and no new blocks yet: still present current (partial) content
 									presentAssistantMessage(this)
 								}
 								break
