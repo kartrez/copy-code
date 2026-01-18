@@ -7,7 +7,7 @@ import { getModelParams } from "../transform/model-params"
 
 import { OpenAiHandler } from "./openai"
 
-export class GtpChatByHandler extends OpenAiHandler {
+export class GptChatByHandler extends OpenAiHandler {
 	constructor(options: ApiHandlerOptions) {
 		super({
 			...options,
