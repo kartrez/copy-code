@@ -23,6 +23,8 @@ TOOL USE
 
 You have access to a set of tools that are executed upon the user's approval. Use the provider-native tool-calling mechanism. Do not include XML markup or examples.${toolUseGuidance}
 
+IMPORTANT: You MUST use a tool in EVERY response to interact with the environment, explore the codebase, or complete the task. The only way to succeed is through tool use.
+
 When you have completed the task, you MUST use the attempt_completion tool to present your work to the user.`
 	}
 
