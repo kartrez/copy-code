@@ -32,41 +32,35 @@ export class GptChatByHandler extends OpenAiHandler {
 		// gpt-chat.by (specifically mimo-free) requires tool_call_id to be set for role: tool messages.
 		// It also doesn't support tool_choice.
 		// If we are using native tools, we need to ensure IDs are handled correctly.
+		// NOTE: Some providers (like those behind gpt-chat.by) might have issues with
+		// customized IDs. We'll use the original ones if possible.
 		const openAiMessages = convertToOpenAiMessages(messages, {
-			// Ensure IDs are alphanumeric and 9 chars long, similar to Mistral,
-			// which often helps with providers that have strict ID requirements.
-			normalizeToolCallId: (id) => {
-				const sanitized = id.replace(/[^a-zA-Z0-9]/g, "")
-				if (sanitized.length === 0) {
-					return "call" + Math.random().toString(36).substring(2, 7)
-				}
-				// GptChatBy (specifically mimo-free) is sensitive to ID format.
-				// Forcing a consistent 'call_xxxxx' format often helps.
-				return "call_" + sanitized.substring(0, 15)
-			},
-			// GptChatBy providers often benefit from merging tool result text
-			// to avoid issues with multiple messages in a row.
 			mergeToolResultText: true,
 		})
-
-		const systemMessage: OpenAI.Chat.ChatCompletionSystemMessageParam = {
-			role: "system",
-			content: systemPrompt,
-		}
 
 		const modelId = this.options.apiModelId ?? gptChatByDefaultModelId
 		const { info: modelInfo, reasoning } = this.getModel()
 
+		const messagesToSend: OpenAI.Chat.ChatCompletionMessageParam[] = []
+
+		// Some providers (like those behind gpt-chat.by) might have issues with
+		// system message placement or need it to be the first message.
+		messagesToSend.push({
+			role: "system",
+			content: systemPrompt,
+		})
+
+		messagesToSend.push(...openAiMessages)
+
 		const requestOptions: OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming = {
 			model: modelId,
 			temperature: this.options.modelTemperature ?? 0,
-			messages: [systemMessage, ...openAiMessages],
+			messages: messagesToSend,
 			stream: true as const,
 			stream_options: { include_usage: true },
 			...(reasoning && reasoning),
 			...(metadata?.tools && { tools: this.convertToolsForOpenAI(metadata.tools) }),
 			// tool_choice is explicitly omitted
-			parallel_tool_calls: false, // Disable parallel tool calls for better compatibility
 		}
 
 		this.addMaxTokensIfNeeded(requestOptions, modelInfo)
