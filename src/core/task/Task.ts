@@ -4343,7 +4343,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			...(shouldIncludeTools
 				? {
 						tools: allTools,
-						tool_choice: "auto",
+						tool_choice: isNativeProtocol(taskProtocol) ? "required" : "auto",
 						toolProtocol: taskProtocol,
 						parallelToolCalls: parallelToolCallsEnabled,
 					}
