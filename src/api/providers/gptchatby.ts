@@ -30,23 +30,26 @@ export class GptChatByHandler extends OpenAiHandler {
 		messages: Anthropic.Messages.MessageParam[],
 		metadata?: ApiHandlerCreateMessageMetadata,
 	): ApiStream {
+		const { info: modelInfo, reasoning } = this.getModel()
+		const modelId = this.options.apiModelId ?? gptChatByDefaultModelId
+
 		// gpt-chat.by (specifically mimo-free) requires tool_call_id to be set for role: tool messages.
 		// It also doesn't support tool_choice.
 		// If we are using native tools, we need to ensure IDs are handled correctly.
 		// NOTE: Many OpenAI-compatible providers (like those behind gpt-chat.by) have strict
 		// ID requirements and expect 9-char alphanumeric IDs (similar to Mistral).
 		const openAiMessages = convertToOpenAiMessages(messages, {
-			normalizeToolCallId: normalizeMistralToolCallId,
+			modelInfo,
 			mergeToolResultText: true,
 		})
-
-		const modelId = this.options.apiModelId ?? gptChatByDefaultModelId
-		const { info: modelInfo, reasoning } = this.getModel()
 
 		const messagesToSend: OpenAI.Chat.ChatCompletionMessageParam[] = []
 
 		// Some providers (like those behind gpt-chat.by) might have issues with
 		// system message placement or need it to be the first message.
+		// However, if there are already messages, we should be careful about
+		// repeating the system message or its placement.
+		// For OpenAI-style APIs, the system message usually goes first.
 		messagesToSend.push({
 			role: "system",
 			content: systemPrompt,
@@ -121,6 +124,7 @@ export class GptChatByHandler extends OpenAiHandler {
 			...NATIVE_TOOL_DEFAULTS,
 			...(gptChatByModels[id as keyof typeof gptChatByModels] || gptChatByModels[gptChatByDefaultModelId]),
 			supportsNativeTools: true,
+			toolCallIdFormat: "alphanumeric-9" as const,
 		}
 		const params = getModelParams({ format: "openai", modelId: id, model: info, settings: this.options })
 		return { id, info, ...params }
