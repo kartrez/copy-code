@@ -30,7 +30,7 @@ export class DeepSeekHandler extends OpenAiHandler {
 			openAiModelId: options.apiModelId ?? deepSeekDefaultModelId,
 			openAiBaseUrl: options.deepSeekBaseUrl ?? "https://api.deepseek.com",
 			openAiStreamingEnabled: true,
-			includeMaxTokens: true,
+			includeMaxTokens: true
 		})
 	}
 
