@@ -15,25 +15,28 @@ export class GptChatByHandler extends OpenAiHandler {
 			openAiModelId: options.apiModelId ?? gptChatByDefaultModelId,
 			openAiBaseUrl: "https://gpt-chat.by/api",
 			openAiStreamingEnabled: true,
+			includeMaxTokens: true,
 		})
 	}
 
 	override getModel() {
-		const id = this.options.apiModelId ?? gptChatByDefaultModelId
+		const id = (this.options.apiModelId as keyof typeof gptChatByModels) || gptChatByDefaultModelId
 		const info = {
 			...NATIVE_TOOL_DEFAULTS,
-			...(gptChatByModels[id as keyof typeof gptChatByModels] || gptChatByModels[gptChatByDefaultModelId]),
+			...(gptChatByModels[id] || gptChatByModels[gptChatByDefaultModelId]),
 		}
 		const params = getModelParams({ format: "openai", modelId: id, model: info, settings: this.options })
 		return { id, info, ...params }
 	}
 
-	// Override to handle DeepSeek's usage metrics, including caching.
+	// Override to handle usage metrics, including caching.
 	protected override processUsageMetrics(usage: any): ApiStreamUsageChunk {
 		return {
 			type: "usage",
 			inputTokens: usage?.prompt_tokens || 0,
 			outputTokens: usage?.completion_tokens || 0,
+			cacheWriteTokens: usage?.prompt_tokens_details?.cache_miss_tokens,
+			cacheReadTokens: usage?.prompt_tokens_details?.cached_tokens,
 		}
 	}
 }
