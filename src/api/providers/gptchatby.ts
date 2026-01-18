@@ -1,4 +1,4 @@
-import { gptChatByDefaultModelId, gptChatByModels, NATIVE_TOOL_DEFAULTS } from "@roo-code/types"
+import { gptChatByDefaultModelId, gptChatByModels, NATIVE_TOOL_DEFAULTS, GPT_CHAT_BY_DEFAULT_TEMPERATURE } from "@roo-code/types"
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 
@@ -7,6 +7,7 @@ import type { ApiHandlerOptions } from "../../shared/api"
 import type { ApiStream, ApiStreamUsageChunk } from "../transform/stream"
 import { getModelParams } from "../transform/model-params"
 import { convertToOpenAiMessages } from "../transform/openai-format"
+import { normalizeMistralToolCallId } from "../transform/mistral-format"
 import { XmlMatcher } from "../../utils/xml-matcher"
 import { handleOpenAIError } from "./utils/openai-error-handler"
 
@@ -32,9 +33,10 @@ export class GptChatByHandler extends OpenAiHandler {
 		// gpt-chat.by (specifically mimo-free) requires tool_call_id to be set for role: tool messages.
 		// It also doesn't support tool_choice.
 		// If we are using native tools, we need to ensure IDs are handled correctly.
-		// NOTE: Some providers (like those behind gpt-chat.by) might have issues with
-		// customized IDs. We'll use the original ones if possible.
+		// NOTE: Many OpenAI-compatible providers (like those behind gpt-chat.by) have strict
+		// ID requirements and expect 9-char alphanumeric IDs (similar to Mistral).
 		const openAiMessages = convertToOpenAiMessages(messages, {
+			normalizeToolCallId: normalizeMistralToolCallId,
 			mergeToolResultText: true,
 		})
 
@@ -54,13 +56,14 @@ export class GptChatByHandler extends OpenAiHandler {
 
 		const requestOptions: OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming = {
 			model: modelId,
-			temperature: this.options.modelTemperature ?? 0,
+			temperature: this.options.modelTemperature ?? GPT_CHAT_BY_DEFAULT_TEMPERATURE,
 			messages: messagesToSend,
 			stream: true as const,
 			stream_options: { include_usage: true },
 			...(reasoning && reasoning),
 			...(metadata?.tools && { tools: this.convertToolsForOpenAI(metadata.tools) }),
 			// tool_choice is explicitly omitted
+			parallel_tool_calls: false,
 		}
 
 		this.addMaxTokensIfNeeded(requestOptions, modelInfo)
