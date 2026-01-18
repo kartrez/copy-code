@@ -1,4 +1,4 @@
-import { gptChatByDefaultModelId, gptChatByModels } from "@roo-code/types"
+import { gptChatByDefaultModelId, gptChatByModels, NATIVE_TOOL_DEFAULTS } from "@roo-code/types"
 
 import type { ApiHandlerOptions } from "../../shared/api"
 
@@ -20,7 +20,10 @@ export class GtpChatByHandler extends OpenAiHandler {
 
 	override getModel() {
 		const id = this.options.apiModelId ?? gptChatByDefaultModelId
-		const info = gptChatByModels[id as keyof typeof gptChatByModels] || gptChatByModels[gptChatByDefaultModelId]
+		const info = {
+			...NATIVE_TOOL_DEFAULTS,
+			...(gptChatByModels[id as keyof typeof gptChatByModels] || gptChatByModels[gptChatByDefaultModelId]),
+		}
 		const params = getModelParams({ format: "openai", modelId: id, model: info, settings: this.options })
 		return { id, info, ...params }
 	}
