@@ -40,8 +40,13 @@ export class GptChatByHandler extends OpenAiHandler {
 				if (sanitized.length === 0) {
 					return "call" + Math.random().toString(36).substring(2, 7)
 				}
-				return sanitized.substring(0, 9).padEnd(9, "0")
+				// GptChatBy (specifically mimo-free) is sensitive to ID format.
+				// Forcing a consistent 'call_xxxxx' format often helps.
+				return "call_" + sanitized.substring(0, 15)
 			},
+			// GptChatBy providers often benefit from merging tool result text
+			// to avoid issues with multiple messages in a row.
+			mergeToolResultText: true,
 		})
 
 		const systemMessage: OpenAI.Chat.ChatCompletionSystemMessageParam = {
