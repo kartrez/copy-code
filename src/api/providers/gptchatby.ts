@@ -54,16 +54,17 @@ export class GptChatByHandler extends OpenAiHandler {
 				for (const toolCall of msg.tool_calls) {
 					if (!toolCall.id || toolCall.id.trim() === "") {
 						const newId = this.generateToolCallId()
-						toolCall.id = newId
+						;(toolCall as any).id = newId
 
-						if (toolCall.function?.name) {
-							toolCallMap.set(toolCall.function.name, newId)
+						if ((toolCall as any).function?.name) {
+							toolCallMap.set((toolCall as any).function.name, newId)
 						}
 					} else {
-						toolCall.id = normalizeMistralToolCallId(toolCall.id)
+						const normalizedId = normalizeMistralToolCallId(toolCall.id)
+						;(toolCall as any).id = normalizedId
 
-						if (toolCall.function?.name) {
-							toolCallMap.set(toolCall.function.name, toolCall.id)
+						if ((toolCall as any).function?.name) {
+							toolCallMap.set((toolCall as any).function.name, normalizedId)
 						}
 					}
 				}
@@ -121,10 +122,10 @@ export class GptChatByHandler extends OpenAiHandler {
 		// Подготовка параметров tools с возможностью выбора режима
 		const toolsParams = metadata?.tools ? {
 			tools: this.convertToolsForOpenAI(metadata.tools),
-			...(metadata.toolChoice && {
-				tool_choice: metadata.toolChoice === 'auto' ? 'auto' :
-					metadata.toolChoice === 'none' ? 'none' :
-						{ type: 'function', function: { name: metadata.toolChoice } }
+			...(metadata.tool_choice && {
+				tool_choice: metadata.tool_choice === 'auto' ? 'auto' :
+					metadata.tool_choice === 'none' ? 'none' :
+						metadata.tool_choice
 			}),
 			parallel_tool_calls: metadata?.parallelToolCalls ?? false,
 		} : {}
@@ -220,8 +221,7 @@ export class GptChatByHandler extends OpenAiHandler {
 			type: "usage",
 			inputTokens: usage?.prompt_tokens || 0,
 			outputTokens: usage?.completion_tokens || 0,
-			totalTokens: usage?.total_tokens || 0,
-			completionReason: usage?.completion_reason || null,
+			// totalTokens is not present in ApiStreamUsageChunk
 		}
 	}
 }
