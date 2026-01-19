@@ -3626,6 +3626,14 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 							}
 						}
 
+						// For XML protocol, check if we might have interrupted the response prematurely
+						if (!isNativeProtocol(this._taskToolProtocol ?? "xml") && this.didAlreadyUseTool) {
+							const lastBlock = this.assistantMessageContent[this.assistantMessageContent.length - 1]
+							if (lastBlock && (lastBlock.type === "tool_use" || lastBlock.type === "mcp_tool_use") && lastBlock.partial) {
+								extraFeedback += "\n\n(Note: The previous tool call was interrupted before it could be completed. Please ensure you provide a complete XML tool call at the end of your response.)"
+							}
+						}
+
 						// Only show error and count toward mistake limit after 2 consecutive failures
 						if (this.consecutiveNoToolUseCount >= 2) {
 							await this.say("error", "MODEL_NO_TOOLS_USED")

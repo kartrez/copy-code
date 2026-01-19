@@ -603,20 +603,20 @@ export async function presentAssistantMessage(cline: Task) {
 					}
 				}
 
-				// For XML protocol: Only one tool per message is allowed
-				// For native protocol with experimental flag enabled: Multiple tools can be executed in sequence
-				// For native protocol with experimental flag disabled: Single tool per message (default safe behavior)
-				if (toolProtocol === TOOL_PROTOCOL.XML) {
+				// Uses step-by-step for both protocol types.
+				// For XML protocol, only one tool call is allowed per message.
+				// For NATIVE protocol, multiple tool calls are allowed per message, but they are executed one by one.
+				if (!block.partial) {
 					// Once a tool result has been collected, ignore all other tool
 					// uses since we should only ever present one tool result per
 					// message (XML protocol only).
-					cline.didAlreadyUseTool = true
-				} else if (toolProtocol === TOOL_PROTOCOL.NATIVE && !isMultipleNativeToolCallsEnabled) {
-					// For native protocol with experimental flag disabled, enforce single tool per message
-					cline.didAlreadyUseTool = true
+					if (toolProtocol === TOOL_PROTOCOL.XML) {
+						cline.didAlreadyUseTool = true
+					} else if (toolProtocol === TOOL_PROTOCOL.NATIVE && !isMultipleNativeToolCallsEnabled) {
+						// For native protocol with experimental flag disabled, enforce single tool per message
+						cline.didAlreadyUseTool = true
+					}
 				}
-				// If toolProtocol is NATIVE and isMultipleNativeToolCallsEnabled is true,
-				// allow multiple tool calls in sequence (don't set didAlreadyUseTool)
 			}
 
 			const askApproval = async (
