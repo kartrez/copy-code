@@ -180,6 +180,7 @@ export async function presentAssistantMessage(cline: Task) {
 						type: "tool_result",
 						tool_use_id: toolCallId,
 						content: resultContent,
+						is_error: true,
 					})
 
 					if (imageBlocks.length > 0) {
@@ -188,7 +189,9 @@ export async function presentAssistantMessage(cline: Task) {
 				}
 
 				hasToolResult = true
-				cline.didAlreadyUseTool = true
+				if (!mcpBlock.partial) {
+					cline.didAlreadyUseTool = true
+				}
 			}
 
 			const toolDescription = () => `[mcp_tool: ${mcpBlock.serverName}/${mcpBlock.toolName}]`
@@ -633,7 +636,9 @@ export async function presentAssistantMessage(cline: Task) {
 					if (!approved) {
 						// Gatekeeper denied the action
 						pushToolResult(formatResponse.toolDenied())
-						cline.didRejectTool = true
+						if (!block.partial) {
+							cline.didRejectTool = true
+						}
 						captureAskApproval(block.name, false)
 						return false
 					}
@@ -663,7 +668,9 @@ export async function presentAssistantMessage(cline: Task) {
 					} else {
 						pushToolResult(formatResponse.toolDenied(toolProtocol))
 					}
-					cline.didRejectTool = true
+					if (!block.partial) {
+						cline.didRejectTool = true
+					}
 					captureAskApproval(block.name, false) // kilocode_change
 					return false
 				}
