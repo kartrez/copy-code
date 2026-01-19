@@ -46,5 +46,17 @@ Tool uses are formatted using XML-style tags. The tool name itself becomes the X
 ...
 </actual_tool_name>
 
+Example:
+To read a file, use:
+<read_file>
+<path>src/index.js</path>
+</read_file>
+
+CRITICAL:
+- You MUST use EXACTLY ONE tool call per response.
+- You MUST NOT use any other format for tool calls.
+- You MUST NOT wrap the XML in markdown code blocks.
+- The XML tool call MUST be at the VERY END of your response.
+
 Always use the actual tool name as the XML tag name for proper parsing and execution.`
 }

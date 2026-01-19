@@ -49,7 +49,9 @@ export function getToolUseGuidelinesSection(
 
 	// Protocol-specific guideline - only add for XML protocol
 	if (!isNativeProtocol(protocol)) {
-		guidelinesList.push(`${itemNumber++}. Formulate your tool use using the XML format specified for each tool.`)
+		guidelinesList.push(
+			`${itemNumber++}. Formulate your tool use using the XML format specified for each tool. The XML must NOT be wrapped in markdown code blocks and MUST be the very last thing in your response.`,
+		)
 	}
 	guidelinesList.push(`${itemNumber++}. After each tool use, the user will respond with the result of that tool use. This result will provide you with the necessary information to continue your task or make further decisions. This response may include:
 	 - Information about whether the tool succeeded or failed, along with any reasons for failure.
