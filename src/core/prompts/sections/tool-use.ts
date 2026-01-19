@@ -25,7 +25,7 @@ You have access to a set of tools that are executed upon the user's approval. Us
 
 CRITICAL: You MUST use the API's native function-calling feature. Any tool call using XML tags will FAIL and will not be processed.${toolUseGuidance}
 
-IMPORTANT: You MUST use a tool in EVERY response to interact with the environment, explore the codebase, or complete the task. The only way to succeed is through tool use.
+IMPORTANT: You MUST use a tool in EVERY response to interact with the environment, explore the codebase, or complete the task. The only way to succeed is through tool use. If you are unsure of what to do next, use a tool to gather more information.
 
 When you have completed the task, you MUST use the attempt_completion tool to present your work to the user.`
 	}
@@ -35,6 +35,8 @@ When you have completed the task, you MUST use the attempt_completion tool to pr
 TOOL USE
 
 You have access to a set of tools that are executed upon the user's approval. You must use exactly one tool per message, and every assistant message must include a tool call. You use tools step-by-step to accomplish a given task, with each tool use informed by the result of the previous tool use.
+
+IMPORTANT: You MUST use a tool in EVERY response. If you do not use a tool, you will fail the task.
 
 # Tool Use Formatting
 
@@ -57,6 +59,7 @@ CRITICAL:
 - You MUST NOT use any other format for tool calls.
 - You MUST NOT wrap the XML in markdown code blocks.
 - The XML tool call MUST be at the VERY END of your response.
+- Every response MUST contain a tool call.
 
 Always use the actual tool name as the XML tag name for proper parsing and execution.`
 }

@@ -3132,7 +3132,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 							if (finalToolUse) {
 								// Store the tool call ID
-								;(finalToolUse as any).id = event.id
+								;(finalToolUse as any).id = event.id || `tool_${Math.random().toString(36).substr(2, 9)}`
 
 								// Get the index and replace partial with final
 								if (toolUseIndex !== undefined) {

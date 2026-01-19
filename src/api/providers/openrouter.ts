@@ -415,8 +415,11 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 
 		let stream
 		try {
+			console.log(`[OpenRouter] Creating completion for model ${modelId} with ${openAiMessages.length} messages`)
+			console.log(`[OpenRouter] Completion params: ${JSON.stringify({ ...completionParams, messages: "[TRUNCATED]" })}`)
 			stream = await this.client.chat.completions.create(completionParams, requestOptions)
 		} catch (error) {
+			console.error(`[OpenRouter] API Error:`, error)
 			// kilocode_change start
 			// KiloCode backend errors are already user-readable and should be handled upstream.
 			if (this.providerName === "KiloCode" && isAnyRecognizedKiloCodeError(error)) {
@@ -482,6 +485,7 @@ export class OpenRouterHandler extends BaseProvider implements SingleCompletionH
 		let hasYieldedReasoningFromDetails = false
 
 		for await (const chunk of stream) {
+			console.log(`[OpenRouter] Raw chunk: ${JSON.stringify(chunk)}`)
 			// OpenRouter returns an error object instead of the OpenAI SDK throwing an error.
 			if ("error" in chunk) {
 				this.handleStreamingError(chunk.error as OpenRouterError, modelId, "createMessage")

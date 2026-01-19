@@ -177,11 +177,14 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 
 			let stream
 			try {
+				console.log(`[OpenAI] Creating completion for model ${modelId} with ${convertedMessages.length} messages`)
+				console.log(`[OpenAI] Request options: ${JSON.stringify({ ...requestOptions, messages: "[TRUNCATED]" })}`)
 				stream = await this.client.chat.completions.create(
 					requestOptions,
 					isAzureAiInference ? { path: OPENAI_AZURE_AI_INFERENCE_PATH } : {},
 				)
 			} catch (error) {
+				console.error(`[OpenAI] API Error:`, error)
 				throw handleOpenAIError(error, this.providerName)
 			}
 
@@ -198,6 +201,7 @@ export class OpenAiHandler extends BaseProvider implements SingleCompletionHandl
 			const activeToolCallIds = new Set<string>()
 
 			for await (const chunk of stream) {
+				console.log(`[OpenAI] Raw chunk: ${JSON.stringify(chunk)}`)
 				const delta = chunk.choices?.[0]?.delta ?? {}
 				const finishReason = chunk.choices?.[0]?.finish_reason
 
