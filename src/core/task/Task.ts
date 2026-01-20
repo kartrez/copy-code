@@ -365,28 +365,28 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	 * Push a tool_result block to userMessageContent, preventing duplicates.
 	 * Uses 'tool_call_id' as required by OpenRouter / Gemini API.
 	 */
-	public pushToolResultToUserContent(toolResult: Omit<Anthropic.ToolResultBlockParam, "tool_call_id"> & { tool_use_id: string }): boolean {
-		const toolCallId = toolResult.tool_use_id;
+	public pushToolResultToUserContent(toolResult: Omit<Anthropic.ToolResultBlockParam, "tool_use_id"> & { tool_use_id: string }): boolean {
+		const toolUseId = toolResult.tool_use_id;
 
 		const existingResult = this.userMessageContent.find(
 			(block): block is Anthropic.ToolResultBlockParam =>
-				block.type === "tool_result" && block.tool_call_id === toolCallId,
-		)
+				block.type === "tool_result" && block.tool_use_id === toolUseId,
+		);
 
 		if (existingResult) {
 			console.warn(
-				`[Task#pushToolResultToUserContent] Skipping duplicate tool_result for tool_call_id: ${toolCallId}`,
-			)
-			return false
+				`[Task#pushToolResultToUserContent] Skipping duplicate tool_result for tool_use_id: ${toolUseId}`,
+			);
+			return false;
 		}
 
 		this.userMessageContent.push({
 			type: "tool_result",
-			tool_call_id: toolCallId,
+			tool_use_id: toolUseId,
 			content: toolResult.content,
-		} as Anthropic.ToolResultBlockParam)
+		});
 
-		return true
+		return true;
 	}
 	didRejectTool = false
 	didAlreadyUseTool = false
@@ -3646,13 +3646,6 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 							// Only count toward mistake limit after second consecutive failure
 							this.consecutiveMistakeCount++
 						}
-
-						// Use the task's locked protocol for consistent behavior
-						this.userMessageContent.push({
-							type: "tool_result",
-							tool_call_id: toolResult.tool_use_id, // ✅ ПРАВИЛЬНО
-							content: result,
-						})
 					} else {
 						// Reset counter when tools are used successfully
 						this.consecutiveNoToolUseCount = 0
