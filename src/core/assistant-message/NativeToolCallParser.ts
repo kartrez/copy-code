@@ -285,9 +285,8 @@ export class NativeToolCallParser {
 
 		// Parse the complete accumulated JSON
 		// Cast to any for the name since parseToolCall handles both ToolName and dynamic MCP tools
-		const finalId = id || `call_${Date.now()}${Math.random().toString(36).substr(2, 5)}`
 		const finalToolUse = this.parseToolCall({
-			id: finalId,
+			id: toolCall.id,
 			name: toolCall.name as ToolName,
 			arguments: toolCall.argumentsAccumulator,
 		})
