@@ -363,23 +363,29 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 	/**
 	 * Push a tool_result block to userMessageContent, preventing duplicates.
-	 * This is critical for native tool protocol where duplicate tool_use_ids cause API errors.
-	 *
-	 * @param toolResult - The tool_result block to add
-	 * @returns true if added, false if duplicate was skipped
+	 * Uses 'tool_call_id' as required by OpenRouter / Gemini API.
 	 */
-	public pushToolResultToUserContent(toolResult: Anthropic.ToolResultBlockParam): boolean {
+	public pushToolResultToUserContent(toolResult: Omit<Anthropic.ToolResultBlockParam, "tool_call_id"> & { tool_use_id: string }): boolean {
+		const toolCallId = toolResult.tool_use_id;
+
 		const existingResult = this.userMessageContent.find(
 			(block): block is Anthropic.ToolResultBlockParam =>
-				block.type === "tool_result" && block.tool_use_id === toolResult.tool_use_id,
+				block.type === "tool_result" && block.tool_call_id === toolCallId,
 		)
+
 		if (existingResult) {
 			console.warn(
-				`[Task#pushToolResultToUserContent] Skipping duplicate tool_result for tool_use_id: ${toolResult.tool_use_id}`,
+				`[Task#pushToolResultToUserContent] Skipping duplicate tool_result for tool_call_id: ${toolCallId}`,
 			)
 			return false
 		}
-		this.userMessageContent.push(toolResult)
+
+		this.userMessageContent.push({
+			type: "tool_result",
+			tool_call_id: toolCallId,
+			content: toolResult.content,
+		} as Anthropic.ToolResultBlockParam)
+
 		return true
 	}
 	didRejectTool = false
@@ -3643,8 +3649,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 						// Use the task's locked protocol for consistent behavior
 						this.userMessageContent.push({
-							type: "text",
-							text: formatResponse.noToolsUsed(this._taskToolProtocol ?? "xml") + extraFeedback,
+							type: "tool_result",
+							tool_call_id: toolResult.tool_use_id, // ✅ ПРАВИЛЬНО
+							content: result,
 						})
 					} else {
 						// Reset counter when tools are used successfully
