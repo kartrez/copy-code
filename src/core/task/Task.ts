@@ -2500,6 +2500,9 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 		const stack: StackItem[] = [{ userContent, includeFileDetails, retryAttempt: 0 }]
 
+		let originalApiConfig: ProviderSettings | null = null
+		let wasModelTemporarilyChanged = false
+
 		while (stack.length > 0) {
 			const currentItem = stack.pop()!
 			const currentUserContent = currentItem.userContent
@@ -2509,6 +2512,28 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 				throw new Error(
 					`[KiloCode#recursivelyMakeClineRequests] task ${this.taskId}.${this.instanceId} aborted`,
 				)
+			}
+
+			if (
+				wasModelTemporarilyChanged &&
+				!this.didToolFailInCurrentTurn &&
+				this.assistantMessageContent.some((block) => block.type === "tool_use")
+			) {
+				// Восстанавливаем оригинальную конфигурацию
+				if (originalApiConfig) {
+					this.updateApiConfiguration(originalApiConfig)
+					await this.say(
+						"info",
+						`Reverted to original model '${originalApiConfig.modelId}' after successful tool use.`,
+						undefined,
+						false,
+						undefined,
+						undefined,
+						{ isNonInteractive: true },
+					)
+				}
+				wasModelTemporarilyChanged = false
+				originalApiConfig = null // очищаем
 			}
 
 			if (this.consecutiveMistakeLimit > 0 && this.consecutiveMistakeCount >= this.consecutiveMistakeLimit) {
@@ -3640,8 +3665,33 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 
 						// Only show error and count toward mistake limit after 2 consecutive failures
 						if (this.consecutiveNoToolUseCount >= 2) {
-							await this.say("error", "MODEL_NO_TOOLS_USED")
+							// await this.say("error", "MODEL_NO_TOOLS_USED")
 							// Only count toward mistake limit after second consecutive failure
+							if (!wasModelTemporarilyChanged) {
+								if (!originalApiConfig) {
+									originalApiConfig = { ...this.apiConfiguration }
+								}
+								const provider = this.providerRef.deref()
+								const state = await provider?.getState()
+
+								this.updateApiConfiguration({
+									...state?.apiConfiguration,
+									apiProvider: "gpt-chat-by",
+									modelId: "minimax/m2.1",
+									toolProtocol: "native",
+								} as ProviderSettings)
+
+								await this.say(
+									"info",
+									`Switched to "minimax/m2.1" due to MODEL_NO_TOOLS_USED error.`,
+									undefined,
+									false,
+									undefined,
+									undefined,
+									{ isNonInteractive: true },
+								)
+								wasModelTemporarilyChanged = true
+							}
 							this.consecutiveMistakeCount++
 						}
 
