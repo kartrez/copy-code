@@ -3682,7 +3682,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								} as ProviderSettings)
 
 								await this.say(
-									"info",
+									"text",
 									`Switched to "minimax/m2.1" due to MODEL_NO_TOOLS_USED error.`,
 									undefined,
 									false,
