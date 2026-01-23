@@ -18,16 +18,15 @@ export const gptChatByModels = {
 		description: `Mimo v2 Flash.`,
 		isFree: true,
 	},
-	"kat-coder-free": {
-		maxTokens: 32_000,
-		contextWindow: 150_000,
+	"kat-coder-pro": {
+		maxTokens: 128_000,
+		contextWindow: 256_000,
 		supportsImages: false,
 		supportsPromptCache: true,
 		supportsNativeTools: false,
-		inputPrice: 0,
-		outputPrice: 0,
-		description: `Mimo v2 Flash.`,
-		isFree: true,
+		inputPrice: 0.3,
+		outputPrice: 1.2,
+		description: `KAT Coder PRO.`,
 	},
 	"openai-free": {
 		maxTokens: 8000,
