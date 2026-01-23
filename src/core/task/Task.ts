@@ -3677,7 +3677,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								this.updateApiConfiguration({
 									...state?.apiConfiguration,
 									apiProvider: "gpt-chat-by",
-									modelId: "minimax/m2.1",
+									apiModelId: "minimax/m2.1",
 									toolProtocol: "native",
 								} as ProviderSettings)
 
