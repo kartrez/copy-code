@@ -2524,7 +2524,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 					this.updateApiConfiguration(originalApiConfig)
 					await this.say(
 						"text",
-						`Reverted to original model '${originalApiConfig.modelId}' after successful tool use.`,
+						`Reverted to original model '${originalApiConfig.apiModelId}' after successful tool use.`,
 						undefined,
 						false,
 						undefined,
