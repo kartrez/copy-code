@@ -929,6 +929,7 @@ export interface WebviewMessage {
 		| "requestModes"
 		| "switchMode"
 		| "debugSetting"
+		| "telegramAuthButtonClicked"
 		| "refreshSkills" // kilocode_change: Request skills data refresh
 	text?: string
 	suggestionLength?: number // kilocode_change: Length of accepted suggestion for telemetry
@@ -1066,14 +1067,15 @@ export type UserOrganizationWithApiKey = {
 }
 
 export type ProfileData = {
-	kilocodeToken: string
-	user: {
+	token: string
+	telegram: {
 		id: string
-		name: string
-		email: string
-		image: string
+		firstname: string
+		lastname: string
 	}
-	organizations?: UserOrganizationWithApiKey[]
+	hasTrial: boolean,
+	hasSubscription: boolean,
+	subscriptionExpairedDate: string,
 }
 
 export interface ProfileDataResponsePayload {
