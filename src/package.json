@@ -140,11 +140,6 @@
 				"icon": "$(add)"
 			},
 			{
-				"command": "copy-coder.mcpButtonClicked",
-				"title": "%command.mcpServers.title%",
-				"icon": "$(server)"
-			},
-			{
 				"command": "copy-coder.importSettings",
 				"title": "%command.importSettings.title%",
 				"category": "%configuration.title%"
@@ -366,8 +361,8 @@
 					"when": "view == copy-coder.SidebarProvider"
 				},
 				{
-					"command": "copy-coder.mcpButtonClicked",
-					"group": "navigation@2",
+					"command": "copy-coder.agentManagerOpen",
+					"group": "navigation@1",
 					"when": "view == copy-coder.SidebarProvider"
 				},
 				{
@@ -405,11 +400,6 @@
 				{
 					"command": "copy-coder.plusButtonClicked",
 					"group": "navigation@1",
-					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
-				},
-				{
-					"command": "copy-coder.mcpButtonClicked",
-					"group": "navigation@2",
 					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
 				},
 				{
@@ -623,6 +613,24 @@
 					"type": "boolean",
 					"default": false,
 					"description": "%settings.debug.description%"
+				},
+				"copy-coder.debugProxy.enabled": {
+					"type": "boolean",
+					"default": false,
+					"description": "%settings.debugProxy.enabled.description%",
+					"markdownDescription": "%settings.debugProxy.enabled.description%"
+				},
+				"copy-coder.debugProxy.serverUrl": {
+					"type": "string",
+					"default": "http://127.0.0.1:8888",
+					"description": "%settings.debugProxy.serverUrl.description%",
+					"markdownDescription": "%settings.debugProxy.serverUrl.description%"
+				},
+				"copy-coder.debugProxy.tlsInsecure": {
+					"type": "boolean",
+					"default": false,
+					"description": "%settings.debugProxy.tlsInsecure.description%",
+					"markdownDescription": "%settings.debugProxy.tlsInsecure.description%"
 				}
 			}
 		},
@@ -700,6 +708,7 @@
 		"fuse.js": "^7.1.0",
 		"fzf": "^0.5.2",
 		"get-folder-size": "^5.0.0",
+		"global-agent": "^3.0.0",
 		"google-auth-library": "^9.15.1",
 		"gray-matter": "^4.0.3",
 		"i18next": "^25.0.0",
@@ -754,6 +763,7 @@
 		"tree-sitter-wasms": "^0.1.12",
 		"turndown": "^7.2.0",
 		"uri-js": "^4.4.1",
+		"undici": "^6.21.3",
 		"uuid": "^11.1.0",
 		"vscode-material-icons": "^0.1.1",
 		"web-tree-sitter": "^0.25.6",
@@ -805,7 +815,6 @@
 		"rimraf": "^6.1.0",
 		"tsup": "^8.4.0",
 		"tsx": "^4.19.3",
-		"typescript": "5.8.3",
 		"vitest": "^3.2.3",
 		"zod-to-ts": "^1.2.0"
 	}

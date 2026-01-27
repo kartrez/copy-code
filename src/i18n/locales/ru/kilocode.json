@@ -15,6 +15,7 @@
 		"noAssistantMessages": "Ответ модели неожиданно завершился (нет сообщений ассистента). Это может быть признаком ограничения скорости запросов.",
 		"notLoggedInError": "Невозможно выполнить запрос, убедитесь, что вы подключены и вошли в систему с выбранным поставщиком.\n\n{{error}}",
 		"maxCompletionTokens": "Достигнуто максимальное количество токенов завершения.",
+		"contentFilter": "Запрос был заблокирован фильтром контента.",
 		"disableApplyDiff": "Если эта ошибка продолжает повторяться, пожалуйста, отключите Редактирование через Diff в Расширенных настройках.",
 		"disableEditFile": "Если эта ошибка продолжает повторяться, пожалуйста, отключите экспериментальную функцию Быстрого применения."
 	},
@@ -99,8 +100,8 @@
 			"tooltip": {
 				"basic": "Copy Coder Autocomplete",
 				"disabled": "Copy Coder Autocomplete (отключено)",
-				"noCredits": "**На вашем счёте нет кредитов**\n\nНа вашем счёте Kilo Code нет кредитов. Чтобы использовать автодополнение, пожалуйста, пополните счёт.\n\n[Открыть Настройки](command:kilo-code.settingsButtonClicked)",
-				"noUsableProvider": "**Модель автодополнения не настроена**\n\nЧтобы включить автодополнение, добавьте профиль с одним из поддерживаемых провайдеров: {{providers}}.\n\n[Открыть Настройки](command:kilo-code.settingsButtonClicked)",
+				"noCredits": "**На вашем счёте нет кредитов**\n\nНа вашем счёте Copy Code нет кредитов. Чтобы использовать автодополнение, пожалуйста, пополните счёт.\n\n[Открыть Настройки](command:copy-code.settingsButtonClicked)",
+				"noUsableProvider": "**Модель автодополнения не настроена**\n\nЧтобы включить автодополнение, добавьте профиль с одним из поддерживаемых провайдеров: {{providers}}.\n\n[Открыть Настройки](command:copy-code.settingsButtonClicked)",
 				"sessionTotal": "Общая стоимость сессии:",
 				"provider": "Провайдер:",
 				"model": "Модель:",
@@ -178,7 +179,7 @@
 		"errors": {
 			"cliOutdated": "Твоя версия Copy Coder CLI устарела и не поддерживает Agent Manager. Обнови до последней версии.",
 			"cliNotFound": "Copy Coder CLI не найден. Установи его для использования Agent Manager.",
-			"cliMisconfigured": "Code CLI не настроен. Выполни 'kilocode auth' для входа или 'kilocode config' для настройки.",
+			"cliMisconfigured": "Code CLI не настроен. Выполни 'copycoder auth' для входа или 'copycoder config' для настройки.",
 			"sessionFailed": "Не удалось запустить сессию агента",
 			"sessionFailedWithMessage": "Не удалось запустить сессию агента: {{message}}"
 		},
@@ -196,7 +197,7 @@
 		},
 		"terminal": {
 			"installMessage": "Выполнение npm install для установки Copy Copy Coder CLI. После завершения можешь закрыть этот терминал и попробовать запустить Agent Manager снова.",
-			"authReminder": "If this is your first install, run `kilocode auth` to sign in before starting the Agent Manager."
+			"authReminder": "If this is your first install, run `copycoder auth` to sign in before starting the Agent Manager."
 		}
 	},
 	"speechToText": {
@@ -206,7 +207,7 @@
 		}
 	},
 	"configDiscovery": {
-		"added": "Код Кило: Добавлен {{source}} {{configType}}: {{name}}{{modeStr}}",
-		"removed": "Код Kilo: Удалено {{source}} {{configType}}: {{name}}{{modeStr}}"
+		"added": "Код Copy: Добавлен {{source}} {{configType}}: {{name}}{{modeStr}}",
+		"removed": "Код Copy Coder: Удалено {{source}} {{configType}}: {{name}}{{modeStr}}"
 	}
 }
