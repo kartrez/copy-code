@@ -148,7 +148,6 @@ export const providerNames = [
 	"featherless",
 	"fireworks",
 	"gemini",
-	"gemini-cli",
 	"groq",
 	"mistral",
 	"moonshot",
@@ -161,7 +160,6 @@ export const providerNames = [
 	// kilocode_change start
 	"kilocode",
 	"minimax",
-	"gemini-cli",
 	"virtual-quota-fallback",
 	"synthetic",
 	"inception",
@@ -357,11 +355,6 @@ const geminiSchema = apiModelIdProviderModelSchema.extend({
 	enableGrounding: z.boolean().optional(),
 })
 
-const geminiCliSchema = apiModelIdProviderModelSchema.extend({
-	geminiCliOAuthPath: z.string().optional(),
-	geminiCliProjectId: z.string().optional(),
-})
-
 const openAiCodexSchema = apiModelIdProviderModelSchema.extend({
 	// No additional settings needed - uses OAuth authentication
 })
@@ -403,7 +396,11 @@ const doubaoSchema = apiModelIdProviderModelSchema.extend({
 
 const moonshotSchema = apiModelIdProviderModelSchema.extend({
 	moonshotBaseUrl: z
-		.union([z.literal("https://api.moonshot.ai/v1"), z.literal("https://api.moonshot.cn/v1")])
+		.union([
+			z.literal("https://api.moonshot.ai/v1"),
+			z.literal("https://api.moonshot.cn/v1"),
+			z.literal("https://api.kimi.com/coding/v1"),
+		])
 		.optional(),
 	moonshotApiKey: z.string().optional(),
 })
@@ -584,7 +581,6 @@ export const providerSettingsSchemaDiscriminated = z.discriminatedUnion("apiProv
 	vsCodeLmSchema.merge(z.object({ apiProvider: z.literal("vscode-lm") })),
 	lmStudioSchema.merge(z.object({ apiProvider: z.literal("lmstudio") })),
 	geminiSchema.merge(z.object({ apiProvider: z.literal("gemini") })),
-	geminiCliSchema.merge(z.object({ apiProvider: z.literal("gemini-cli") })),
 	openAiCodexSchema.merge(z.object({ apiProvider: z.literal("openai-codex") })),
 	openAiNativeSchema.merge(z.object({ apiProvider: z.literal("openai-native") })),
 	ovhcloudSchema.merge(z.object({ apiProvider: z.literal("ovhcloud") })), // kilocode_change
@@ -639,7 +635,6 @@ export const providerSettingsSchema = z.object({
 	...vsCodeLmSchema.shape,
 	...lmStudioSchema.shape,
 	...geminiSchema.shape,
-	...geminiCliSchema.shape,
 	// kilocode_change start
 	...kilocodeSchema.shape,
 	...virtualQuotaFallbackSchema.shape,
@@ -748,7 +743,6 @@ export const modelIdKeysByProvider: Record<TypicalProvider, ModelIdKey> = {
 	ollama: "ollamaModelId",
 	lmstudio: "lmStudioModelId",
 	gemini: "apiModelId",
-	"gemini-cli": "apiModelId",
 	mistral: "apiModelId",
 	moonshot: "apiModelId",
 	minimax: "apiModelId",
@@ -820,7 +814,6 @@ export const MODELS_BY_PROVIDER: Record<
 		ProviderName,
 		| "fake-ai"
 		| "human-relay"
-		| "gemini-cli"
 		| "openai"
 		| "openai-responses" // kilocode_change
 		| "gemini"

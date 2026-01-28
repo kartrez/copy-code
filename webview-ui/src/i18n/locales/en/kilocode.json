@@ -2,7 +2,7 @@
 	"welcome": {
 		"greeting": "Welcome to Copy Coder!",
 		"introText1": "Copy Coder is a free, open source AI coding agent.",
-		"introText2": "It works with the latest AI models like Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5, and 450+ more.",
+		"introText2": "It works with the latest AI models like Claude Opus 4.5, Gemini 3 Pro, GPT-5.2, and 450+ more.",
 		"introText3": "Create a free account and get access to free models of OpenAI GPT-5 Nano, Gemeni 2.5 Flash, Mistral 3.2 Small. You can also get a trial subscription that allows you to use a wide range of third-party APIs and local code indexing.",
 		"ctaButton": "Get Started",
 		"manualModeButton": "Use your own API key",
@@ -12,7 +12,8 @@
 	"lowCreditWarning": {
 		"addCredit": "Add Credit",
 		"lowBalance": "Your Copy Coder balance is low",
-		"newOrganization": "Using Copy Coder for work?"
+		"newOrganization": "Using Copy Coder for work?",
+        "switchToFreeModel": "Switch to Free Model instead"
 	},
 	"memoryWarning": {
 		"message": "Memory usage is at {{percentage}}%. Please restart your IDE to prevent crashes."
@@ -56,6 +57,7 @@
 			"login": "Log in at Copy Coder",
 			"loginTelegram": "Log in with Telegram",
 			"logout": "Log out from Copy Coder",
+			"loginForPremiumModels": "Log in to access premium models & features",
 			"providerRouting": {
 				"title": "Provider Routing",
 				"managedByOrganization": "Manage Organization-level Provider Routing",

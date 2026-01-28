@@ -102,16 +102,6 @@
 			"apiKeyModelPlanMismatch": "API keys and subscription plans allow different models. Make sure the selected model is included in your plan.",
 			"notFound": "Claude Code executable '{{claudePath}}' not found.\n\nPlease install Claude Code CLI:\n1. Visit {{installationUrl}} to download Claude Code\n2. Follow the installation instructions for your operating system\n3. Ensure the 'claude' command is available in your PATH\n4. Alternatively, configure a custom path in Copy Coder settings under 'Claude Code Path'\n\nOriginal error: {{originalError}}"
 		},
-		"geminiCli": {
-			"oauthLoadFailed": "Не удалось загрузить учетные данные OAuth. Сначала выполните аутентификацию: {{error}}",
-			"tokenRefreshFailed": "Не удалось обновить токен OAuth: {{error}}",
-			"onboardingTimeout": "Операция подключения истекла через 60 секунд. Пожалуйста, попробуйте позже.",
-			"projectDiscoveryFailed": "Не удалось обнаружить идентификатор проекта. Убедитесь, что вы аутентифицированы с помощью 'gemini auth'.",
-			"rateLimitExceeded": "Превышен лимит скорости. Достигнуты лимиты бесплатного уровня.",
-			"badRequest": "Неверный запрос: {{details}}",
-			"apiError": "Ошибка API Gemini CLI: {{error}}",
-			"completionError": "Ошибка завершения Gemini CLI: {{error}}"
-		},
 		"message": {
 			"no_active_task_to_delete": "Нет активной задачи для удаления сообщений",
 			"invalid_timestamp_for_deletion": "Недействительная временная метка сообщения для удаления",

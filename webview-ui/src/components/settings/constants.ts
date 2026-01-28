@@ -10,7 +10,6 @@ import {
 	moonshotModels,
 	// kilocode_change start
 	// geminiModels,
-	geminiCliModels,
 	// kilocode_change end
 	mistralModels,
 	openAiNativeModels,
@@ -40,7 +39,6 @@ export const MODELS_BY_PROVIDER: Partial<Record<ProviderName, Record<string, Mod
 	moonshot: moonshotModels,
 	// kilocode_change start
 	// gemini: geminiModels,
-	"gemini-cli": geminiCliModels,
 	// kilocode_change end
 	mistral: mistralModels,
 	"openai-native": openAiNativeModels,
@@ -69,7 +67,6 @@ export const PROVIDERS = [
 	{ value: "doubao", label: "Doubao", proxy: false },
 	// kilocode_change start
 	{ value: "inception", label: "Inception", proxy: false },
-	{ value: "gemini-cli", label: "Gemini CLI", proxy: false },
 	{ value: "virtual-quota-fallback", label: "Virtual Quota Fallback", proxy: false },
 	{ value: "synthetic", label: "Synthetic", proxy: false },
 	{ value: "ovhcloud", label: "OVHcloud AI Endpoints", proxy: false },
