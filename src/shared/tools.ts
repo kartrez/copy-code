@@ -314,7 +314,8 @@ export const TOOL_DISPLAY_NAMES: Record<ToolName, string> = {
 // Define available tool groups.
 export const TOOL_GROUPS: Record<ToolGroup, ToolGroupConfig> = {
 	read: {
-		tools: ["read_file", "fetch_instructions", "search_files", "list_files", "codebase_search"],
+		//tools: ["read_file", "fetch_instructions", "search_files", "list_files", "codebase_search"],
+		tools: ["read_file", "fetch_instructions", "search_files", "list_files"],
 	},
 	edit: {
 		tools: [

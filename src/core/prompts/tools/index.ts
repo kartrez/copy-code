@@ -48,7 +48,7 @@ const toolDescriptionMap: Record<string, (args: ToolArgs) => string | undefined>
 	attempt_completion: (args) => getAttemptCompletionDescription(args),
 	use_mcp_tool: (args) => getUseMcpToolDescription(args),
 	access_mcp_resource: (args) => getAccessMcpResourceDescription(args),
-	codebase_search: (args) => getCodebaseSearchDescription(args),
+	//codebase_search: (args) => getCodebaseSearchDescription(args),
 	switch_mode: () => getSwitchModeDescription(),
 	new_task: (args) => getNewTaskDescription(args),
 	// kilocode_change start: Fast Apply
@@ -131,15 +131,19 @@ export function getToolDescriptionsForMode(
 
 	// Conditionally exclude codebase_search if feature is disabled or not configured
 	// kilocode_change start
-	const isCodebaseSearchAvailable =
-		ManagedIndexer.getInstance().isEnabled() ||
-		(codeIndexManager &&
-			codeIndexManager.isFeatureEnabled &&
-			codeIndexManager.isFeatureConfigured &&
-			codeIndexManager.isInitialized)
-	if (!isCodebaseSearchAvailable) {
-		tools.delete("codebase_search")
-	}
+
+	//
+	// const isCodebaseSearchAvailable =
+	// 	ManagedIndexer.getInstance().isEnabled() ||
+	// 	(codeIndexManager &&
+	// 		codeIndexManager.isFeatureEnabled &&
+	// 		codeIndexManager.isFeatureConfigured &&
+	// 		codeIndexManager.isInitialized)
+	// if (!isCodebaseSearchAvailable) {
+	// 	tools.delete("codebase_search")
+	// }
+	tools.delete("codebase_search")
+
 	// kilocode_change end
 
 	// kilocode_change start: Fast Apply

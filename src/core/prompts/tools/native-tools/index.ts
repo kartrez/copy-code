@@ -67,7 +67,7 @@ export function getNativeTools(options: NativeToolsOptions = {}): OpenAI.Chat.Ch
 		askFollowupQuestion,
 		attemptCompletion,
 		browserAction,
-		codebaseSearch,
+		// codebaseSearch,
 		executeCommand,
 		fetchInstructions,
 		generateImage,
