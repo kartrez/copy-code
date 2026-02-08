@@ -98,20 +98,7 @@ const Content = () => {
 		)
 	}
 
-	const { apiConfiguration, currentApiConfigName} = useExtensionState()
 	const { t } = useAppTranslation()
-
-	function enableLocalIndexing(): void {
-		console.info("Logging out...", apiConfiguration)
-		vscode.postMessage({
-			type: "upsertApiConfiguration",
-			text: currentApiConfigName,
-			apiConfiguration: {
-				...apiConfiguration,
-				gptChatEnableLocalIndexing: true,
-			},
-		})
-	}
 
 	return (
 		<>
@@ -119,15 +106,6 @@ const Content = () => {
 				<div className="flex flex-row items-center gap-1 p-0 mt-0 mb-1 w-full">
 					<h4 className="m-0 pb-2 flex-1">Managed Code Indexing</h4>
 				</div>
-				{apiConfiguration?.gptChatProfileHasSubscription && (
-					<p className="my-0 pr-4 text-sm w-full mb-3">
-						<VSCodeCheckbox
-							checked={false}
-							onChange={(e: any) => enableLocalIndexing()}>
-							<span className="font-medium">{t("settings:codeIndex.enableLabel")}</span>
-						</VSCodeCheckbox>
-					</p>
-				)}
 			</div>
 
 			<div className="border-t border-vscode-dropdown-border" />

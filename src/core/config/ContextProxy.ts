@@ -25,7 +25,6 @@ import { logger } from "../../utils/logging"
 // kilocode_change start: Configuration change event types
 export interface ManagedIndexerConfig {
 	gptChatByApiKey: string | null,
-	gptChatEnableLocalIndexing: boolean | null,
 	gptChatProfileHasSubscription: boolean | null
 }
 // kilocode_change end
@@ -370,7 +369,6 @@ export class ContextProxy {
 	public async setProviderSettings(values: ProviderSettings) {
 		// Capture old values for change detection
 		const oldToken = this.secretCache.gptChatByApiKey
-		const oldEnableLocalIndexing = this.stateCache.gptChatEnableLocalIndexing
 		const oldProfileHasSubscription = this.stateCache.gptChatProfileHasSubscription
 		// Explicitly clear out any old API configuration values before that
 		// might not be present in the new configuration.
@@ -397,13 +395,11 @@ export class ContextProxy {
 
 		// kilocode_change start: Emit event if managed indexer config changed
 		const newToken = this.secretCache.gptChatByApiKey
-		const newEnableLocalIndexing = this.stateCache.gptChatEnableLocalIndexing
 		const newProfileHasSubscription = this.stateCache.gptChatProfileHasSubscription
 
-		if (oldToken !== newToken || oldEnableLocalIndexing !== newEnableLocalIndexing || oldProfileHasSubscription !== newProfileHasSubscription) {
+		if (oldToken !== newToken || oldProfileHasSubscription !== newProfileHasSubscription) {
 			this.configEmitter.emit("managed-indexer-config-changed", {
 				gptChatByApiKey: newToken ?? null,
-				gptChatEnableLocalIndexing: newEnableLocalIndexing ?? null,
 				gptChatProfileHasSubscription: newProfileHasSubscription ?? null,
 			} as ManagedIndexerConfig)
 		}

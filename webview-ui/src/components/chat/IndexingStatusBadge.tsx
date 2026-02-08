@@ -10,7 +10,7 @@ import type { IndexingStatus, IndexingStatusUpdateMessage } from "@roo/Extension
 import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { PopoverTrigger, StandardTooltip, Button } from "@src/components/ui"
 
-import { CodeIndexPopover } from "./CodeIndexPopover" // kilocode_change
+// import { CodeIndexPopover } from "./CodeIndexPopover" // kilocode_change
 import { useManagedIndexerState, useIsIndexing } from "./hooks/useManagedIndexerState" // kilocode_change
 import { ManagedCodeIndexPopover } from "./kilocode/ManagedCodeIndexPopover" // kilocode_change
 
@@ -132,26 +132,14 @@ export const IndexingStatusBadge: React.FC<IndexingStatusBadgeProps> = ({ classN
 		return statusColors[indexingStatus.systemStatus as keyof typeof statusColors] || statusColors.Standby
 	}, [indexingStatus.systemStatus])
 
-	const { apiConfiguration} = useExtensionState()
-	const [isEnableLocalIndexing, setEnableLocalIndexing] = React.useState(false)
-	useEffect(() => {
-		if (!apiConfiguration?.gptChatProfileHasSubscription) {
-			setEnableLocalIndexing(false)
-			return
-		}
-		if (apiConfiguration?.gptChatEnableLocalIndexing && apiConfiguration?.gptChatEnableLocalIndexing) {
-			setEnableLocalIndexing(true)
-			return
-		}
-		setEnableLocalIndexing(false)
-	}, [apiConfiguration?.gptChatEnableLocalIndexing, apiConfiguration?.gptChatProfileHasSubscription])
-
 	// Use ManagedCodeIndexPopover when organization is available, otherwise use regular CodeIndexPopover
-	const PopoverComponent = isEnableLocalIndexing ? CodeIndexPopover: ManagedCodeIndexPopover // kilocode_change
-
-	return(
-		<></>
-	)
+	// const PopoverComponent = isEnableLocalIndexing ? CodeIndexPopover: ManagedCodeIndexPopover // kilocode_change
+	if (!managedIndexerState.isEnabled) {
+		return (
+			<></>
+		)
+	}
+	const PopoverComponent = ManagedCodeIndexPopover
 
 	return (
 		<PopoverComponent indexingStatus={indexingStatus}>

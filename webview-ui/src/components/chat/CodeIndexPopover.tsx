@@ -722,19 +722,6 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 	const MaybePopoverContent = !contentOnly ? PopoverContent : NoOpWrapper
 	// kilcode_change end - Allow rendering just the content of CodeIndexPopover
 
-	const { currentApiConfigName} = useExtensionState()
-	function disableLocalIndexing(): void {
-		console.info("Logging out...", apiConfiguration)
-		vscode.postMessage({
-			type: "upsertApiConfiguration",
-			text: currentApiConfigName,
-			apiConfiguration: {
-				...apiConfiguration,
-				gptChatEnableLocalIndexing: false,
-			},
-		})
-	}
-
 	return (
 		<>
 			{/* kilocode_change - Popover -> MaybePopover */}
@@ -777,11 +764,6 @@ export const CodeIndexPopover: React.FC<CodeIndexPopoverProps> = ({
 						{/* Enable/Disable Toggle */}
 						<div className="mb-4">
 							<div className="flex items-center gap-2">
-								<VSCodeCheckbox
-									checked={true}
-									onChange={(e: any) => disableLocalIndexing()}>
-									<span className="font-medium">{t("settings:codeIndex.enableLabel")}</span>
-								</VSCodeCheckbox>
 								<StandardTooltip content={t("settings:codeIndex.enableDescription")}>
 									<span className="codicon codicon-info text-xs text-vscode-descriptionForeground cursor-help" />
 								</StandardTooltip>

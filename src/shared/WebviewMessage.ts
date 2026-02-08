@@ -442,6 +442,7 @@ export type ProfileData = {
 	hasTrial: boolean,
 	hasSubscription: boolean,
 	subscriptionExpairedDate: string,
+	indexingType: string
 }
 
 export interface ProfileDataResponsePayload {

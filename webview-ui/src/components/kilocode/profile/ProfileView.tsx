@@ -78,7 +78,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ onDone }) => {
 			apiConfiguration: {
 				...apiConfiguration,
 				gptChatByApiKey: "",
-				gptChatEnableLocalIndexing: false,
 				gptChatProfileHasSubscription: false,
 			},
 		})

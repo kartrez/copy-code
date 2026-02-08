@@ -6,7 +6,7 @@ import { GitWatcher, GitWatcherEvent } from "../../../shared/GitWatcher"
 import { getCurrentBranch, isGitRepository } from "./git-utils"
 import { normalizeProjectId } from "../../../utils/kilo-config-file"
 import { getGitRepositoryInfo } from "../../../utils/git"
-import { getServerManifest, searchCode, upsertChunks, deleteFiles } from "./api-client"
+import { getServerManifest, searchCode, upsertChunks, deleteFiles, getProfile } from "./api-client"
 import {
 	MAX_FILE_SIZE_BYTES
 } from "../constants"
@@ -22,7 +22,6 @@ import { ProfileData } from "../../../shared/WebviewMessage"
 
 interface ManagedIndexerConfig {
 	gptChatByApiKey: string | null,
-	gptChatEnableLocalIndexing: boolean | null,
 	gptChatProfileHasSubscription: boolean | null,
 }
 
@@ -154,12 +153,11 @@ export class ManagedIndexer implements vscode.Disposable {
 
 	async fetchConfig(): Promise<ManagedIndexerConfig> {
 		const gptChatByApiKey = this.contextProxy.getSecret("gptChatByApiKey")
-		const gptChatEnableLocalIndexing = this.contextProxy.getValue("gptChatEnableLocalIndexing")
+		this.profile = await getProfile(gptChatByApiKey)
 		const gptChatProfileHasSubscription = this.contextProxy.getValue("gptChatProfileHasSubscription")
 
 		this.config = {
 			gptChatByApiKey: gptChatByApiKey ?? null,
-			gptChatEnableLocalIndexing: gptChatEnableLocalIndexing ?? false,
 			gptChatProfileHasSubscription: gptChatProfileHasSubscription ?? false
 		}
 
@@ -167,11 +165,8 @@ export class ManagedIndexer implements vscode.Disposable {
 	}
 
 	isEnabled(): boolean {
-		if (!this.config?.gptChatProfileHasSubscription) {
-			return true
-		}
-
-		return !this.config?.gptChatEnableLocalIndexing
+		return this.profile?.hasSubscription === true &&
+			this.profile.indexingType === 'server';
 	}
 
 	/**
