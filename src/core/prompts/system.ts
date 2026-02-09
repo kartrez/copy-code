@@ -24,7 +24,7 @@ import { SkillsManager } from "../../services/skills/SkillsManager"
 import { PromptVariables, loadSystemPromptFile } from "./sections/custom-system-prompt"
 
 import type { SystemPromptSettings } from "./types"
-import { getToolDescriptionsForMode } from "./tools"
+import { getCodebaseSearchDescription, getToolDescriptionsForMode } from "./tools"
 import {
 	getRulesSection,
 	getSystemInfoSection,
@@ -38,7 +38,8 @@ import {
 	markdownFormattingSection,
 	getSkillsSection,
 } from "./sections"
-import { type ClineProviderState } from "../webview/ClineProvider" // kilocode_change
+import { type ClineProviderState } from "../webview/ClineProvider"
+import { ToolArgs } from "./tools/types" // kilocode_change
 
 // Helper function to get prompt component, filtering out empty objects
 export function getPromptComponent(
@@ -211,7 +212,9 @@ export const SYSTEM_PROMPT = async (
 		getModeBySlug(inputMode, customModes)?.slug || modes.find((m) => m.slug === inputMode)?.slug || defaultModeSlug // kilocode_change: don't try to use non-existent modes
 
 	if (mode === "no-mode") {
-		return ''
+		const args: ToolArgs = {cwd: cwd, supportsComputerUse: supportsComputerUse, settings: settings}
+
+		return getCodebaseSearchDescription(args)
 	}
 
 	// Try to load custom system prompt from file
