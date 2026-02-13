@@ -39,7 +39,7 @@ export const gptChatByModels = {
 		description: `Open AI GPT-5 nano`,
 		isFree: true,
 	},
-	"coder": {
+	"qwen/coder": {
 		maxTokens: 65_000,
 		contextWindow: 1_000_000,
 		supportsImages: false,
@@ -49,7 +49,7 @@ export const gptChatByModels = {
 		outputPrice: 5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `Qwen Coder - High-performance coding model with 1M context window for large codebases.`,
 	},
-	"coder-flash": {
+	"qwen/coder-flash": {
 		maxTokens: 65_000,
 		contextWindow: 1_000_000,
 		supportsImages: false,
