@@ -3677,13 +3677,13 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								this.updateApiConfiguration({
 									...state?.apiConfiguration,
 									apiProvider: "gpt-chat-by",
-									apiModelId: "minimax/m2.1",
+									apiModelId: "minimax/m2.5",
 									toolProtocol: "native",
 								} as ProviderSettings)
 
 								await this.say(
 									"text",
-									`Switched to "minimax/m2.1" due to MODEL_NO_TOOLS_USED error.`,
+									`Switched to "minimax/m2.5" due to MODEL_NO_TOOLS_USED error.`,
 									undefined,
 									false,
 									undefined,

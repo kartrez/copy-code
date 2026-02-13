@@ -79,8 +79,8 @@ export const gptChatByModels = {
 		outputPrice: 0.45 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `deepseek 3.2`,
 	},
-	"minimax/m2.1": {
-		maxTokens: 120_000,
+	"minimax/m2.5": {
+		maxTokens: 180_000,
 		contextWindow: 180_000,
 		supportsImages: false,
 		supportsPromptCache: true,
@@ -88,15 +88,6 @@ export const gptChatByModels = {
 		inputPrice: 0.12 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 0.48 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `MiniMax M2.1`,
-	},
-	"minimax/m2": {
-		maxTokens: 65_000,
-		contextWindow: 180_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.2 * GTP_CHAT_BY_TAKE_PROFIT_USD,
-		outputPrice: GTP_CHAT_BY_TAKE_PROFIT_USD,
-		description: `MiniMax M2`,
 	},
 	"anthropic/claude-opus-4.6": {
 		maxTokens: 128_000,
