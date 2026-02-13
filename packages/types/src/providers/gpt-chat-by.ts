@@ -64,7 +64,7 @@ export const gptChatByModels = {
 		contextWindow: 1_000_000,
 		supportsImages: true,
 		supportsPromptCache: false,
-		supportsNativeTools: true,
+		supportsNativeTools: false,
 		inputPrice: 0.5 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		outputPrice: 3 * GTP_CHAT_BY_TAKE_PROFIT_USD,
 		description: `Google: Gemini 3 Flash Preview.`,
