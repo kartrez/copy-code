@@ -3664,7 +3664,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						}
 
 						// Only show error and count toward mistake limit after 2 consecutive failures
-						if (this.consecutiveNoToolUseCount >= 2) {
+						if (this.consecutiveNoToolUseCount > 0) {
 							// await this.say("error", "MODEL_NO_TOOLS_USED")
 							// Only count toward mistake limit after second consecutive failure
 							if (!wasModelTemporarilyChanged) {
