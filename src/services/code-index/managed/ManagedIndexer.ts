@@ -527,142 +527,136 @@ export class ManagedIndexer implements vscode.Disposable {
 			// Start with all files from manifest - we'll remove entries as we encounter them in git
 			const manifestFilesToCheck = new Set<string>(Object.values(manifest.files))
 			const filesToDelete: string[] = []
-			let upsertCount = manifestFilesToCheck.size
+			let upsertCount = Object.keys(manifest.files).length
 			let errorCount = 0
 
-			await pMap(
-				event.files,
-				async (file) => {
-					// Check if operation was aborted
-					if (signal.aborted) {
-						throw new Error("AbortError")
-					}
+			// === STEP 1: Collect eligible files for upsert (skip deleted, unsupported, ignored) ===
+			const fileUpsertJobs: Array<{
+				filePath: string
+				blocks: any[]
+				absoluteFilePath: string
+				relativeFilePath: string
+				fileHash: string
+			}> = []
 
-					if (this.isEnabled() === false) {
-						throw new Error("ManagedIndexing is not enabled")
-					}
+			for await (const file of event.files) {
+				if (signal.aborted) throw new Error("AbortError")
+				
+				// If file is in git event, it's not "missing" from manifest
+				manifestFilesToCheck.delete(file.filePath)
 
-					if (!this.isActive) {
-						return
-					}
+				if (file.type === "file-deleted") {
+					filesToDelete.push(file.filePath)
+					continue
+				}
 
-					const { filePath } = file
+				const ext = path.extname(file.filePath).toLowerCase()
+				if (!scannerExtensions.includes(ext)) continue
 
-					// Also remove from manifest check set if present
-					manifestFilesToCheck.delete(filePath)
+				if (manifest.files[file.fileHash] === file.filePath) continue // already indexed
 
-					if (file.type === "file-deleted") {
-						// Track deleted files for removal from backend
-						filesToDelete.push(filePath)
-						return
-					}
+				const absoluteFilePath = path.isAbsolute(file.filePath)
+					? file.filePath
+					: path.join(event.watcher.config.cwd, file.filePath)
 
-					const { fileHash } = file
+				try {
+					const stats = await fs.stat(absoluteFilePath)
+					if (stats.size > MAX_FILE_SIZE_BYTES) continue
+				} catch {
+					continue
+				}
 
-					// Check if file extension is supported
-					const ext = path.extname(filePath).toLowerCase()
-					if (!scannerExtensions.includes(ext)) {
-						return
-					}
+				const relativeFilePath = path.relative(event.watcher.config.cwd, absoluteFilePath)
+				const ignore = state.ignoreController
+				if (ignore && !ignore.validateAccess(relativeFilePath)) continue
 
-					// Already indexed - check if fileHash exists in the map and matches the filePath
-					if (manifest.files[fileHash] === filePath) {
-						return
-					}
+				try {
+					const content = await fs.readFile(absoluteFilePath).then(buf => buf.toString("utf-8"))
+					const blocks = await this.codeParser.parseFile(file.filePath, { content, fileHash: file.fileHash })
+					fileUpsertJobs.push({
+						filePath: file.filePath,
+						blocks,
+						absoluteFilePath,
+						relativeFilePath,
+						fileHash: file.fileHash
+					})
+				} catch (err) {
+					errorCount++
+					const errorMessage = err instanceof Error ? err.message : String(err)
+					console.error(`[ManagedIndexer] Failed to parse ${file.filePath}: ${errorMessage}`)
+					if (errorCount > 2) this.dispose()
+					continue
+				}
+			}
 
-					// Check if operation was aborted before processing
-					if (signal.aborted) {
-						throw new Error("AbortError")
-					}
+			// === STEP 2: Batch file upsert jobs into groups of 30 ===
+			const BATCH_SIZE = 30
+			const batches: (typeof fileUpsertJobs)[] = []
+			for (let i = 0; i < fileUpsertJobs.length; i += BATCH_SIZE) {
+				batches.push(fileUpsertJobs.slice(i, i + BATCH_SIZE))
+			}
 
-					try {
-						// Ensure we have the necessary configuration
-						// check again inside loop as this can change mid-flight
-						if (
-							!this.config?.gptChatByApiKey ||
-							!state.projectId
-						) {
-							return
-						}
-						const projectId = state.projectId
+			// === STEP 3: Process each batch with 3s delay between ===
+			for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
+				if (signal.aborted) throw new Error("AbortError")
 
-						const absoluteFilePath = path.isAbsolute(filePath)
-							? filePath
-							: path.join(event.watcher.config.cwd, filePath)
+				const batch = batches[batchIndex]
+				console.info(`[ManagedIndexer] Starting upsert batch #${batchIndex + 1} (${batch.length} files)`)
 
-						// if file is larger than 1 megabyte, skip it
-						const stats = await fs.stat(absoluteFilePath)
-						if (stats.size > MAX_FILE_SIZE_BYTES) {
-							return
-						}
+				// Run upserts in this batch with concurrency=3
+				await pMap(
+					batch,
+					async (job) => {
+						if (signal.aborted) throw new Error("AbortError")
+						if (!this.config?.gptChatByApiKey || !state.projectId) return
 
-						const content = await fs.readFile(absoluteFilePath)
-							.then((buffer) => Buffer.from(buffer).toString("utf-8"))
-						const relativeFilePath = path.relative(event.watcher.config.cwd, absoluteFilePath)
-
-						// Check RooIgnoreController
-						const ignore = state.ignoreController
-						if (ignore && !ignore.validateAccess(relativeFilePath)) {
-							return
-						}
-						const blocks = await this.codeParser.parseFile(filePath, { content, fileHash: fileHash })
-
-						upsertChunks(
-							projectId,
-							event.branch,
-							event.isBaseBranch,
-							blocks,
-							this.config?.gptChatByApiKey || "",
-							signal
-						)
-
-						upsertCount++
-						this.sendStateToWebview(state, upsertCount)
-
-						// Clear any previous file-upsert errors on success
-						if (state.error?.type === "file-upsert") {
-							state.error = undefined
+						try {
+							await upsertChunks(
+								state.projectId,
+								event.branch,
+								event.isBaseBranch,
+								job.blocks,
+								this.config.gptChatByApiKey,
+								signal
+							)
+							upsertCount++
+							this.sendStateToWebview(state, upsertCount)
+							// Clear file-upsert error on success
+							if (state.error?.type === "file-upsert") {
+								state.error = undefined
+								this.sendStateToWebview()
+							}
+						} catch (error) {
+							if (error instanceof Error && error.message === "AbortError") throw error
+							errorCount++
+							const errorMessage = error instanceof Error ? error.message : String(error)
+							console.error(`[ManagedIndexer] Failed to upsert ${job.filePath}: ${errorMessage}`)
+							state.error = {
+								type: "file-upsert",
+								message: `Failed to upsert file: ${errorMessage}`,
+								timestamp: new Date().toISOString(),
+								context: { filePath: job.filePath, branch: event.branch, operation: "file-upsert" },
+								details: error instanceof Error ? error.stack : undefined
+							}
 							this.sendStateToWebview()
+							if (errorCount > 2) this.dispose()
 						}
-					} catch (error) {
-						// Don't log abort errors as failures
-						if (error instanceof Error && error.message === "AbortError") {
-							throw error
-						}
+					},
+					{ concurrency: 3 }
+				)
 
-						errorCount++
-						// if we have 3 indexing errors, something is wrong....stop trying
-						if (errorCount > 2) {
-							this.dispose()
-						}
-						const errorMessage = error instanceof Error ? error.message : String(error)
-						console.error(`[ManagedIndexer] Failed to upsert file ${filePath}: ${errorMessage}`)
-						// Store the error in state
-						state.error = {
-							type: "file-upsert",
-							message: `Failed to upsert file: ${errorMessage}`,
-							timestamp: new Date().toISOString(),
-							context: {
-								filePath,
-								branch: event.branch,
-								operation: "file-upsert"
-							},
-							details: error instanceof Error ? error.stack : undefined
-						}
-						this.sendStateToWebview()
+				// Delay before next batch (unless last batch)
+				if (batchIndex < batches.length - 1) {
+					console.info(`[ManagedIndexer] Waiting 3 seconds before next batch...`)
+					await this.delay(3000, signal)
+				}
+			}
 
-					}
-				},
-				{ concurrency: 2 }
-			)
-
-			// Any files remaining in manifestFilesToCheck were not encountered in git
-			// and should be deleted from the backend
+			// === STEP 4: Handle deletions (unchanged) ===
 			for (const manifestFile of manifestFilesToCheck) {
 				filesToDelete.push(manifestFile)
 			}
 
-			// Delete files that are no longer in git or were explicitly deleted
 			if (filesToDelete.length > 0 && this.isActive) {
 				console.info(`[ManagedIndexer] Deleting ${filesToDelete.length} files from manifest`)
 				try {
@@ -675,66 +669,44 @@ export class ManagedIndexer implements vscode.Disposable {
 					)
 					console.info(`[ManagedIndexer] Successfully deleted ${filesToDelete.length} files`)
 				} catch (error) {
-					// Don't log abort errors as failures
-					if (error instanceof Error && error.message === "AbortError") {
-						throw error
-					}
-
+					if (error instanceof Error && error.message === "AbortError") throw error
 					const errorMessage = error instanceof Error ? error.message : String(error)
 					console.error(`[ManagedIndexer] Failed to delete files: ${errorMessage}`)
-
-					// Store the error in state
 					state.error = {
 						type: "file-upsert",
 						message: `Failed to delete files: ${errorMessage}`,
 						timestamp: new Date().toISOString(),
-						context: {
-							branch: event.branch,
-							operation: "file-delete"
-						},
+						context: { branch: event.branch, operation: "file-delete" },
 						details: error instanceof Error ? error.stack : undefined
 					}
 					this.sendStateToWebview()
 				}
 			}
 
-			// Force a re-fetch of the manifest
+			// === STEP 5: Poll manifest (unchanged) ===
 			manifest = await this.getManifest(state, event.branch, true)
 			if (manifest.inProgress) {
 				console.info(`[ManagedIndexer] Manifest is in progress for branch ${event.branch}, starting polling...`)
-
-				const POLLING_INTERVAL_MS = 10_000 // 10 seconds
+				const POLLING_INTERVAL_MS = 10_000
 				let pollCount = 0
-
-				// Poll until inProgress is false or operation is aborted
 				while (manifest.inProgress && !signal.aborted) {
 					try {
-						// Wait for interval using a promise with timeout
 						await new Promise((resolve, reject) => {
 							const timeoutId = setTimeout(resolve, POLLING_INTERVAL_MS)
-							// Cleanup on abort
 							signal.addEventListener("abort", () => {
 								clearTimeout(timeoutId)
 								reject(new Error("AbortError"))
 							})
 						})
-
-						// Re-fetch manifest
 						manifest = await this.getManifest(state, event.branch, true)
 						pollCount++
-
-						console.info(
-							`[ManagedIndexer] Polling manifest (${pollCount}) - inProgress: ${manifest.inProgress}`
-						)
-
-						// Update UI state during polling
+						console.info(`[ManagedIndexer] Polling manifest (${pollCount}) - inProgress: ${manifest.inProgress}`)
 						this.sendStateToWebview()
 					} catch (error) {
 						if (error instanceof Error && error.message === "AbortError") {
 							console.info("[ManagedIndexer] Polling aborted due to signal")
 							throw error
 						}
-
 						console.error(`[ManagedIndexer] Error during manifest polling:`, error)
 						state.error = {
 							type: "manifest",
@@ -747,7 +719,6 @@ export class ManagedIndexer implements vscode.Disposable {
 						break
 					}
 				}
-
 				if (!manifest.inProgress) {
 					console.info(`[ManagedIndexer] Manifest is now complete after ${pollCount} polls`)
 				}
@@ -804,5 +775,18 @@ export class ManagedIndexer implements vscode.Disposable {
 				}
 			}))
 			.sort((a, b) => b.score - a.score)
+	}
+
+	/**
+	 * Utility delay function
+	 */
+	private async delay(ms: number, signal?: AbortSignal): Promise<void> {
+		return new Promise((resolve, reject) => {
+			const timeoutId = setTimeout(resolve, ms)
+			signal?.addEventListener("abort", () => {
+				clearTimeout(timeoutId)
+				reject(new Error("AbortError"))
+			})
+		})
 	}
 }
