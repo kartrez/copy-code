@@ -301,7 +301,7 @@
 				"icon": "$(link-external)"
 			},
 			{
-				"command": "copy-coder.open",
+				"command": "copy-coder.openInNewTab",
 				"title": "%views.activitybar.title%",
 				"icon": {
 					"light": "assets/icons/icon.png",
@@ -418,7 +418,7 @@
 					"when": "activeWebviewPanelId == copy-coder.TabPanelProvider"
 				},
 				{
-					"command": "copy-coder.open",
+					"command": "copy-coder.openInNewTab",
 					"group": "navigation",
 					"when": "true"
 				}
