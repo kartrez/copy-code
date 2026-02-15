@@ -3,7 +3,7 @@
 	"displayName": "%extension.displayName%",
 	"description": "%extension.description%",
 	"publisher": "copy-code",
-	"version": "0.1.0",
+	"version": "0.0.1",
 	"icon": "assets/icons/kilo.png",
 	"galleryBanner": {
 		"color": "#FFFFFF",
