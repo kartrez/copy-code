@@ -1,8 +1,23 @@
 {
+	"onboarding": {
+		"title": "How would you like to get started?",
+		"freeModels": {
+			"title": "Free models",
+			"description": "Start coding immediately"
+		},
+		"premiumModels": {
+			"title": "Premium models",
+			"description": "Sign up. New users get $5 in credits"
+		},
+		"byok": {
+			"title": "Bring my own Key",
+			"description": "Advanced. Use your own account or subscription"
+		}
+	},
 	"welcome": {
 		"greeting": "Welcome to Copy Coder!",
 		"introText1": "Copy Coder is a free, open source AI coding agent.",
-		"introText2": "It works with the latest AI models like Claude Sonnet 4.5, Gemini 2.5 Pro, GPT-5, and 450+ more.",
+		"introText2": "It works with the latest AI models like Claude Opus 4.5, Gemini 3 Pro, GPT-5.2, and 450+ more.",
 		"introText3": "Create a free account and get access to free models of OpenAI GPT-5 Nano, Gemeni 2.5 Flash, Mistral 3.2 Small. You can also get a trial subscription that allows you to use a wide range of third-party APIs and local code indexing.",
 		"ctaButton": "Get Started",
 		"manualModeButton": "Use your own API key",
@@ -12,7 +27,8 @@
 	"lowCreditWarning": {
 		"addCredit": "Add Credit",
 		"lowBalance": "Your Copy Coder balance is low",
-		"newOrganization": "Using Copy Coder for work?"
+		"newOrganization": "Using Copy Coder for work?",
+        "switchToFreeModel": "Switch to Free Model instead"
 	},
 	"memoryWarning": {
 		"message": "Memory usage is at {{percentage}}%. Please restart your IDE to prevent crashes."
@@ -28,6 +44,11 @@
 		"modelUnavailable": "⚠️ The model {{model}} is unavailable. Change to a different model to continue.",
 		"continueWith": "Continue with {{model}}",
 		"continue": "Continue"
+	},
+	"unauthorizedError": {
+		"title": "You need to sign in to use the {{modelId}} model",
+		"message": "Sign in or create an account to access over 500 models, use credits at cost, or bring your own key.",
+		"loginButton": "Sign In"
 	},
 	"pricing": {
 		"costUnknown": "cost unknown",
@@ -46,7 +67,9 @@
 	},
 	"settings": {
 		"sections": {
-			"mcp": "MCP Servers"
+			"mcp": "MCP Servers",
+			"agentBehaviour": "Agent Behaviour",
+			"skills": "Skills"
 		},
 		"provider": {
 			"account": "Copy Coder Account",
@@ -54,6 +77,7 @@
 			"login": "Log in at Copy Coder",
 			"loginTelegram": "Log in with Telegram",
 			"logout": "Log out from Copy Coder",
+			"loginForPremiumModels": "Log in to access premium models & features",
 			"providerRouting": {
 				"title": "Provider Routing",
 				"managedByOrganization": "Manage Organization-level Provider Routing",
@@ -71,8 +95,7 @@
 					"deny": "Deny prompt training",
 					"zdr": "Zero data retention"
 				}
-			},
-			"automaticFetch": "The latest models are automatically available in Copy Coder. If you're unsure which model to choose, Copy Coder works best with the recommended models listed at the top in <strong>bold face</strong>."
+			}
 		},
 		"modelInfo": {
 			"contextWindow": "Context window",
@@ -165,7 +188,14 @@
 	},
 	"docs": "Docs",
 	"rules": {
-		"tooltip": "Manage Copy Coder Rules & Workflows",
+		"tooltip": "Manage Agent Behaviour ({{types}})",
+		"agentBehaviourTypes": {
+			"rules": "Rules",
+			"workflows": "Workflows",
+			"mcps": "MCPs",
+			"modes": "Modes",
+			"skills": "Skills"
+		},
 		"ariaLabel": "Copy Coder Rules",
 		"tabs": {
 			"rules": "Rules",
@@ -225,6 +255,7 @@
 	},
 	"ideaSuggestionsBox": {
 		"newHere": "New here?",
+		"tryOneOfThese": "Try one of these ideas to get started:",
 		"suggestionText": "<suggestionButton>Click here</suggestionButton> for a cool idea, then tap on <sendIcon /> and watch me do magic!",
 		"ideas": {
 			"idea1": "Make a spinning, glowing 3D sphere that responds to mouse movements. Make the app work in the browser.",
@@ -243,7 +274,7 @@
 		"xml": "XML",
 		"json": "JSON"
 	},
-	"ghost": {
+	"autocomplete": {
 		"title": "Autocomplete",
 		"settings": {
 			"codeEditorSuggestions": "Code Editor Suggestions",
@@ -368,6 +399,18 @@
 			"loading": "Loading microphone devices...",
 			"noDevices": "No microphone devices found",
 			"refresh": "Refresh"
+		}
+	},
+	"skills": {
+		"description": "Skills provide specialized instructions for specific tasks. They are automatically applied when relevant to your request.",
+		"noSkills": "No skills installed",
+		"projectSkills": "Project Skills",
+		"globalSkills": "Global Skills",
+		"deleteDialog": {
+			"title": "Delete Skill",
+			"description": "Are you sure you want to delete the skill \"{{skillName}}\"? This action cannot be undone.",
+			"cancel": "Cancel",
+			"delete": "Delete"
 		}
 	}
 }

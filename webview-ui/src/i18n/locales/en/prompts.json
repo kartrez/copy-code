@@ -18,7 +18,7 @@
 	},
 	"organizationMode": {
 		"title": "Organization Mode",
-		"description": "This mode is provided by your organization and cannot be edited here. To modify this mode, please visit the Copy Coder Dashboard.",
+		"description": "This mode is provided by your organization and cannot be edited here. To modify this mode, please visit the <dashboardLink>Copy Coder Dashboard</dashboardLink>.",
 		"cannotEdit": "Organization modes cannot be edited"
 	},
 	"tools": {
