@@ -3907,13 +3907,13 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 								this.updateApiConfiguration({
 									...state?.apiConfiguration,
 									apiProvider: "gpt-chat-by",
-									apiModelId: "gemini-3-flash",
+									apiModelId: "deepseek/deepseek-v3.2",
 									toolProtocol: "native",
 								} as ProviderSettings)
 
 								await this.say(
 									"text",
-									`Switched to "gemini-3-flash" due to MODEL_NO_TOOLS_USED error.`,
+									`Switched to "deepseek/deepseek-v3.2" due to MODEL_NO_TOOLS_USED error.`,
 									undefined,
 									false,
 									undefined,
